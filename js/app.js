@@ -6,7 +6,6 @@ const screens={
   missingword:document.getElementById("missingWordScreen"),
   missingwordpokemon:document.getElementById("missingWordPokemonScreen"),
   hangman:document.getElementById("hangmanScreen"),
-  hangmanpokemon:document.getElementById("hangmanPokemonScreen"),
   placeholder:document.getElementById("placeholderScreen")
 };
 const fullscreenCallbacks=new Set();
@@ -14,7 +13,6 @@ let current="home";
 let missingWordLoaded=false;
 let missingWordPokemonLoaded=false;
 let hangmanLoaded=false;
-let hangmanPokemonLoaded=false;
 
 function haptic(ms=14){if("vibrate" in navigator)navigator.vibrate(ms)}
 function isFullscreen(){return Boolean(document.fullscreenElement||document.webkitFullscreenElement)}
@@ -86,16 +84,6 @@ async function openTile(tile){
       hangmanLoaded=true;
     }
     showScreen("hangman");
-    return;
-  }
-
-  if(file==="hangmanpokemon.html"){
-    if(!hangmanPokemonLoaded){
-      const module=await import("./games/hangman-pokemon.js");
-      module.registerHangmanPokemon(api);
-      hangmanPokemonLoaded=true;
-    }
-    showScreen("hangmanpokemon");
     return;
   }
 

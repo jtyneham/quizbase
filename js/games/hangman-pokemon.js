@@ -243,6 +243,13 @@ function initializeHangmanPokemon(root, app) {
     return next;
   }
 
+  function resetKeys(){
+    keyboard.querySelectorAll(".letter-key").forEach(key=>{
+      key.classList.remove("used","guessed-correct","guessed-wrong","key-pressed");
+      key.querySelector(".key-popup")?.remove();
+    });
+  }
+
   function startRound(){
     answer=pickWord(); guessed=new Set(); misses=[]; wrongCount=0; active=true;
     root.querySelectorAll(".draw-part").forEach(part=>part.classList.remove("drawn"));
