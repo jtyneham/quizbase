@@ -1,4 +1,4 @@
-import { POKEMON_NAMES } from "../../data/hangman-pokemon-words.js";
+import { POKEMON_WORDS } from "../../data/missing-word-pokemon-words.js";
 
 let appAPI;
 
@@ -7,6 +7,7 @@ const templateHTML = `<div class="hangman-root">
   <main class="game-card" id="gameCard">
     <div class="status-row">
       <div class="status-actions"><button class="home-button" id="homeButton" type="button" aria-label="Back to Home" title="Home">Home</button><button class="fullscreen-btn" id="fullscreenBtn" type="button" aria-label="Toggle fullscreen" title="Fullscreen">⛶</button></div>
+      <button class="topics-btn" id="topicsBtn" type="button">Topics <span id="topicsCount">1</span></button>
 <span class="tries-text" id="triesText">0 / 6 misses</span>
     </div>
 
@@ -180,9 +181,24 @@ const templateHTML = `<div class="hangman-root">
 
   </main>
 </div>
+
+<div class="topics-overlay" id="topicsOverlay" aria-hidden="true"><div class="topics-sheet">
+<div class="topics-sheet-head"><div><div class="topics-title">Choose Topics</div><div class="topics-subtitle">Select one or more categories</div></div><button class="topics-close" id="topicsClose" type="button">×</button></div>
+<div class="topics-actions-row"><button class="topics-mini-btn" id="selectAllTopics" type="button">All Topics</button><button class="topics-mini-btn" id="clearTopics" type="button">Clear</button></div>
+<div class="topics-grid" id="topicsGrid"></div>
+<div class="topics-footer"><button class="btn btn-ghost" id="cancelTopics" type="button">Cancel</button><button class="btn btn-primary" id="applyTopics" type="button">Apply</button></div>
+</div></div>
 </div>`;
 
 function initializeHangmanPokemon(root, app) {
+  const TOPICS = [
+    "Pokemon All Names",
+    "Gen 1", "Gen 2", "Gen 3", "Gen 4", "Gen 5", "Gen 6", "Gen 7", "Gen 8", "Gen 9",
+    "Moves + Abilities", "Moves", "Abilities",
+    "Final Evolutions",
+    "Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison", "Ground",
+    "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"
+  ];
   const slots = root.getElementById("slots");
   const missesList = root.getElementById("missesList");
   const triesText = root.getElementById("triesText");
@@ -196,9 +212,15 @@ function initializeHangmanPokemon(root, app) {
   const solveUi = root.getElementById("solveUi");
   const solveText = root.getElementById("solveText");
   const solveCancelBtn = root.getElementById("solveCancelBtn");
+  const topicsBtn=root.getElementById("topicsBtn"), topicsCount=root.getElementById("topicsCount"),
+    topicsOverlay=root.getElementById("topicsOverlay"), topicsGrid=root.getElementById("topicsGrid"),
+    topicsClose=root.getElementById("topicsClose"), selectAllTopics=root.getElementById("selectAllTopics"),
+    clearTopics=root.getElementById("clearTopics"), cancelTopics=root.getElementById("cancelTopics"),
+    applyTopics=root.getElementById("applyTopics");
 
   let answer="", guessed=new Set(), misses=[], wrongCount=0;
   let active=false, solveMode=false, solveBuffer="", confirmNewWord=false, confirmTimer=null;
+  let selectedTopics=new Set(["Pokemon All Names"]), draftTopics=new Set(["Pokemon All Names"]);
 
   let backspaceHoldTimer=null;
   let backspaceRepeatTimer=null;
@@ -235,12 +257,67 @@ function initializeHangmanPokemon(root, app) {
     hits.forEach(el=>{el.classList.remove("correct-hit");void el.offsetWidth;el.classList.add("correct-hit");});
     setTimeout(()=>hits.forEach(el=>el.classList.remove("correct-hit")),360);
   }
+  function getActivePool(){
+    return POKEMON_WORDS.filter(entry =>
+      entry.topics.some(topic => selectedTopics.has(topic))
+    );
+  }
+
   function pickWord(){
-    let next=POKEMON_NAMES[Math.floor(Math.random()*POKEMON_NAMES.length)];
-    if(POKEMON_NAMES.length>1 && next===answer){
-      next=POKEMON_NAMES[(POKEMON_NAMES.indexOf(next)+1)%POKEMON_NAMES.length];
+    const pool=getActivePool();
+    if(!pool.length) return "";
+
+    let index=Math.floor(Math.random()*pool.length);
+    let next=pool[index].word.toUpperCase();
+
+    if(pool.length>1 && next===answer){
+      index=(index+1)%pool.length;
+      next=pool[index].word.toUpperCase();
     }
     return next;
+  }
+
+  function renderTopicChoices(){
+    topicsGrid.innerHTML="";
+
+    TOPICS.forEach(topic=>{
+      const button=document.createElement("button");
+      button.type="button";
+      button.className="topic-chip";
+      button.textContent=topic;
+      button.classList.toggle("selected",draftTopics.has(topic));
+      button.addEventListener("click",()=>{
+        if(draftTopics.has(topic)) draftTopics.delete(topic);
+        else draftTopics.add(topic);
+        renderTopicChoices();
+      });
+      topicsGrid.appendChild(button);
+    });
+  }
+
+  function updateTopicsLabel(){
+    if(selectedTopics.size===TOPICS.length) topicsCount.textContent="All";
+    else topicsCount.textContent=selectedTopics.size;
+  }
+
+  function openTopics(){
+    draftTopics=new Set(selectedTopics);
+    renderTopicChoices();
+    topicsOverlay.classList.add("open");
+    topicsOverlay.setAttribute("aria-hidden","false");
+  }
+
+  function closeTopics(){
+    topicsOverlay.classList.remove("open");
+    topicsOverlay.setAttribute("aria-hidden","true");
+  }
+
+  function applyTopicSelection(){
+    if(!draftTopics.size) return;
+    selectedTopics=new Set(draftTopics);
+    updateTopicsLabel();
+    closeTopics();
+    startRound();
   }
 
   function resetKeys(){
@@ -468,6 +545,21 @@ function initializeHangmanPokemon(root, app) {
     startRound();
   });
 
+  topicsBtn.addEventListener("click",openTopics);
+  topicsClose.addEventListener("click",closeTopics);
+  cancelTopics.addEventListener("click",closeTopics);
+  selectAllTopics.addEventListener("click",()=>{
+    draftTopics=new Set(TOPICS);
+    renderTopicChoices();
+  });
+  clearTopics.addEventListener("click",()=>{
+    draftTopics.clear();
+    renderTopicChoices();
+  });
+  applyTopics.addEventListener("click",applyTopicSelection);
+  topicsOverlay.addEventListener("click",event=>{
+    if(event.target===topicsOverlay) closeTopics();
+  });
 
   const updateFullscreenButton = () => {
     const on = app.isFullscreen();
@@ -482,11 +574,13 @@ function initializeHangmanPokemon(root, app) {
 
   root.getElementById("homeButton").addEventListener("click", () => {
     app.haptic(12);
+    closeTopics();
     app.showHome();
   });
 
   app.onFullscreenChange(updateFullscreenButton);
   updateFullscreenButton();
+  updateTopicsLabel();
   startRound();
 }
 

@@ -1450,6 +1450,3 @@
     transform:scale(.96);
     box-shadow:0 .1rem .35rem rgba(0,0,0,.14);
   }
-
-  .topics-btn,
-  .topics-overlay{display:none!important}
