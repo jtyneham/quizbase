@@ -1,6 +1,7 @@
 import { POKEMON_WORDS } from "../../data/missing-word-pokemon-words.js";
 import { bindFullscreenButton } from "../core/ui.js";
 import { bindOutsideDismiss } from "../core/ui.js";
+import { POKEMON_TOPICS } from "../core/pokemon-topics.js";
 
 let appAPI;
 
@@ -193,14 +194,7 @@ const templateHTML = `<div class="hangman-root">
 </div>`;
 
 function initializeHangmanPokemon(root, app) {
-  const TOPICS = [
-    "Pokemon All Names",
-    "Gen 1", "Gen 2", "Gen 3", "Gen 4", "Gen 5", "Gen 6", "Gen 7", "Gen 8", "Gen 9",
-    "Moves + Abilities", "Moves", "Abilities",
-    "Final Evolutions",
-    "Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison", "Ground",
-    "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"
-  ];
+  const TOPICS = POKEMON_TOPICS;
   const slots = root.getElementById("slots");
   const missesList = root.getElementById("missesList");
   const triesText = root.getElementById("triesText");
