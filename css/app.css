@@ -1,12 +1,12 @@
 :root{
-  --page-bg:#eeeeee;--card-bg:#ffffff;--text:#333333;--muted:#777d86;
-  --accent:#2c6dc4;--accent-hover:#245da8;--radius-card:.95rem;
-  --shadow-card:0 .7rem 1.8rem rgba(0,0,0,.12),0 .15rem .5rem rgba(0,0,0,.08);
+  --page-bg:var(--qb-color-page);--card-bg:var(--qb-color-surface);--text:var(--qb-color-text);--muted:var(--qb-color-text-muted-soft);
+  --accent:var(--qb-color-accent);--accent-hover:var(--qb-color-accent-hover);--radius-card:var(--qb-radius-card);
+  --shadow-card:var(--qb-shadow-card);
   --page-inline:clamp(.8rem,3.5vw,2rem);
 }
 *{box-sizing:border-box}
 html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:none}
-body{background:var(--page-bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:var(--page-bg);color:var(--text);font-family:var(--qb-font-family);-webkit-tap-highlight-color:transparent}
 button{font:inherit}
 .quiz-shell,.screen{width:100%;height:100vh;height:100dvh;overflow:hidden}
 .screen{display:none}.screen.active{display:block}
@@ -32,32 +32,32 @@ button{font:inherit}
 .game-grid .app-tile:nth-child(5){grid-column:1/-1}
 @keyframes tileIn{to{opacity:1;transform:none}}
 .tile-card{width:100%;aspect-ratio:1;display:grid;place-items:center;position:relative;overflow:hidden;border-radius:var(--radius-card);background:var(--card-bg);box-shadow:var(--shadow-card);transition:transform 150ms ease,box-shadow 150ms ease,background-color 150ms ease}
-.app-tile:hover .tile-card{transform:translateY(-.12rem);background:#fafafa;box-shadow:0 .85rem 1.9rem rgba(0,0,0,.14),0 .2rem .55rem rgba(0,0,0,.09)}
+.app-tile:hover .tile-card{transform:translateY(-.12rem);background:var(--qb-color-surface-hover);box-shadow:0 .85rem 1.9rem rgba(0,0,0,.14),0 .2rem .55rem rgba(0,0,0,.09)}
 .app-tile:active .tile-card,.app-tile.pressed .tile-card{transform:scale(.965);box-shadow:0 .35rem .85rem rgba(0,0,0,.11),0 .08rem .25rem rgba(0,0,0,.08)}
 .tile-title{display:block;margin-top:clamp(.25rem,.65dvh,.5rem);padding-inline:.1rem;font-size:clamp(.7rem,2.3vw,.98rem);font-weight:650;line-height:1.15}
-.icon{width:61%;height:61%;overflow:visible;fill:none;stroke:#25282d;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;transition:transform 170ms ease}
-.icon text{fill:#25282d;stroke:none;font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-weight:750}
+.icon{width:61%;height:61%;overflow:visible;fill:none;stroke:var(--qb-color-text-strong);stroke-width:6;stroke-linecap:round;stroke-linejoin:round;transition:transform 170ms ease}
+.icon text{fill:var(--qb-color-text-strong);stroke:none;font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-weight:750}
 .app-tile:active .icon,.app-tile.pressed .icon{transform:scale(.96)}
 .missing-word-icon .mw-blanks{stroke-width:3.2}
-.missing-word-icon .mw-question{font-size:76px;font-weight:800;fill:#25282d;stroke:#fff;stroke-width:3px;paint-order:stroke fill}
+.missing-word-icon .mw-question{font-size:76px;font-weight:800;fill:var(--qb-color-text-strong);stroke:var(--qb-color-surface);stroke-width:3px;paint-order:stroke fill}
 .pokemon-missing-icon{width:66%;height:66%}
-.pokemon-missing-icon .pokemon-question{font-size:68px;font-weight:800;fill:#25282d;stroke:#fff;stroke-width:3px;paint-order:stroke fill}
+.pokemon-missing-icon .pokemon-question{font-size:68px;font-weight:800;fill:var(--qb-color-text-strong);stroke:var(--qb-color-surface);stroke-width:3px;paint-order:stroke fill}
 .hangman-icon,.hangman-pokemon-icon{width:68%;height:68%}
-.hangman-pokemon-icon circle:last-of-type{fill:#fff;stroke:#25282d}
-.pokemon-ball .top{fill:#f5f5f5;stroke:#25282d}.pokemon-ball .bottom{fill:#fff;stroke:#25282d}.pokemon-ball .center{fill:#fff;stroke:#25282d}
+.hangman-pokemon-icon circle:last-of-type{fill:var(--qb-color-surface);stroke:var(--qb-color-text-strong)}
+.pokemon-ball .top{fill:var(--qb-color-game-page);stroke:var(--qb-color-text-strong)}.pokemon-ball .bottom{fill:var(--qb-color-surface);stroke:var(--qb-color-text-strong)}.pokemon-ball .center{fill:var(--qb-color-surface);stroke:var(--qb-color-text-strong)}
 .screen-rngl{background:var(--page-bg)}
 .rngl-topbar .utility-actions{display:inline-flex;align-items:center;gap:.5rem}
 .rngl-topbar .utility-actions .fullscreen-button{position:static;transform:none}
 .rngl-topbar .utility-actions img{width:1.35rem;height:1.35rem;display:block}
 .screen-missing-word{background:var(--page-bg)}quiz-missing-word{display:block;width:100%;height:100%}
 .screen-missing-word-pokemon{background:var(--page-bg)}quiz-missing-word-pokemon{display:block;width:100%;height:100%}
-.screen-hangman{background:#f5f6f8}quiz-hangman{display:block;width:100%;height:100%}
-.screen-hangman-pokemon{background:#f5f6f8}quiz-hangman-pokemon{display:block;width:100%;height:100%}
+.screen-hangman{background:var(--qb-color-game-page)}quiz-hangman{display:block;width:100%;height:100%}
+.screen-hangman-pokemon{background:var(--qb-color-game-page)}quiz-hangman-pokemon{display:block;width:100%;height:100%}
 
 .screen-placeholder{background:var(--page-bg);position:relative}.screen-placeholder.active{display:grid;place-items:center}
-.placeholder-home{position:absolute;top:max(1rem,env(safe-area-inset-top));left:max(1rem,env(safe-area-inset-left));border:0;background:#fff;color:#000;border-radius:.7rem;padding:.68rem 1rem;box-shadow:0 .2rem .65rem rgba(0,0,0,.16);font-weight:750;cursor:pointer;transition:transform 120ms ease,box-shadow 120ms ease}
+.placeholder-home{position:absolute;top:max(1rem,env(safe-area-inset-top));left:max(1rem,env(safe-area-inset-left));border:0;background:var(--qb-color-surface);color:var(--qb-color-text-on-surface);border-radius:.7rem;padding:.68rem 1rem;box-shadow:0 .2rem .65rem rgba(0,0,0,.16);font-weight:750;cursor:pointer;transition:transform 120ms ease,box-shadow 120ms ease}
 .placeholder-home:active{transform:scale(.96);box-shadow:0 .1rem .35rem rgba(0,0,0,.14)}
-.placeholder-card{width:min(88vw,28rem);background:#fff;border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:2rem;text-align:center}
+.placeholder-card{width:min(88vw,28rem);background:var(--qb-color-surface);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:2rem;text-align:center}
 .placeholder-title{font-size:1.35rem;font-weight:750;margin-bottom:.45rem}.placeholder-text{color:var(--muted)}
 @media(min-width:42rem){
   .game-grid{grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:1fr;gap:clamp(1rem,3vw,2rem)}

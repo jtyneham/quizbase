@@ -1,17 +1,17 @@
 
     #rnglScreen {
-      --page-bg: #eeeeee;
-      --card-bg: #ffffff;
-      --card-text: #000000;
-      --text: #333333;
-      --accent: #2c6dc4;
-      --accent-hover: #245da8;
-      --generating: #999999;
+      --page-bg: var(--qb-color-page);
+      --card-bg: var(--qb-color-surface);
+      --card-text: var(--qb-color-text-on-surface);
+      --text: var(--qb-color-text);
+      --accent: var(--qb-color-accent);
+      --accent-hover: var(--qb-color-accent-hover);
+      --generating: var(--qb-color-generating);
 
-      --ticker-bg: #202127;
-      --ticker-text: #ffffff;
-      --ticker-separator: #8c9199;
-      --ticker-border: #2d3035;
+      --ticker-bg: var(--qb-ticker-bg);
+      --ticker-text: var(--qb-ticker-text);
+      --ticker-separator: var(--qb-ticker-separator);
+      --ticker-border: var(--qb-ticker-border);
 
       --topbar-height: 4.25rem;
       --ticker-height: 16rem;
@@ -27,17 +27,15 @@
       --font-ticker: calc(var(--font-button) * 1.35);
       --font-letter: clamp(8rem, 32vw, 13rem);
 
-      --radius-card: 0.95rem;
-      --radius-button: 0.7rem;
-      --radius-pill: 999rem;
+      --radius-card: var(--qb-radius-card);
+      --radius-button: var(--qb-radius-control);
+      --radius-pill: var(--qb-radius-pill);
 
-      --gap-small: 0.65rem;
-      --gap-medium: 1.1rem;
-      --gap-large: 1.5rem;
+      --gap-small: var(--qb-gap-small);
+      --gap-medium: var(--qb-gap-medium);
+      --gap-large: var(--qb-gap-large);
 
-      --shadow-card:
-        0 0.7rem 1.8rem rgba(0, 0, 0, 0.12),
-        0 0.15rem 0.5rem rgba(0, 0, 0, 0.08);
+      --shadow-card: var(--qb-shadow-card);
     }
 #rnglScreen * {
       box-sizing: border-box;
@@ -74,7 +72,7 @@
 
     .fullscreen-button,
     .ideas-control {
-      color: #3d3d3d;
+      color: var(--qb-color-text-control);
       font-size: var(--font-ui);
       -webkit-tap-highlight-color: transparent;
     }
@@ -97,8 +95,8 @@
       min-height: 2.75rem;
       padding: 0;
       border-radius: .65rem;
-      background: #eef0f5;
-      box-shadow: 0 .22rem .7rem rgba(0, 0, 0, 0.16);
+      background: var(--qb-color-surface-muted);
+      box-shadow: var(--qb-shadow-control);
     }
 
     .fullscreen-button svg, .fullscreen-button img {
@@ -152,9 +150,9 @@
       width: 3em;
       height: 1.7em;
       flex: 0 0 auto;
-      border: 0.07em solid #b8b8b8;
+      border: 0.07em solid var(--qb-color-control-border);
       border-radius: var(--radius-pill);
-      background: #d4d4d4;
+      background: var(--qb-color-control-track);
       transition:
         background-color 180ms ease,
         border-color 180ms ease;
@@ -168,7 +166,7 @@
       width: 1.18em;
       height: 1.18em;
       border-radius: 50%;
-      background: #777777;
+      background: var(--qb-color-control-knob);
       transition:
         transform 180ms ease,
         background-color 180ms ease;
@@ -181,7 +179,7 @@
 
     .ideas-control input:checked + .switch::after {
       transform: translateX(1.25em);
-      background: #ffffff;
+      background: var(--qb-color-surface);
     }
 
     .rngl-main {
@@ -224,7 +222,7 @@
     }
 
     .letter-card:hover {
-      background: #fafafa;
+      background: var(--qb-color-surface-hover);
       box-shadow:
         0 0.85rem 2rem rgba(0, 0, 0, 0.14),
         0 0.2rem 0.6rem rgba(0, 0, 0, 0.09);
@@ -275,7 +273,7 @@
       border: 0;
       border-radius: var(--radius-button);
       background: var(--accent);
-      color: #ffffff;
+      color: var(--qb-color-control-active-text);
       font-size: var(--font-button);
       font-weight: 650;
       cursor: pointer;
@@ -427,7 +425,7 @@
       min-width: 0.62em;
       margin-inline: 0.4em;
       padding: 0;
-      color: rgba(255, 255, 255, 0.55);
+      color: var(--qb-ticker-text-muted);
       font-size: 1.4em;
       font-weight: 400;
       line-height: 1;
@@ -650,8 +648,8 @@
       padding: 0;
       border: 0;
       border-radius: 0.65rem;
-      background: #ffffff;
-      color: #000000;
+      background: var(--qb-color-surface);
+      color: var(--qb-color-text-on-surface);
       font-size: 1rem;
       font-weight: 700;
       line-height: 1;
@@ -662,5 +660,5 @@
 
     #rnglScreen .rngl-home-button:active {
       transform: scale(0.96);
-      box-shadow: 0 0.1rem 0.35rem rgba(0, 0, 0, 0.14);
+      box-shadow: var(--qb-shadow-control-pressed);
     }

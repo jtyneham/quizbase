@@ -1,14 +1,14 @@
 
     :host {
-      --page-bg: #eeeeee;
-      --card-bg: #ffffff;
-      --card-text: #000000;
-      --text: #333333;
-      --accent: #2c6dc4;
-      --accent-hover: #245da8;
-      --reveal: #6b5cc4;
-      --reveal-hover: #5b4db0;
-      --generating: #999999;
+      --page-bg: var(--qb-color-page);
+      --card-bg: var(--qb-color-surface);
+      --card-text: var(--qb-color-text-on-surface);
+      --text: var(--qb-color-text);
+      --accent: var(--qb-color-accent);
+      --accent-hover: var(--qb-color-accent-hover);
+      --reveal: var(--qb-color-reveal);
+      --reveal-hover: var(--qb-color-reveal-hover);
+      --generating: var(--qb-color-generating);
 
       --topbar-height: 4.25rem;
       --page-inline: clamp(1rem, 4vw, 2rem);
@@ -22,13 +22,11 @@
       --font-ui: clamp(1rem, 2.8vw, 1.25rem);
       --font-button: clamp(1.15rem, 3vw, 1.35rem);
 
-      --radius-card: 0.95rem;
-      --radius-button: 0.7rem;
-      --gap-large: 1.5rem;
+      --radius-card: var(--qb-radius-card);
+      --radius-button: var(--qb-radius-control);
+      --gap-large: var(--qb-gap-large);
 
-      --shadow-card:
-        0 0.7rem 1.8rem rgba(0, 0, 0, 0.12),
-        0 0.15rem 0.5rem rgba(0, 0, 0, 0.08);
+      --shadow-card: var(--qb-shadow-card);
     }
 
     * {
@@ -70,7 +68,7 @@
       padding: 0.25em 0;
       border: 0;
       background: transparent;
-      color: #3d3d3d;
+      color: var(--qb-color-text-control);
       font-size: var(--font-ui);
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
@@ -98,7 +96,7 @@
       gap: 0.12rem;
       padding: 0.18rem;
       border-radius: var(--radius-pill, 999rem);
-      background: #d9d9d9;
+      background: var(--qb-picker-control-bg);
       box-shadow: inset 0 0 0 0.05rem rgba(0, 0, 0, 0.08);
       -webkit-tap-highlight-color: transparent;
     }
@@ -106,7 +104,7 @@
     .difficulty-control button {
       border: 0;
       background: transparent;
-      color: #555555;
+      color: var(--qb-picker-control-text);
       font: inherit;
       font-size: clamp(0.78rem, 2.4vw, 0.95rem);
       padding: 0.52em 0.75em;
@@ -124,7 +122,7 @@
 
     .difficulty-control button.active {
       background: var(--accent);
-      color: #ffffff;
+      color: var(--qb-color-control-active-text);
     }
 
     .difficulty-control button:focus-visible {
@@ -142,10 +140,10 @@
       width: 100%;
       min-height: 3rem;
       padding: 0.75rem 0.95rem;
-      border: 1px solid #d0d0d0;
+      border: 1px solid var(--qb-color-line-strong);
       border-radius: 0.65rem;
-      background: #ffffff;
-      color: #3d3d3d;
+      background: var(--qb-color-surface);
+      color: var(--qb-color-text-control);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -178,9 +176,9 @@
       left: 0;
       right: 0;
       padding: 0.65rem;
-      border: 1px solid #d5d5d5;
+      border: 1px solid var(--qb-picker-border);
       border-radius: 0.75rem;
-      background: #ffffff;
+      background: var(--qb-color-surface);
       box-shadow: 0 0.8rem 2rem rgba(0, 0, 0, 0.18);
       opacity: 0;
       visibility: hidden;
@@ -200,7 +198,7 @@
     .topic-search {
       width: 100%;
       padding: 0.72rem 0.8rem;
-      border: 1px solid #d6d6d6;
+      border: 1px solid var(--qb-picker-field-border);
       border-radius: 0.55rem;
       font: inherit;
       outline: none;
@@ -208,7 +206,7 @@
     }
 
     .topic-search:focus {
-      border-color: #8eb5e8;
+      border-color: var(--qb-picker-field-focus);
       box-shadow: 0 0 0 0.15rem rgba(44, 109, 196, 0.12);
     }
 
@@ -218,7 +216,7 @@
       justify-content: space-between;
       padding: 0.55rem 0.7rem;
       border-radius: 0.5rem;
-      background: #f6f6f6;
+      background: var(--qb-picker-row-hover);
       margin-bottom: 0.4rem;
     }
 
@@ -263,7 +261,7 @@
       border: 0;
       border-radius: 0.48rem;
       background: transparent;
-      color: #333333;
+      color: var(--qb-color-text);
       font: inherit;
       text-align: left;
       cursor: pointer;
@@ -286,7 +284,7 @@
     .topic-option.selected .topic-checkbox {
       border-color: var(--accent);
       background: var(--accent);
-      color: #ffffff;
+      color: var(--qb-color-control-active-text);
     }
 
     .topic-option.selected .topic-checkbox::after {
@@ -300,7 +298,7 @@
       gap: 0.55rem;
       margin-top: 0.5rem;
       padding-top: 0.55rem;
-      border-top: 1px solid #e4e4e4;
+      border-top: 1px solid var(--qb-picker-footer-line);
     }
 
     .topic-panel-footer button {
@@ -325,7 +323,7 @@
 
     .topic-clear {
       border: 1px solid #cccccc;
-      background: #ffffff;
+      background: var(--qb-color-surface);
       color: #444444;
     }
 
@@ -342,7 +340,7 @@
     .topic-done {
       border: 0;
       background: var(--accent);
-      color: #ffffff;
+      color: var(--qb-color-control-active-text);
       font-weight: 650;
       box-shadow: 0 0.16rem 0.45rem rgba(44, 109, 196, 0.18);
     }
@@ -538,7 +536,7 @@
       border: 0;
       border-radius: var(--radius-button);
       background: var(--accent);
-      color: #ffffff;
+      color: var(--qb-color-control-active-text);
       font-size: var(--font-button);
       font-weight: 650;
       cursor: pointer;
@@ -623,12 +621,12 @@
   min-height: 2.75rem;
   padding: 0;
   border-radius: .65rem;
-  background: #fff;
-  box-shadow: 0 .22rem .7rem rgba(0,0,0,.16);
+  background: var(--qb-color-surface);
+  box-shadow: var(--qb-shadow-control);
 }
 .utility-actions .home-button img,
 .utility-actions .fullscreen-button img { width: 1.35rem; height: 1.35rem; display: block; }
-.utility-actions .fullscreen-button { background: #eef0f5; }
+.utility-actions .fullscreen-button { background: var(--qb-color-surface-muted); }
 .utility-actions .home-button:active,
-.utility-actions .fullscreen-button:active { transform: scale(.96); box-shadow: 0 .1rem .35rem rgba(0,0,0,.14); }
+.utility-actions .fullscreen-button:active { transform: scale(.96); box-shadow: var(--qb-shadow-control-pressed); }
 .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }

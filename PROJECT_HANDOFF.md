@@ -186,3 +186,23 @@ The Hangman sibling refactor has reached the same shared-engine milestone as Mis
 ### Next recommended phase
 
 The major sibling-engine duplication is now removed: both Missing Word variants share one engine and both Hangman variants share one engine. The next large phase should establish semantic theme tokens and a deliberate Shadow-DOM-compatible styling contract, then document those stable extension points in `RESKINNING.md`. Before visual architecture work, perform real-device/browser playtests of both Hangman variants, especially New Word, six-miss loss, Solve Now/Cancel, backspace hold, topic Apply/Clear/All, Pokémon accented names, Home/fullscreen, and long/multi-line answers.
+
+## Latest work — semantic reskin architecture
+
+Quizbase now has a dedicated visual extension layer rather than requiring future reskins to hunt through unrelated hard-coded styles.
+
+- `css/theme.css` defines inherited `--qb-*` semantic tokens for typography, surfaces, text/lines, accent/state, geometry, effects, motion, pickers, Hangman keyboard, Random Letter ticker, and Hangman artwork.
+- Existing component variables now resolve to these semantic tokens where they represent reusable visual decisions. This preserves the current default appearance while giving future skins a central override surface.
+- CSS custom properties are intentionally used as the cross-Shadow-DOM theming mechanism. Global selectors still cannot pierce the four custom-element Shadow DOMs.
+- Major presentation roles now expose stable `data-ui` hooks across the launcher, Random Letter, shared Missing Word engine, and shared Hangman engine. These hooks describe semantic roles rather than current layout positions.
+- Added `RESKINNING.md` as the extension contract. It explicitly permits radical launcher/screen recomposition while protecting gameplay, data, accessibility, responsive behavior, animations, and interaction contracts.
+- Added `tests/smoke/theme-contract.test.js` to protect stylesheet load order, core token availability, Shadow-DOM token consumption, and semantic hooks.
+- Test suite now has 29 passing tests.
+
+### Reskin architecture lesson
+
+Do not make future skins by forking shared engines or by appending increasingly strong CSS overrides. Prefer, in order: semantic token overrides, semantic `data-ui` hooks, component-level presentation styles, and only then intentional markup changes when the target visual language genuinely requires a different composition. Keep behavior engines and visual reconstruction separate.
+
+### Recommended continuation
+
+The major shared-engine and reskin-extension foundations are now in place. Before further architectural refactoring, do a real-device regression pass of all five games. After that, the next useful engineering batch is to expand browser-level smoke coverage around actual interaction flows (route switching, Home, fullscreen state, pickers, round starts/resets) and then address any remaining hard-coded visual fragments discovered during the first real reskin rather than tokenizing values speculatively.

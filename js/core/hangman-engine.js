@@ -1,16 +1,16 @@
 import { bindFullscreenButton, bindOutsideDismiss } from "./ui.js";
 import { isCorrectGuess, isSolved, normalizePlayableChar, normalizePlayableAnswer, normalizeSolveAttempt, pickDifferent, uniquePlayableLetters } from "./hangman-logic.js";
 
-export const HANGMAN_TEMPLATE = `<div class="hangman-root">
+export const HANGMAN_TEMPLATE = `<div class="hangman-root" data-ui="game-root">
 <div class="app">
-  <main class="game-card" id="gameCard">
-    <div class="status-row">
-      <div class="status-actions"><button class="home-button" id="homeButton" type="button" aria-label="Back to Home" title="Home"><img src="assets/home.svg" alt="" aria-hidden="true"></button><button class="fullscreen-btn" id="fullscreenBtn" type="button" aria-label="Toggle fullscreen" title="Fullscreen"><img src="assets/fullscreen.svg" alt="" aria-hidden="true"></button></div>
-<button class="topics-btn" id="topicsBtn" type="button">Topics <span id="topicsCount">All</span></button>
-      <span class="tries-text" id="triesText">0 / 6 misses</span>
+  <main class="game-card" data-ui="game-primary-surface" id="gameCard">
+    <div class="status-row" data-ui="game-toolbar">
+      <div class="status-actions" data-ui="utility-actions"><button class="home-button" data-ui="home-action" id="homeButton" type="button" aria-label="Back to Home" title="Home"><img src="assets/home.svg" alt="" aria-hidden="true"></button><button class="fullscreen-btn" data-ui="fullscreen-action" id="fullscreenBtn" type="button" aria-label="Toggle fullscreen" title="Fullscreen"><img src="assets/fullscreen.svg" alt="" aria-hidden="true"></button></div>
+<button class="topics-btn" data-ui="topic-picker-trigger" id="topicsBtn" type="button">Topics <span id="topicsCount">All</span></button>
+      <span class="tries-text" data-ui="status-counter" id="triesText">0 / 6 misses</span>
     </div>
 
-    <div class="hangman-wrap">
+    <div class="hangman-wrap" data-ui="game-artwork">
       <svg class="hangman" viewBox="0 0 300 240" preserveAspectRatio="xMidYMid meet" aria-label="Hangman drawing">
         <defs>
           <linearGradient id="woodMain" x1="0" y1="0" x2="1" y2="1">
@@ -121,19 +121,19 @@ export const HANGMAN_TEMPLATE = `<div class="hangman-root">
       </svg>
     </div>
 
-    <section class="word-zone" id="wordZone" title="Tap here to type a letter">
+    <section class="word-zone" data-ui="answer-display" id="wordZone" title="Tap here to type a letter">
       <div class="slots" id="slots"></div>
     </section>
 
     <div class="feedback-zone">
-      <div class="misses">
+      <div class="misses" data-ui="status-detail">
         <div class="misses-label">Misses</div>
         <div class="misses-list" id="missesList">—</div>
       </div>
       <div class="message" id="message"></div>
     </div>
 
-    <div class="solve-panel">
+    <div class="solve-panel" data-ui="solve-panel">
       <div class="solve-ui" id="solveUi">
         <div class="solve-display" id="solveDisplay" role="textbox" aria-label="Full answer">
           <span class="solve-entry">
@@ -146,13 +146,13 @@ export const HANGMAN_TEMPLATE = `<div class="hangman-root">
 
     <div>
       <div class="controls">
-        <button class="btn btn-secondary" id="solveBtn">Solve Word</button>
-        <button class="btn btn-primary" id="newWordBtn">New Word</button>
+        <button class="btn btn-secondary" data-ui="secondary-action" id="solveBtn">Solve Word</button>
+        <button class="btn btn-primary" data-ui="primary-action" id="newWordBtn">New Word</button>
       </div>
       
     </div>
 
-    <div class="custom-keyboard" id="customKeyboard">
+    <div class="custom-keyboard" data-ui="game-keyboard" id="customKeyboard">
       <div class="kb-row">
         <button class="kb-key letter-key" data-key="Q">Q</button><button class="kb-key letter-key" data-key="W">W</button><button class="kb-key letter-key" data-key="E">E</button><button class="kb-key letter-key" data-key="R">R</button><button class="kb-key letter-key" data-key="T">T</button><button class="kb-key letter-key" data-key="Y">Y</button><button class="kb-key letter-key" data-key="U">U</button><button class="kb-key letter-key" data-key="I">I</button><button class="kb-key letter-key" data-key="O">O</button><button class="kb-key letter-key" data-key="P">P</button>
       </div>
@@ -182,11 +182,11 @@ export const HANGMAN_TEMPLATE = `<div class="hangman-root">
 </div>
 
 
-<div class="topics-overlay" id="topicsOverlay" aria-hidden="true"><div class="topics-sheet">
+<div class="topics-overlay" data-ui="overlay" id="topicsOverlay" aria-hidden="true"><div class="topics-sheet" data-ui="overlay-panel">
 <div class="topics-sheet-head"><div><div class="topics-title">Choose Topics</div><div class="topics-subtitle">Select one or more categories</div></div><button class="topics-close" id="topicsClose">×</button></div>
 <div class="topics-actions-row"><button class="topics-mini-btn" id="selectAllTopics">All Topics</button><button class="topics-mini-btn" id="clearTopics">Clear</button></div>
 <div class="topics-grid" id="topicsGrid"></div>
-<div class="topics-footer"><button class="btn btn-ghost" id="cancelTopics">Cancel</button><button class="btn btn-primary" id="applyTopics">Apply</button></div>
+<div class="topics-footer"><button class="btn btn-ghost" id="cancelTopics">Cancel</button><button class="btn btn-primary" data-ui="primary-action" id="applyTopics">Apply</button></div>
 </div></div>
 </div>`;
 

@@ -3,16 +3,16 @@ import { randomInteger } from "./missing-word-utils.js";
 import { filterWordPool, weightedWordChoice, blankCountFor, wordLetterGroups, longestBlankRun, eachWordKeepsVisibleLetter } from "./missing-word-logic.js";
 
 const templateHTML = `
-  <div class="app">
-    <header class="topbar">
-      <div class="utility-actions">
-      <button id="homeButton" class="home-button" type="button" aria-label="Back to Home" title="Home">
+  <div class="app" data-ui="game-root">
+    <header class="topbar" data-ui="game-toolbar">
+      <div class="utility-actions" data-ui="utility-actions">
+      <button id="homeButton" class="home-button" data-ui="home-action" type="button" aria-label="Back to Home" title="Home">
         <img src="assets/home.svg" alt="" aria-hidden="true">
       </button>
 
       <button
         id="fullscreenButton"
-        class="fullscreen-button"
+        class="fullscreen-button" data-ui="fullscreen-action"
         type="button"
         aria-label="Enter fullscreen"
         title="Fullscreen"
@@ -22,7 +22,7 @@ const templateHTML = `
       </button>
       </div>
 
-      <div class="difficulty-control" aria-label="Difficulty">
+      <div class="difficulty-control" data-ui="difficulty-control" aria-label="Difficulty">
         <button
           type="button"
           class="active"
@@ -48,11 +48,11 @@ const templateHTML = `
       </div>
     </header>
 
-    <main class="main">
+    <main class="main" data-ui="game-content">
       <section class="game" aria-label="Guess the missing word">
-        <div class="topic-picker" id="topicPicker">
+        <div class="topic-picker" data-ui="topic-picker" id="topicPicker">
           <button
-            class="topic-picker-button"
+            class="topic-picker-button" data-ui="topic-picker-trigger"
             id="topicPickerButton"
             type="button"
             aria-expanded="false"
@@ -61,7 +61,7 @@ const templateHTML = `
             <span class="topic-chevron">▼</span>
           </button>
 
-          <div class="topic-panel" id="topicPanel">
+          <div class="topic-panel" data-ui="overlay-panel" id="topicPanel">
             <input
               class="topic-search"
               id="topicSearch"
@@ -88,11 +88,11 @@ const templateHTML = `
           </div>
         </div>
 
-        <div class="word-card" id="wordCard" aria-live="polite" role="button" tabindex="0" aria-label="Game action">
+        <div class="word-card" data-ui="game-primary-surface" id="wordCard" aria-live="polite" role="button" tabindex="0" aria-label="Game action">
           <div id="wordDisplay" class="word-display empty"></div>
         </div>
 
-        <button id="actionButton" class="action-button" type="button">
+        <button id="actionButton" class="action-button" data-ui="primary-action" type="button">
           Next Word
         </button>
       </section>
