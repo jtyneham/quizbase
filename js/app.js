@@ -7,8 +7,7 @@ const screens={
   missingword:document.getElementById("missingWordScreen"),
   missingwordpokemon:document.getElementById("missingWordPokemonScreen"),
   hangman:document.getElementById("hangmanScreen"),
-  hangmanpokemon:document.getElementById("hangmanPokemonScreen"),
-  placeholder:document.getElementById("placeholderScreen")
+  hangmanpokemon:document.getElementById("hangmanPokemonScreen")
 };
 const fullscreenService=createFullscreenService();
 let current="home";
@@ -33,7 +32,6 @@ function showScreen(name){
 
 async function openTile(tile){
   const file=tile.dataset.file;
-  const name=tile.dataset.name||"Game";
   haptic(18);
 
   if(file==="rngl.html"){
@@ -82,9 +80,6 @@ async function openTile(tile){
     showScreen("hangmanpokemon");
     return;
   }
-
-  document.getElementById("placeholderTitle").textContent=name;
-  showScreen("placeholder");
 }
 
 document.querySelectorAll(".app-tile").forEach(tile=>{
@@ -93,8 +88,5 @@ document.querySelectorAll(".app-tile").forEach(tile=>{
   tile.addEventListener("click",()=>openTile(tile));
 });
 
-document.getElementById("placeholderHomeButton").addEventListener("click",()=>{
-  haptic(12);showScreen("home");
-});
 
 window.addEventListener("popstate",()=>showScreen("home"));
