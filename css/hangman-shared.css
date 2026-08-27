@@ -338,27 +338,6 @@
       width:min(54vw, 29svh);
     }
 
-    .fullscreen-btn{
-    display:grid;
-    place-items:center;
-    width:clamp(2.25rem,6svh,2.8rem);
-    aspect-ratio:1;
-    padding:0;
-    border:0;
-    border-radius:0.75rem;
-    background:var(--qb-color-surface-subtle);
-    color:var(--text);
-    font-size:clamp(1.15rem,4vw,1.45rem);
-    line-height:1;
-    cursor:pointer;
-    transition:transform .08s ease, background .18s ease;
-    -webkit-tap-highlight-color:transparent;
-  }
-
-  .fullscreen-btn:active{
-    transform:scale(.97);
-  }
-
   .status-row{
       min-height:0;
       font-size:clamp(0.72rem,2.8vw,0.9rem);
@@ -1407,9 +1386,8 @@
     }
   }
 
-.topics-btn{border:0;border-radius:.75rem;background:var(--qb-color-surface-subtle);color:var(--text);min-height:2.35rem;padding:0 .8rem;font-weight:700}.topics-btn span{margin-left:.3rem;color:var(--accent)}.topics-overlay{position:fixed;inset:0;z-index:100;display:none;align-items:flex-end;justify-content:center;background:rgba(20,24,30,.38)}.topics-overlay.open{display:flex}.topics-sheet{width:min(100%,46rem);max-height:88svh;display:flex;flex-direction:column;background:var(--surface);border-radius:1.25rem 1.25rem 0 0;padding:1rem;padding-bottom:max(env(safe-area-inset-bottom),1rem)}.topics-sheet-head{display:flex;justify-content:space-between;align-items:center}.topics-title{font-size:1.15rem;font-weight:800}.topics-subtitle{color:var(--muted);font-size:.88rem}.topics-close{border:0;background:var(--qb-color-surface-subtle);width:2.4rem;aspect-ratio:1;border-radius:.75rem;font-size:1.4rem}.topics-actions-row{display:flex;gap:.5rem;margin-top:.8rem}.topics-mini-btn{border:.0625rem solid var(--line);border-radius:.7rem;background:var(--qb-color-surface);padding:.5rem .7rem;font-weight:700}.topics-grid{flex:1;min-height:0;overflow-y:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem;margin-top:.8rem}.topic-chip{display:flex;align-items:center;min-height:3rem;border:.0625rem solid var(--line);border-radius:.8rem;padding:.7rem .8rem;background:var(--qb-color-surface);font-weight:650}.topic-chip.selected{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}.topic-chip.selected::after{content:"✓";margin-left:auto}.topics-footer{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:.85rem}.topics-footer .btn{width:100%}@media(min-width:40em){.topics-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.topics-sheet{border-radius:1.25rem;margin:auto}.topics-overlay{align-items:center;padding:1rem}}.topics-btn{display:flex!important;position:absolute;left:50%;transform:translateX(-50%);align-items:center;gap:.45rem}
-.topics-overlay.open{display:flex!important}
-.topic-chip.random-topic{grid-column:1/-1;justify-content:center;font-weight:800}
+.topics-btn span { margin-left: .3rem; color: var(--accent); }
+.topic-chip.random-topic { grid-column: 1 / -1; justify-content: center; font-weight: 800; }
 
   /* Solve mode: previously guessed letters stay visually marked,
      but all A-Z keys become usable for typing the full answer. */

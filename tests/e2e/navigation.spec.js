@@ -12,4 +12,13 @@ test.describe("launcher and navigation", () => {
       await assertNoPageOverflow(page);
     });
   }
+
+  for (const game of games) {
+    test(`${game.name} opens from a direct hash URL`, async ({ page }) => {
+      await page.goto(`/${game.hash}`);
+      const screen = page.locator(`#${game.screen}`);
+      await expect(screen).toHaveClass(/active/);
+      await expect(screen.locator('[data-ui="game-root"]')).toBeVisible();
+    });
+  }
 });

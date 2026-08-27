@@ -1,6 +1,6 @@
 import { POKEMON_WORDS } from "../../data/missing-word-pokemon-words.js";
 import { POKEMON_TOPICS } from "../core/pokemon-topics.js";
-import { registerMissingWordGame } from "../core/missing-word-engine.js?v=20260827-fix";
+import { registerMissingWordGame } from "../core/missing-word-engine.js";
 
 export function registerMissingWordPokemon(app) {
   registerMissingWordGame({

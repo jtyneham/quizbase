@@ -1,6 +1,7 @@
 import { bindFullscreenButton } from "./ui.js";
 import { countLetters } from "./missing-word-utils.js";
 import { filterWordPool, weightedWordChoice, blankCountFor, wordLetterGroups, longestBlankRun, eachWordKeepsVisibleLetter } from "./missing-word-logic.js";
+import { createMissingWordTopicPicker } from "./missing-word-topic-picker.js";
 
 const templateHTML = `
   <div class="app" data-ui="game-root">
@@ -159,21 +160,13 @@ function initializeGame(root, app, config) {
     const difficultyButtons = [
       ...root.querySelectorAll(".difficulty-control button")
     ];
-    const topicPicker = root.getElementById("topicPicker");
-    const topicPickerButton = root.getElementById("topicPickerButton");
-    const topicPanel = root.getElementById("topicPanel");
-    const topicLabel = root.getElementById("topicLabel");
-    const topicSearch = root.getElementById("topicSearch");
-    const topicList = root.getElementById("topicList");
-    const topicAllButton = root.getElementById("topicAllButton");
-    const topicClearButton = root.getElementById("topicClearButton");
-    const topicDoneButton = root.getElementById("topicDoneButton");
-
     const TOPICS = configuredTopics;
-    let selectedTopics = new Set(initialTopics);
-    let pendingTopics = new Set(initialTopics);
-    let allTopicsMode = topicMode === "pokemon" && selectedTopics.size === 0;
-    let pendingAllTopicsMode = allTopicsMode;
+    const topicPicker = createMissingWordTopicPicker({
+      root,
+      topics: TOPICS,
+      mode: topicMode,
+      initialTopics
+    });
 
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const recentWords = [];
@@ -205,6 +198,7 @@ function initializeGame(root, app, config) {
     }
 
     function filteredWordPool(roundDifficulty = currentRoundDifficulty) {
+      const { selectedTopics, allTopicsMode } = topicPicker.getState();
       return filterWordPool({
         wordPool,
         roundDifficulty,
@@ -755,152 +749,11 @@ function initializeGame(root, app, config) {
       });
     });
 
-    function renderTopicOptions() {
-      const query = topicSearch.value.trim().toLowerCase();
-      topicList.replaceChildren();
-
-      topicAllButton.classList.toggle(
-        "selected",
-        topicMode === "pokemon" && pendingAllTopicsMode
-      );
-
-      TOPICS
-        .filter((topic) => topic.toLowerCase().includes(query))
-        .forEach((topic) => {
-          const option = document.createElement("button");
-          option.type = "button";
-          option.className =
-            "topic-option" +
-            (pendingTopics.has(topic) ? " selected" : "");
-
-          const checkbox = document.createElement("span");
-          checkbox.className = "topic-checkbox";
-
-          const text = document.createElement("span");
-          text.textContent = topic;
-
-          option.append(checkbox, text);
-
-          option.addEventListener("click", (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-
-            if (pendingTopics.has(topic)) {
-              pendingTopics.delete(topic);
-            } else {
-              pendingTopics.add(topic);
-            }
-
-            pendingAllTopicsMode = false;
-            renderTopicOptions();
-            topicPicker.classList.add("open");
-          });
-
-          topicList.appendChild(option);
-        });
-    }
-
-    function updateTopicLabel() {
-      if (allTopicsMode || (topicMode === "general" && selectedTopics.size === 0)) {
-        topicLabel.textContent = topicMode === "pokemon" ? "Topic: All" : "Topic: All Topics";
-      } else if (selectedTopics.size === 0) {
-        topicLabel.textContent = "Topic: None";
-      } else if (selectedTopics.size === 1) {
-        topicLabel.textContent = "Topic: " + [...selectedTopics][0];
-      } else {
-        topicLabel.textContent = "Topics: " + selectedTopics.size + " selected";
-      }
-    }
-
-    updateTopicLabel();
-
-    function setTopicPanelOpen(open) {
-      topicPicker.classList.toggle("open", open);
-      topicPickerButton.setAttribute("aria-expanded", String(open));
-
-      if (open) {
-        pendingAllTopicsMode = allTopicsMode;
-        pendingTopics = new Set(
-          allTopicsMode ? [] : selectedTopics
-        );
-        renderTopicOptions();
-
-        // Do not auto-focus the search field.
-        // On mobile this would immediately summon the keyboard.
-      }
-    }
-
-    function playTapFeedback(button) {
-      button.classList.remove("tap-feedback");
-      void button.offsetWidth;
-      button.classList.add("tap-feedback");
-
-      window.setTimeout(() => {
-        button.classList.remove("tap-feedback");
-      }, 150);
-    }
-
-    topicPickerButton.addEventListener("click", () => {
-      setTopicPanelOpen(!topicPicker.classList.contains("open"));
-    });
-
-    topicPanel.addEventListener("click", (event) => {
-      event.stopPropagation();
-    });
-
-    topicAllButton.addEventListener("click", (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      playTapFeedback(topicAllButton);
-      pendingTopics.clear();
-      pendingAllTopicsMode = true;
-      renderTopicOptions();
-    });
-
-    topicClearButton.addEventListener("click", (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      playTapFeedback(topicClearButton);
-      pendingTopics.clear();
-      pendingAllTopicsMode = false;
-      renderTopicOptions();
-    });
-
-    topicDoneButton.addEventListener("click", (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      playTapFeedback(topicDoneButton);
-
-      if (topicMode === "pokemon") {
-        allTopicsMode = pendingAllTopicsMode;
-        selectedTopics = allTopicsMode ? new Set() : new Set(pendingTopics);
-      } else {
-        selectedTopics = new Set(pendingTopics);
-        allTopicsMode = selectedTopics.size === 0;
-      }
-
-      updateTopicLabel();
-      topicSearch.value = "";
-
-      // Let the press feedback register before the panel closes.
-      window.setTimeout(() => {
-        setTopicPanelOpen(false);
-      }, 90);
-    });
-
-    topicSearch.addEventListener("input", renderTopicOptions);
-
-    root.addEventListener("click", (event) => {
-      if (!topicPicker.contains(event.target)) {
-        setTopicPanelOpen(false);
-      }
-    });
-
     bindFullscreenButton({ button: fullscreenButton, icon: fullscreenIcon, label: fullscreenLabel, app });
 
     root.getElementById("homeButton").addEventListener("click", () => {
       app.haptic(12);
-      setTopicPanelOpen(false);
+      topicPicker.close();
       app.showHome();
     });
 
