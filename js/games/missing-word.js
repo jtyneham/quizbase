@@ -1,4 +1,5 @@
 import { WORDS } from "../../data/missing-word-words.js";
+import { bindFullscreenButton } from "../core/ui.js";
 
 const templateHTML = `
   <div class="app">
@@ -996,20 +997,7 @@ function initializeGame(root, app) {
       }
     });
 
-    const updateFullscreenButton = () => {
-      const active = app.isFullscreen();
-      fullscreenButton.setAttribute("aria-label", active ? "Exit fullscreen" : "Enter fullscreen");
-      fullscreenButton.title = active ? "Exit fullscreen" : "Fullscreen";
-      fullscreenLabel.textContent = active ? "Exit" : "Fullscreen";
-      fullscreenIcon.innerHTML = active
-        ? `<path d="M3 8h5V3"></path><path d="M21 8h-5V3"></path><path d="M21 16h-5v5"></path><path d="M3 16h5v5"></path>`
-        : `<path d="M8 3H3v5"></path><path d="M16 3h5v5"></path><path d="M21 16v5h-5"></path><path d="M3 16v5h5"></path>`;
-    };
-
-    fullscreenButton.addEventListener("click", async () => {
-      app.haptic(12);
-      await app.toggleFullscreen();
-    });
+    bindFullscreenButton({ button: fullscreenButton, icon: fullscreenIcon, label: fullscreenLabel, app });
 
     root.getElementById("homeButton").addEventListener("click", () => {
       app.haptic(12);
@@ -1017,8 +1005,6 @@ function initializeGame(root, app) {
       app.showHome();
     });
 
-    app.onFullscreenChange(updateFullscreenButton);
-    updateFullscreenButton();
 
     actionButton.addEventListener("click", handleAction);
 
@@ -1044,7 +1030,6 @@ function initializeGame(root, app) {
       }
     });
 
-    updateFullscreenButton();
   
 }
 

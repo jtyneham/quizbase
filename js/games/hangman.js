@@ -1,4 +1,5 @@
 import { GAME_DATABASE, RANDOM_POOL } from "../../data/hangman-words.js";
+import { bindFullscreenButton } from "../core/ui.js";
 
 let appAPI;
 
@@ -530,16 +531,7 @@ function initializeHangman(root, app) {
   topicsOverlay.addEventListener("click",e=>{if(e.target===topicsOverlay)closeTopics();});
 
 
-  const updateFullscreenButton = () => {
-    const on = app.isFullscreen();
-    fullscreenBtn.textContent = on ? "×" : "⛶";
-    fullscreenBtn.setAttribute("aria-label", on ? "Exit fullscreen" : "Enter fullscreen");
-  };
-
-  fullscreenBtn.addEventListener("click", async () => {
-    app.haptic(12);
-    await app.toggleFullscreen();
-  });
+  bindFullscreenButton({ button: fullscreenBtn, app });
 
   root.getElementById("homeButton").addEventListener("click", () => {
     app.haptic(12);
@@ -547,8 +539,6 @@ function initializeHangman(root, app) {
     app.showHome();
   });
 
-  app.onFullscreenChange(updateFullscreenButton);
-  updateFullscreenButton();
   updateTopicsLabel();
   startRound();
 }

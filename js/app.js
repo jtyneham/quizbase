@@ -1,4 +1,5 @@
 import { initRandomLetter } from "./games/rngl.js";
+import { createFullscreenService, haptic } from "./core/device.js";
 
 const screens={
   home:document.getElementById("homeScreen"),
@@ -9,34 +10,16 @@ const screens={
   hangmanpokemon:document.getElementById("hangmanPokemonScreen"),
   placeholder:document.getElementById("placeholderScreen")
 };
-const fullscreenCallbacks=new Set();
+const fullscreenService=createFullscreenService();
 let current="home";
 let missingWordLoaded=false;
 let missingWordPokemonLoaded=false;
 let hangmanLoaded=false;
 let hangmanPokemonLoaded=false;
 
-function haptic(ms=14){if("vibrate" in navigator)navigator.vibrate(ms)}
-function isFullscreen(){return Boolean(document.fullscreenElement||document.webkitFullscreenElement)}
-async function toggleFullscreen(){
-  try{
-    if(isFullscreen()){
-      if(document.exitFullscreen)await document.exitFullscreen();
-      else if(document.webkitExitFullscreen)document.webkitExitFullscreen();
-    }else{
-      const root=document.documentElement;
-      if(root.requestFullscreen)await root.requestFullscreen({navigationUI:"hide"});
-      else if(root.webkitRequestFullscreen)root.webkitRequestFullscreen();
-    }
-  }catch(err){console.warn(err)}
-}
-function notifyFullscreen(){fullscreenCallbacks.forEach(fn=>fn())}
-document.addEventListener("fullscreenchange",notifyFullscreen);
-document.addEventListener("webkitfullscreenchange",notifyFullscreen);
-
 const api={
-  haptic,isFullscreen,toggleFullscreen,
-  onFullscreenChange(fn){fullscreenCallbacks.add(fn);return()=>fullscreenCallbacks.delete(fn)},
+  haptic,isFullscreen:fullscreenService.isFullscreen,toggleFullscreen:fullscreenService.toggle,
+  onFullscreenChange(fn){return fullscreenService.onChange(fn)},
   showHome(){showScreen("home")},
   isScreenActive(name){return current===name}
 };

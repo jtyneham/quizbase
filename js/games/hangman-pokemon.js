@@ -1,4 +1,5 @@
 import { POKEMON_WORDS } from "../../data/missing-word-pokemon-words.js";
+import { bindFullscreenButton } from "../core/ui.js";
 
 let appAPI;
 
@@ -561,16 +562,7 @@ function initializeHangmanPokemon(root, app) {
     if(event.target===topicsOverlay) closeTopics();
   });
 
-  const updateFullscreenButton = () => {
-    const on = app.isFullscreen();
-    fullscreenBtn.textContent = on ? "×" : "⛶";
-    fullscreenBtn.setAttribute("aria-label", on ? "Exit fullscreen" : "Enter fullscreen");
-  };
-
-  fullscreenBtn.addEventListener("click", async () => {
-    app.haptic(12);
-    await app.toggleFullscreen();
-  });
+  bindFullscreenButton({ button: fullscreenBtn, app });
 
   root.getElementById("homeButton").addEventListener("click", () => {
     app.haptic(12);
@@ -578,8 +570,6 @@ function initializeHangmanPokemon(root, app) {
     app.showHome();
   });
 
-  app.onFullscreenChange(updateFullscreenButton);
-  updateFullscreenButton();
   updateTopicsLabel();
   startRound();
 }
