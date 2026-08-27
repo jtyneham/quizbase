@@ -240,3 +240,9 @@ The 30 Node tests remain green after the fix. Re-run `npm run test:all` on the l
 - Updated Hangman E2E assertions to target the engine's actual `.letter-slot` elements rather than the obsolete/nonexistent `.slot` class.
 - Updated Random Letter Ideas coverage to click the visible `.ideas-control` label, matching real user interaction; the checkbox input is intentionally non-pointer-interactive.
 - These changes correct test assumptions only and do not alter gameplay behavior or production UI.
+
+### Playwright round-four Hangman contract fixes
+- Updated the Hangman Solve-mode E2E assertion to match the shared engine's actual `solve-ui open` state rather than the obsolete `active` class assumption.
+- Audited the remainder of the same interaction test against `hangman-engine.js` before handing it back. New Word uses an in-button two-click confirmation (`New Word` -> `New Word?` -> reset), not a browser dialog, so the E2E flow now exercises that real contract and verifies the keyboard state resets afterward.
+- No production gameplay or visual code changed in this pass; these are test-harness corrections only.
+- Node regression suite remains 30/30 passing. The browser E2E runner still needs to be executed in the normal Windows development environment to confirm the full 57/57 browser gate.

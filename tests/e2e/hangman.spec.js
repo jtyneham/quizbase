@@ -18,12 +18,15 @@ for (const variant of variants) {
       await expect(q).toHaveClass(/used/);
 
       await screen.locator("#solveBtn").click();
-      await expect(screen.locator("#solveUi")).toHaveClass(/active/);
+      await expect(screen.locator("#solveUi")).toHaveClass(/open/);
       await screen.locator("#solveCancelBtn").click();
-      await expect(screen.locator("#solveUi")).not.toHaveClass(/active/);
+      await expect(screen.locator("#solveUi")).not.toHaveClass(/open/);
 
-      page.once("dialog", dialog => dialog.accept());
-      await screen.locator("#newWordBtn").click();
+      const newWord = screen.locator("#newWordBtn");
+      await newWord.click();
+      await expect(newWord).toHaveText("New Word?");
+      await newWord.click();
+      await expect(newWord).toHaveText("New Word");
       await expect(slots.locator(".letter-slot").first()).toBeVisible();
       await expect(q).not.toHaveClass(/used/);
     });
