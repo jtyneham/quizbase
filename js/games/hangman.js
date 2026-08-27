@@ -1,5 +1,5 @@
 import { GAME_DATABASE, RANDOM_POOL } from "../../data/hangman-words.js";
-import { defineHangmanElement } from "../core/hangman-engine.js";
+import { defineHangmanElement } from "../core/hangman-engine.js?v=20260827-fix";
 
 export function registerHangman(app) {
   const topics = [...new Set(GAME_DATABASE.map(entry => entry.category))];

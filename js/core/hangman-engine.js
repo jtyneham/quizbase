@@ -1,4 +1,4 @@
-import { bindFullscreenButton, bindOutsideDismiss } from "./ui.js";
+import { bindFullscreenButton, bindOutsideDismiss } from "./ui.js?v=20260827-fix";
 import { isCorrectGuess, isSolved, normalizePlayableChar, normalizePlayableAnswer, normalizeSolveAttempt, pickDifferent, uniquePlayableLetters } from "./hangman-logic.js";
 
 export const HANGMAN_TEMPLATE = `<div class="hangman-root" data-ui="game-root">

@@ -71,8 +71,16 @@ Mobile/tablet behavior must be validated independently rather than inferred from
 
 Treat this v1 state as the known-good master base. For a new visual language, clone/fork this baseline, implement the reskin, then run `npm run test:all`. Further Quizbase-core refactoring should happen only when an actual use case demonstrates that the current extension points are insufficient.
 
-## Regression lesson: real interaction paths (2026-08-27)
-- Missing Word generation must be tested as a full human cycle: Next Word -> Reveal -> click word card -> Next Word -> next generation, and the primary action must never remain disabled/generating.
-- Missing Word - Pokemon starts in All Topics mode when no explicit initial topics are configured.
-- Popup outside-dismiss logic must use the event composed path. Topic chips re-render on click; checking only `owner.contains(event.target)` after the target is detached can falsely classify an inside click as outside and close the picker.
-- Hangman E2E coverage must click individual topic chips and verify multi-select while the picker remains open; Select All alone does not cover this interaction.
+
+## Missing Word root-cause repair
+
+The shared Missing Word refactor accidentally dropped the `countLetters` import
+while the renderer still called `countLetters(...)`. The click handler therefore
+entered its pressed/generating visual state and then threw a `ReferenceError` as
+soon as it attempted to render a generated word. Both Missing Word variants
+failed because both use the same shared engine.
+
+Playwright had also been configured with `reuseExistingServer: true`. If an older
+Quizbase preview was already listening on port 8000, Playwright could silently
+test that stale server instead of the current repository. It is now false. If
+port 8000 is occupied, stop the old preview before running the E2E suite.

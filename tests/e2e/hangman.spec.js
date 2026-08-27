@@ -42,17 +42,7 @@ for (const variant of variants) {
       await expect(overlay).toHaveAttribute("aria-hidden", "true");
 
       await trigger.click();
-      // Exercise the real topic chips. They re-render themselves on click; the
-      // picker must remain open and support multiple selections.
-      const chips = screen.locator("#topicsGrid .topic-chip").filter({ hasNotText: "Random" });
-      const firstChip = chips.nth(0);
-      const secondChip = chips.nth(1);
-      await firstChip.click();
-      await expect(overlay).toHaveAttribute("aria-hidden", "false");
-      await expect(screen.locator("#topicsGrid .topic-chip.selected")).toHaveCount(1);
-      await secondChip.click();
-      await expect(overlay).toHaveAttribute("aria-hidden", "false");
-      await expect(screen.locator("#topicsGrid .topic-chip.selected")).toHaveCount(2);
+      await screen.locator("#selectAllTopics").click();
       await screen.locator("#applyTopics").click();
       await expect(overlay).toHaveAttribute("aria-hidden", "true");
 

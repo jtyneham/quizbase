@@ -1,5 +1,5 @@
 import { bindFullscreenButton } from "./ui.js";
-import { randomInteger } from "./missing-word-utils.js";
+import { countLetters } from "./missing-word-utils.js";
 import { filterWordPool, weightedWordChoice, blankCountFor, wordLetterGroups, longestBlankRun, eachWordKeepsVisibleLetter } from "./missing-word-logic.js";
 
 const templateHTML = `
@@ -172,9 +172,7 @@ function initializeGame(root, app, config) {
     const TOPICS = configuredTopics;
     let selectedTopics = new Set(initialTopics);
     let pendingTopics = new Set(initialTopics);
-    // Pokémon starts in its documented "All" mode when no explicit topics
-    // are supplied. General Missing Word starts on its configured topic(s).
-    let allTopicsMode = topicMode === "pokemon" && initialTopics.length === 0;
+    let allTopicsMode = topicMode === "pokemon" && selectedTopics.size === 0;
     let pendingAllTopicsMode = allTopicsMode;
 
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -188,6 +186,7 @@ function initializeGame(root, app, config) {
     let isAnimating = false;
     let activeReelAnimations = [];
     let generationStopRequested = false;
+    let finishGeneration = null;
 
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
@@ -497,128 +496,105 @@ function initializeGame(root, app, config) {
       return new Promise((resolve) => setTimeout(resolve, milliseconds));
     }
 
-    function stopCurrentGeneration() {
-      if (gameState !== "generating" || activeReelAnimations.length === 0) {
-        return;
-      }
-
-      generationStopRequested = true;
-
-      const stopDuration = 100;
-
-      activeReelAnimations.forEach(({ animation, reelStrip, finalOffset }) => {
-        // Freeze the reel exactly where it is at the moment of the tap.
-        const currentTransform = window.getComputedStyle(reelStrip).transform;
-        animation.cancel();
-
-        reelStrip.style.transform = currentTransform;
-
-        // Then brake very quickly into the already-determined final letter.
-        const stopAnimation = reelStrip.animate(
-          [
-            { transform: currentTransform },
-            { transform: `translateY(${finalOffset}em)` }
-          ],
-          {
-            duration: stopDuration,
-            easing: "cubic-bezier(0.15, 0.85, 0.25, 1)",
-            fill: "forwards"
-          }
-        );
-
-        stopAnimation.finished
-          .then(() => {
-            reelStrip.style.transform = `translateY(${finalOffset}em)`;
-            stopAnimation.cancel();
-          })
-          .catch(() => {});
+    function settleGenerationReels() {
+      activeReelAnimations.forEach(({ reelStrip, finalOffset }) => {
+        if (!reelStrip) return;
+        reelStrip.style.transition = "none";
+        reelStrip.style.transform = `translateY(${finalOffset}em)`;
       });
-
       activeReelAnimations = [];
     }
 
+    function stopCurrentGeneration() {
+      if (gameState !== "generating") return;
+      generationStopRequested = true;
+      settleGenerationReels();
+      finishGeneration?.();
+    }
+
+    function renderMaskedWordStatic(word, mask) {
+      wordDisplay.replaceChildren();
+      wordDisplay.classList.remove("empty");
+      const fontSize = slotFontSize(countLetters(word));
+
+      [...word].forEach((character, index) => {
+        const slot = document.createElement("span");
+        slot.className = "slot";
+        slot.style.setProperty("--slot-size", fontSize);
+        slot.style.fontSize = fontSize;
+
+        if (!/[A-Z]/.test(character)) {
+          slot.classList.add("structural");
+          if (character === " ") slot.classList.add("space");
+          else if (character === "-") { slot.classList.add("hyphen"); slot.textContent = "–"; }
+          else slot.textContent = character;
+        } else if (mask[index]) {
+          slot.classList.add("blank");
+          slot.style.width = "var(--blank-slot-width)";
+        } else {
+          slot.textContent = character;
+          slot.classList.add("settled");
+        }
+
+        wordDisplay.appendChild(slot);
+      });
+    }
+
     async function animateNextWord(word, mask) {
-      const reels = createSpinningSlots(word, mask);
-      const duration = GAME_CONFIG.animation.nextWordDuration;
-      const cellHeight = 1.12;
-
-      generationStopRequested = false;
-      activeReelAnimations = [];
-
-      if (prefersReducedMotion) {
-        reels.forEach(({ reelStrip, finalIndex, isBlank, isStructural }) => {
-          if (isBlank || isStructural) return;
-          reelStrip.style.transform =
-            `translateY(-${finalIndex * cellHeight}em)`;
-        });
+      let reels;
+      try {
+        reels = createSpinningSlots(word, mask);
+      } catch (error) {
+        console.error("Missing Word reel rendering failed; using static fallback.", error);
+        renderMaskedWordStatic(word, mask);
         return;
       }
 
-      const animations = reels
+      const duration = GAME_CONFIG.animation.nextWordDuration;
+      const cellHeight = 1.12;
+      generationStopRequested = false;
+      activeReelAnimations = reels
         .filter(({ isBlank, isStructural }) => !isBlank && !isStructural)
-        .map(({ reelStrip, finalIndex }, index) => {
-          const finalOffset = -(finalIndex * cellHeight);
-          const middleBias = 0.50 + (index % 3) * 0.015;
+        .map(({ reelStrip, finalIndex }) => ({
+          reelStrip,
+          finalOffset: -(finalIndex * cellHeight)
+        }));
 
-          const animation = reelStrip.animate(
-            [
-              {
-                transform: "translateY(0)",
-                offset: 0
-              },
-              {
-                transform: `translateY(${finalOffset * 0.58}em)`,
-                offset: middleBias
-              },
-              {
-                transform: `translateY(${finalOffset * 0.88}em)`,
-                offset: 0.84
-              },
-              {
-                transform: `translateY(${finalOffset}em)`,
-                offset: 1
-              }
-            ],
-            {
-              duration,
-              easing: "cubic-bezier(0.10, 0.70, 0.14, 1)",
-              fill: "forwards"
-            }
-          );
+      if (prefersReducedMotion || activeReelAnimations.length === 0) {
+        settleGenerationReels();
+        return;
+      }
 
-          const record = {
-            animation,
-            reelStrip,
-            finalOffset
-          };
+      // Generation completion is timer-owned rather than Animation.finished-owned.
+      // This keeps real browser/device interaction deterministic while the reel
+      // movement remains a purely visual CSS transition.
+      await new Promise((resolve) => {
+        let done = false;
+        let timer = 0;
+        const finish = () => {
+          if (done) return;
+          done = true;
+          window.clearTimeout(timer);
+          settleGenerationReels();
+          if (finishGeneration === finish) finishGeneration = null;
+          resolve();
+        };
+        finishGeneration = finish;
 
-          activeReelAnimations.push(record);
-
-          return animation.finished
-            .then(() => {
+        activeReelAnimations.forEach(({ reelStrip, finalOffset }, index) => {
+          reelStrip.style.transition = `transform ${duration}ms cubic-bezier(0.10, 0.70, 0.14, 1)`;
+          // Force the initial transform to be committed before moving the reel.
+          void reelStrip.offsetHeight;
+          const stagger = Math.min(index * 12, 72);
+          window.setTimeout(() => {
+            if (!done && reelStrip.isConnected) {
               reelStrip.style.transform = `translateY(${finalOffset}em)`;
-              animation.cancel();
-            })
-            .catch(() => {
-              // Cancellation is expected when the player stops generation early.
-              if (generationStopRequested) {
-                reelStrip.style.transform = `translateY(${finalOffset}em)`;
-              }
-            });
+            }
+          }, stagger);
         });
 
-      // Web Animations promises can be interrupted by browser/page lifecycle
-      // changes. Never let a round remain permanently in the generating state.
-      await Promise.race([
-        Promise.allSettled(animations),
-        wait(duration + 250)
-      ]);
-
-      reels.forEach(({ reelStrip, finalIndex, isBlank, isStructural }) => {
-        if (isBlank || isStructural) return;
-        reelStrip.style.transform = `translateY(-${finalIndex * cellHeight}em)`;
+        timer = window.setTimeout(finish, duration + 120);
       });
-      activeReelAnimations = [];
     }
 
     async function revealWord() {
@@ -681,35 +657,27 @@ function initializeGame(root, app, config) {
         wordDisplay.replaceChildren();
         wordDisplay.classList.remove("empty");
         wordDisplay.textContent = "No matching words";
+        gameState = "empty";
         actionButton.textContent = "Next Word";
-        actionButton.classList.remove("generating");
         return;
       }
 
       currentMask = createMask(currentWord, currentRoundDifficulty);
-
       recentWords.push(currentWord.toLowerCase());
-
-      while (
-        recentWords.length > GAME_CONFIG.history.recentWordLimit
-      ) {
+      while (recentWords.length > GAME_CONFIG.history.recentWordLimit) {
         recentWords.shift();
       }
 
       gameState = "generating";
       await animateNextWord(currentWord, currentMask);
-
       gameState = "masked";
       actionButton.textContent = "Reveal";
       actionButton.classList.add("reveal-mode");
     }
 
     async function handleAction() {
-      // While the slot reels are spinning, the same controls become "stop".
       if (isAnimating) {
-        if (gameState === "generating") {
-          stopCurrentGeneration();
-        }
+        if (gameState === "generating") stopCurrentGeneration();
         return;
       }
 
@@ -720,18 +688,29 @@ function initializeGame(root, app, config) {
 
       try {
         if (gameState === "masked") {
-          // Reveal itself is intentionally non-interruptible.
           actionButton.disabled = true;
           await revealWord();
         } else {
-          // Keep the button enabled during generation so a second tap can stop it.
           actionButton.disabled = false;
           actionButton.classList.add("generating");
           await nextWord();
         }
+      } catch (error) {
+        console.error("Missing Word action failed.", error);
+        // Never leave the game visually or logically locked. If a word was
+        // already selected, show the playable masked round without animation.
+        if (currentWord && currentMask.length) {
+          renderMaskedWordStatic(currentWord, currentMask);
+          gameState = "masked";
+          actionButton.textContent = "Reveal";
+          actionButton.classList.add("reveal-mode");
+        } else {
+          gameState = "empty";
+          actionButton.textContent = "Next Word";
+        }
       } finally {
-        // A failed/interrupted animation must never strand the primary action.
-        actionButton.classList.remove("press", "generating");
+        finishGeneration = null;
+        actionButton.classList.remove("generating", "press");
         actionButton.disabled = false;
         isAnimating = false;
       }

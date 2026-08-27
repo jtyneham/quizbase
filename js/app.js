@@ -42,7 +42,7 @@ async function openTile(tile){
 
   if(file==="missingword.html"){
     if(!missingWordLoaded){
-      const module=await import("./games/missing-word.js");
+      const module=await import("./games/missing-word.js?v=20260827-fix");
       module.registerMissingWord(api);
       missingWordLoaded=true;
     }
@@ -52,7 +52,7 @@ async function openTile(tile){
 
   if(file==="missingwordpokemon.html"){
     if(!missingWordPokemonLoaded){
-      const module=await import("./games/missing-word-pokemon.js");
+      const module=await import("./games/missing-word-pokemon.js?v=20260827-fix");
       module.registerMissingWordPokemon(api);
       missingWordPokemonLoaded=true;
     }
@@ -62,7 +62,7 @@ async function openTile(tile){
 
   if(file==="hangman1.html"){
     if(!hangmanLoaded){
-      const module=await import("./games/hangman.js");
+      const module=await import("./games/hangman.js?v=20260827-fix");
       module.registerHangman(api);
       hangmanLoaded=true;
     }
@@ -73,7 +73,7 @@ async function openTile(tile){
 
   if(file==="hangmanpokemon.html"){
     if(!hangmanPokemonLoaded){
-      const module=await import("./games/hangman-pokemon.js");
+      const module=await import("./games/hangman-pokemon.js?v=20260827-fix");
       module.registerHangmanPokemon(api);
       hangmanPokemonLoaded=true;
     }

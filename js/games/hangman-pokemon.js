@@ -1,6 +1,6 @@
 import { POKEMON_WORDS } from "../../data/missing-word-pokemon-words.js";
 import { POKEMON_TOPICS } from "../core/pokemon-topics.js";
-import { defineHangmanElement } from "../core/hangman-engine.js";
+import { defineHangmanElement } from "../core/hangman-engine.js?v=20260827-fix";
 
 export function registerHangmanPokemon(app) {
   defineHangmanElement({

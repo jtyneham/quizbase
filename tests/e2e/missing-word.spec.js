@@ -12,7 +12,17 @@ for (const variant of variants) {
       const screen = await openGame(page, variant);
       const action = screen.locator('[data-ui="primary-action"]');
       await action.click();
+      await expect(action).toHaveText("Reveal", { timeout: 4000 });
+      await expect(action).not.toHaveClass(/generating/);
       await expect(screen.locator("#wordDisplay")).not.toHaveClass(/empty/);
+      await expect(screen.locator("#wordDisplay .slot").first()).toBeVisible();
+
+      // Human play path: reveal from the card, then generate another round.
+      await screen.locator("#wordCard").click();
+      await expect(action).toHaveText("Next Word");
+      await action.click();
+      await expect(action).toHaveText("Reveal", { timeout: 4000 });
+      await expect(action).not.toHaveClass(/generating/);
 
       const hard = screen.getByRole("button", { name: "Hard", exact: true });
       await hard.click();
@@ -26,30 +36,6 @@ for (const variant of variants) {
       await screen.locator("#topicClearButton").click();
       await screen.locator("#topicDoneButton").click();
       await expect(trigger).toHaveAttribute("aria-expanded", "false");
-    });
-
-
-    test("real Next Word and word-card cycle never gets stuck", async ({ page }) => {
-      const screen = await openGame(page, variant);
-      const action = screen.locator("#actionButton");
-      const card = screen.locator("#wordCard");
-      const display = screen.locator("#wordDisplay");
-
-      await expect(action).toHaveText("Next Word");
-      await action.click();
-      await expect(action).toHaveText("Reveal", { timeout: 3000 });
-      await expect(action).not.toBeDisabled();
-      await expect(display).not.toContainText("No matching words");
-      await expect(display.locator(".slot").first()).toBeVisible();
-
-      await card.click();
-      await expect(action).toHaveText("Next Word", { timeout: 1500 });
-      await expect(action).not.toBeDisabled();
-
-      await action.click();
-      await expect(action).toHaveText("Reveal", { timeout: 3000 });
-      await expect(action).not.toBeDisabled();
-      await expect(display.locator(".slot").first()).toBeVisible();
     });
 
     test("topic picker dismisses on outside click and can reopen", async ({ page }) => {
