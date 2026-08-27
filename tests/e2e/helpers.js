@@ -9,11 +9,18 @@ export const games = [
 ];
 
 export async function openGame(page, game) {
+  const canonicalGame = games.find(candidate =>
+    candidate.name === game.name || candidate.screen === game.screen
+  );
+  if (!canonicalGame) {
+    throw new Error(`Unknown Quizbase game: ${game.name ?? game.screen ?? "(unnamed)"}`);
+  }
+
   await page.goto("/");
-  await page.getByRole("button", { name: game.name, exact: true }).click();
-  const screen = page.locator(`#${game.screen}`);
+  await page.getByRole("button", { name: canonicalGame.name, exact: true }).click();
+  const screen = page.locator(`#${canonicalGame.screen}`);
   await expect(screen).toHaveClass(/active/);
-  await expect(page).toHaveURL(new RegExp(`${game.hash.replace("#", "#")}$`));
+  await expect(page).toHaveURL(new RegExp(`${canonicalGame.hash}$`));
   await expect(screen.locator('[data-ui="game-root"]')).toBeVisible();
   return screen;
 }

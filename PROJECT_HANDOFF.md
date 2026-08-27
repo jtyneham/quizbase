@@ -227,3 +227,11 @@ The existing 29 Node tests still pass after this addition. In the current sandbo
 ## Recommended continuation after browser-suite setup
 
 Run the new E2E suite locally and fix any real interaction/layout failures it exposes. Once green on the representative viewports, freeze this state as the Quizbase v1 functional/reskin baseline. Further base refactors should be driven by concrete defects or friction discovered during actual reskins rather than speculative cleanup.
+
+## First Playwright run — harness metadata fix
+
+The first real local `npm run test:all` run confirmed all 30 Node tests passing and successfully launched the 57 Playwright cases. Navigation/fullscreen cases were already passing, but 27 interaction cases stopped in the shared `openGame()` helper before exercising gameplay because several specs passed compact `{ name, screen }` descriptors while the helper assumed every descriptor also contained `hash`.
+
+`tests/e2e/helpers.js` now resolves compact descriptors against the canonical exported `games` table before clicking, checking the active screen, and asserting the route hash. This fixes the test harness rather than changing game behavior and prevents the same metadata mismatch across Missing Word, Hangman, and Random Letter specs. Unknown descriptors now fail with an explicit helper error instead of an undefined-property exception.
+
+The 30 Node tests remain green after the fix. Re-run `npm run test:all` on the local Windows environment; that second Playwright pass is the first run expected to reach the deeper gameplay interactions and may reveal genuine app or test-contract defects.
