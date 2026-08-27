@@ -11,8 +11,9 @@ test("Random Letter generates repeatedly and Ideas remains interactive", async (
   await expect(letter).toHaveText(/[A-Z]/);
 
   const ideas = screen.locator("#ideasToggle");
-  await ideas.check();
+  const ideasControl = screen.locator(".ideas-control");
+  await ideasControl.click();
   await expect(ideas).toBeChecked();
-  await ideas.uncheck();
+  await ideasControl.click();
   await expect(ideas).not.toBeChecked();
 });

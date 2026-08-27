@@ -235,3 +235,8 @@ The first real local `npm run test:all` run confirmed all 30 Node tests passing 
 `tests/e2e/helpers.js` now resolves compact descriptors against the canonical exported `games` table before clicking, checking the active screen, and asserting the route hash. This fixes the test harness rather than changing game behavior and prevents the same metadata mismatch across Missing Word, Hangman, and Random Letter specs. Unknown descriptors now fail with an explicit helper error instead of an undefined-property exception.
 
 The 30 Node tests remain green after the fix. Re-run `npm run test:all` on the local Windows environment; that second Playwright pass is the first run expected to reach the deeper gameplay interactions and may reveal genuine app or test-contract defects.
+
+### Playwright round-three harness fixes
+- Updated Hangman E2E assertions to target the engine's actual `.letter-slot` elements rather than the obsolete/nonexistent `.slot` class.
+- Updated Random Letter Ideas coverage to click the visible `.ideas-control` label, matching real user interaction; the checkbox input is intentionally non-pointer-interactive.
+- These changes correct test assumptions only and do not alter gameplay behavior or production UI.

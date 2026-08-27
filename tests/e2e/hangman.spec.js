@@ -11,7 +11,7 @@ for (const variant of variants) {
     test("keyboard guess, Solve/Cancel, and New Word remain functional", async ({ page }) => {
       const screen = await openGame(page, variant);
       const slots = screen.locator("#slots");
-      await expect(slots.locator(".slot").first()).toBeVisible();
+      await expect(slots.locator(".letter-slot").first()).toBeVisible();
 
       const q = screen.locator('.letter-key[data-key="Q"]');
       await q.click();
@@ -24,7 +24,7 @@ for (const variant of variants) {
 
       page.once("dialog", dialog => dialog.accept());
       await screen.locator("#newWordBtn").click();
-      await expect(slots.locator(".slot").first()).toBeVisible();
+      await expect(slots.locator(".letter-slot").first()).toBeVisible();
       await expect(q).not.toHaveClass(/used/);
     });
 
