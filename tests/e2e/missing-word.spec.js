@@ -17,6 +17,13 @@ for (const variant of variants) {
       await expect(screen.locator("#wordDisplay")).not.toHaveClass(/empty/);
       await expect(screen.locator("#wordDisplay .slot").first()).toBeVisible();
 
+      // A second tap during the reel animation is allowed to fast-forward it;
+      // it must never leave the primary action grey or permanently busy.
+      await action.click();
+      await action.click();
+      await expect(action).toHaveText("Reveal", { timeout: 4000 });
+      await expect(action).not.toHaveClass(/generating/);
+
       // Human play path: reveal from the card, then generate another round.
       await screen.locator("#wordCard").click();
       await expect(action).toHaveText("Next Word");

@@ -669,7 +669,29 @@ function initializeGame(root, app, config) {
       }
 
       gameState = "generating";
-      await animateNextWord(currentWord, currentMask);
+      // The reel animation is decorative. A browser can interrupt its timing
+      // during a page lifecycle change, so a round must never depend on the
+      // animation promise alone to become playable.
+      let animationSettled = false;
+      const generation = animateNextWord(currentWord, currentMask)
+        .then(() => {
+          animationSettled = true;
+        })
+        .catch((error) => {
+          console.warn("Missing Word generation animation failed.", error);
+        });
+
+      await Promise.race([
+        generation,
+        wait(GAME_CONFIG.animation.nextWordDuration + 500)
+      ]);
+
+      if (!animationSettled) {
+        finishGeneration?.();
+        settleGenerationReels();
+        renderMaskedWordStatic(currentWord, currentMask);
+      }
+
       gameState = "masked";
       actionButton.textContent = "Reveal";
       actionButton.classList.add("reveal-mode");
