@@ -633,5 +633,7 @@
 }
 .utility-actions .home-button img,
 .utility-actions .fullscreen-button img { width: 1.35rem; height: 1.35rem; display: block; }
+.utility-actions .fullscreen-button { background: #eef0f5; }
 .utility-actions .home-button:active,
 .utility-actions .fullscreen-button:active { transform: scale(.96); box-shadow: 0 .1rem .35rem rgba(0,0,0,.14); }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
