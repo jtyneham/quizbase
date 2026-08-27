@@ -170,3 +170,19 @@ The Missing Word sibling refactor has now reached its first stable shared-engine
 ### Next recommended phase
 
 Do not immediately rewrite the Hangman siblings. First perform a real browser/device regression pass on both Missing Word variants, especially generation interruption, reveal, topic Apply/Clear/All semantics, difficulty changes, Home, fullscreen, and multi-word animation. Once that shared-engine pattern is visually validated, use the same gradual approach for Hangman: extract pure guessing/round logic with tests first, then keyboard/solve/topic behavior, and only then consolidate DOM/controller code.
+
+## Continuation update — shared Hangman engine
+
+The Hangman sibling refactor has reached the same shared-engine milestone as Missing Word:
+
+- `js/core/hangman-engine.js` now owns the common Hangman Shadow DOM template and controller: round lifecycle, guesses/misses, six-stage drawing state, win/loss, New Word confirmation/reset, Solve Now/Cancel, custom keyboard behavior including backspace hold, topic-picker lifecycle, Home/fullscreen wiring, and interaction feedback.
+- `js/core/hangman-logic.js` contains pure/testable answer normalization, unique-letter extraction, correct-guess/solved checks, solve-attempt normalization, and non-repeating selection.
+- `js/games/hangman.js` is now a thin general-game configuration wrapper. It preserves the existing category list and special Random pool behavior.
+- `js/games/hangman-pokemon.js` is now a thin Pokémon configuration wrapper. It preserves `POKEMON_TOPICS`, the default `Pokemon All Names` selection, topic intersection filtering, and accent-normalized guessing/solving for names such as Flabébé.
+- The duplicated Hangman styles were consolidated into `css/hangman-shared.css`. `css/hangman.css` and `css/hangman-pokemon.css` remain separate theme entry points that import the shared baseline, allowing future reskins to override either variant without forking the functional engine.
+- The multiline answer-area fix is now tested against the shared stylesheet rather than duplicated CSS files.
+- The Node suite now includes pure Hangman regression coverage for accented letters, punctuation/multi-word answers, correct/incorrect guess semantics, solved state, solve normalization, and immediate-repeat avoidance. The full suite passes.
+
+### Next recommended phase
+
+The major sibling-engine duplication is now removed: both Missing Word variants share one engine and both Hangman variants share one engine. The next large phase should establish semantic theme tokens and a deliberate Shadow-DOM-compatible styling contract, then document those stable extension points in `RESKINNING.md`. Before visual architecture work, perform real-device/browser playtests of both Hangman variants, especially New Word, six-miss loss, Solve Now/Cancel, backspace hold, topic Apply/Clear/All, Pokémon accented names, Home/fullscreen, and long/multi-line answers.

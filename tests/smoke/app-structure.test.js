@@ -27,16 +27,21 @@ test("all five route hashes are represented by app screen names", async () => {
 });
 
 test("every game exposes Home navigation directly or through its shared engine", async () => {
-  for (const path of ["js/games/rngl.js", "js/games/hangman.js", "js/games/hangman-pokemon.js"]) {
-    const source = await read(path);
-    assert.match(source, /showHome\(\)/, `${path} should call the shared Home API`);
-  }
+  const rngl = await read("js/games/rngl.js");
+  assert.match(rngl, /showHome\(\)/, "Random Letter should call the shared Home API");
 
-  const engine = await read("js/core/missing-word-engine.js");
-  assert.match(engine, /showHome\(\)/, "the shared Missing Word engine should call the Home API");
+  const missingWordEngine = await read("js/core/missing-word-engine.js");
+  assert.match(missingWordEngine, /showHome\(\)/, "shared Missing Word engine should call the Home API");
   for (const path of ["js/games/missing-word.js", "js/games/missing-word-pokemon.js"]) {
     const source = await read(path);
     assert.match(source, /registerMissingWordGame/, `${path} should register through the shared engine`);
+  }
+
+  const hangmanEngine = await read("js/core/hangman-engine.js");
+  assert.match(hangmanEngine, /showHome\(\)/, "shared Hangman engine should call the Home API");
+  for (const path of ["js/games/hangman.js", "js/games/hangman-pokemon.js"]) {
+    const source = await read(path);
+    assert.match(source, /defineHangmanElement/, `${path} should register through the shared engine`);
   }
 });
 

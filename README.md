@@ -23,3 +23,9 @@ The test suite uses Node's built-in test runner and has no third-party dependenc
 ## Project direction
 
 Quizbase is refactored gradually. Preserve established gameplay while extracting shared logic in small, tested units. The current presentation is not a reskinning contract: future themes may replace the home layout and visual composition completely while keeping behavior contracts and semantic hooks stable. Missing Word and Missing Word Pokémon now share one configurable engine (`js/core/missing-word-engine.js`) while their datasets, topic configuration, routes, and styles remain separate wrappers.
+
+## Shared Hangman architecture
+
+Hangman and Hangman Pokémon now share `js/core/hangman-engine.js` for the Shadow DOM template, round lifecycle, guessing, solve mode, custom keyboard behavior, New Word flow, topic-picker lifecycle, drawing state, Home/fullscreen controls, and interaction feedback. Pure answer/guess normalization and solved-state helpers live in `js/core/hangman-logic.js` and are covered by Node tests.
+
+The game modules in `js/games/` are thin configuration/data wrappers. General Hangman keeps its Random mode and category dataset; Hangman Pokémon keeps its Pokémon topic order/filtering and accented-name normalization. Shared Hangman visuals live in `css/hangman-shared.css`, with the two game stylesheets acting as theme entry points so future reskins can diverge them without forking gameplay logic.
