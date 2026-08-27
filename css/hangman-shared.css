@@ -48,14 +48,8 @@
     background:var(--surface);
     padding:clamp(0.6rem,1.6svh,1.2rem) clamp(0.7rem,2.8vw,1.6rem);
     display:grid;
-    grid-template-rows:
-      auto
-      minmax(0, 33svh)
-      minmax(0, 18svh)
-      auto
-      auto
-      auto;
-    gap:clamp(0.35rem,1.2svh,0.85rem);
+    grid-template-rows:auto minmax(0,1fr) auto auto auto auto auto;
+    gap:clamp(.2rem,.75svh,.55rem);
     overflow:hidden;
   }
 
@@ -81,6 +75,7 @@
   }
 
   .status-row{
+    position:relative;
     display:flex;
     justify-content:space-between;
     align-items:center;
@@ -149,6 +144,7 @@
 
   .letter-slot{
     width:clamp(1.55rem,5.5vw,2.4rem);
+    flex-shrink:0;
     height:clamp(2.2rem,7svh,3.1rem);
     border-bottom:0.1875rem solid var(--text);
     display:flex;
@@ -196,12 +192,14 @@
 
   .space-slot{
     width:clamp(0.7rem,3vw,1.25rem);
+    flex-shrink:0;
     height:clamp(2.2rem,7svh,3.1rem);
   }
 
   .punct{
     width:auto;
     min-width:0.5rem;
+    flex-shrink:0;
     height:clamp(2.2rem,7svh,3.1rem);
     display:flex;
     align-items:flex-end;
@@ -317,6 +315,7 @@
     left:-625rem;
     top:-625rem;
     opacity:0;
+    display:none !important;
   }
 
   @media (orientation:portrait){
@@ -324,18 +323,12 @@
       padding:
         clamp(0.45rem,1.2svh,0.8rem)
         clamp(0.65rem,2.7vw,1rem);
-      grid-template-rows:
-        auto
-        minmax(0, 32svh)
-        minmax(0, 19svh)
-        auto
-        auto
-        auto;
-      gap:clamp(0.28rem,0.9svh,0.65rem);
+      grid-template-rows:auto minmax(0,24svh) minmax(5.1rem,14svh) auto auto auto auto;
+      gap:clamp(.16rem,.5svh,.36rem);
     }
 
     .hangman{
-      width:min(54vw, 29svh);
+      width:min(58vw,27svh);
     }
 
   .status-row{
@@ -356,6 +349,10 @@
       min-height:0;
       font-size:clamp(0.78rem,3vw,0.95rem);
     }
+
+    .word-zone{min-height:clamp(5.1rem,14svh,6.6rem)}
+    .letter-slot{height:clamp(1.9rem,5.6svh,2.7rem)}
+    .space-slot,.punct{height:clamp(1.9rem,5.6svh,2.7rem)}
 
     .controls{
       gap:clamp(0.4rem,1.5vw,0.625rem);
@@ -742,21 +739,13 @@
       padding:max(env(safe-area-inset-top),1rem) 1rem max(env(safe-area-inset-bottom),1rem);
     }
   }
-
-
-  .game-card{
-    grid-template-rows:auto minmax(0,1fr) auto auto auto auto auto;
-    gap:clamp(.2rem,.75svh,.55rem);
-  }
-  .status-row{position:relative}
-  .hidden-input{display:none!important}
   .solve-display{
-    width:min(92vw,32rem);
+    width:100%;
     min-height:2.65rem;
-    display:none;
+    display:flex;
     align-items:center;
     padding:.5rem .8rem;
-    border:.0625rem solid var(--line);
+    border:.0625rem solid var(--accent);
     border-radius:.8rem;
     background:var(--qb-color-surface);
     font-size:clamp(1rem,4vw,1.25rem);
@@ -764,25 +753,31 @@
     letter-spacing:.035em;
     white-space:nowrap;
     overflow:hidden;
+    box-shadow:0 0 0 .12rem var(--accent-soft);
   }
-  .solve-display.open{display:flex}
+
   .custom-keyboard{
     width:100%;
     margin:0 auto;
     display:flex;
     flex-direction:column;
-    gap:clamp(.2rem,.55svh,.38rem);
-    padding:clamp(.3rem,.7svh,.5rem) clamp(.22rem,.8vw,.45rem) max(env(safe-area-inset-bottom),.3rem);
-    background:var(--qb-keyboard-bg);
-    border-radius:1rem 1rem 0 0;
+    gap:clamp(.22rem,.8vw,.46rem);
+    padding:
+      clamp(.52rem,1.05svh,.78rem)
+      clamp(.52rem,1.45vw,.82rem)
+      max(env(safe-area-inset-bottom),clamp(.52rem,1.05svh,.78rem));
+    background:var(--qb-key-bg-special, var(--qb-keyboard-bg));
+    border-radius:1rem;
+    flex:0 0 auto;
+    align-self:end;
   }
-  .kb-row{display:flex;justify-content:center;gap:clamp(.16rem,.55vw,.36rem)}
-  .kb-middle{padding-inline:clamp(.6rem,3.4vw,2rem)}
+  .kb-row{display:flex;justify-content:center;gap:clamp(.22rem,.8vw,.46rem)}
+  .kb-middle{padding-inline:clamp(.72rem,3.6vw,2.15rem)}
   .kb-key{
     flex:1 1 0;
     min-width:0;
-    height:clamp(2.2rem,5.6svh,3.2rem);
-    border:0;
+    height:clamp(2.6rem,6.35svh,3.55rem);
+    border:.0625rem solid rgba(40,45,52,.12);
     border-radius:.55rem;
     background:var(--qb-color-surface);
     color:var(--qb-key-text);
@@ -797,34 +792,6 @@
   .kb-key.guessed-correct{background:var(--qb-key-bg-correct);color:var(--success)}
   .kb-key.guessed-wrong{background:var(--qb-key-bg-wrong);color:var(--danger)}
   .kb-key.used{opacity:.5;pointer-events:none}
-  @media (orientation:portrait){
-    .game-card{
-      grid-template-rows:auto minmax(0,24svh) minmax(5.1rem,14svh) auto auto auto auto;
-      gap:clamp(.16rem,.5svh,.36rem);
-    }
-    .hangman{width:min(58vw,27svh)}
-    .word-zone{min-height:clamp(5.1rem,14svh,6.6rem)}
-    .letter-slot{height:clamp(1.9rem,5.6svh,2.7rem)}
-    .space-slot,.punct{height:clamp(1.9rem,5.6svh,2.7rem)}
-  }
-
-
-  /* Revised custom keyboard deck */
-  .custom-keyboard{
-    background:var(--qb-key-bg-special);
-    padding:
-      clamp(.48rem,1.05svh,.72rem)
-      clamp(.22rem,.8vw,.45rem)
-      max(env(safe-area-inset-bottom),.32rem);
-    gap:clamp(.18rem,.48svh,.34rem);
-    flex:0 0 auto;
-    align-self:end;
-  }
-
-  .kb-row{
-    gap:clamp(.14rem,.5vw,.32rem);
-  }
-
   .kb-key{
     box-shadow:
       0 .08rem .16rem rgba(0,0,0,.14),
@@ -846,21 +813,6 @@
       inset 0 .08rem .12rem rgba(0,0,0,.05);
   }
 
-  /* Keep the deck close to the keys on wider tablets. */
-  @media (min-width:40em){
-    .custom-keyboard{
-      width:min(100%,48rem);
-      padding-top:clamp(.58rem,1.15svh,.82rem);
-      padding-bottom:max(env(safe-area-inset-bottom),.4rem);
-      margin-top:0;
-      margin-bottom:0;
-    }
-
-    .kb-key{
-      height:clamp(2.45rem,5.2svh,3.15rem);
-    }
-  }
-
   .solve-ui{
     width:min(92vw,32rem);
     display:none;
@@ -871,23 +823,6 @@
 
   .solve-ui.open{
     display:grid;
-  }
-
-  .solve-display{
-    width:100%;
-    min-height:2.65rem;
-    display:flex;
-    align-items:center;
-    padding:.5rem .8rem;
-    border:.0625rem solid var(--accent);
-    border-radius:.8rem;
-    background:var(--qb-color-surface);
-    font-size:clamp(1rem,4vw,1.25rem);
-    font-weight:650;
-    letter-spacing:.035em;
-    white-space:nowrap;
-    overflow:hidden;
-    box-shadow:0 0 0 .12rem var(--accent-soft);
   }
 
   .solve-text{
@@ -926,31 +861,6 @@
   .solve-cancel-btn:active{
     transform:scale(.97);
     background:#e4e8ed;
-  }
-
-  /* Old solve-display open state is superseded by solve-ui. */
-  .solve-display.open{display:flex}
-
-
-  /* Keyboard sizing refinements for phone + 8-inch tablet use */
-  .custom-keyboard{
-    padding:
-      clamp(.52rem,1.05svh,.78rem)
-      clamp(.52rem,1.45vw,.82rem)
-      max(env(safe-area-inset-bottom),.36rem);
-  }
-
-  .kb-row{
-    gap:clamp(.22rem,.8vw,.46rem);
-  }
-
-  .kb-middle{
-    padding-inline:clamp(.72rem,3.6vw,2.15rem);
-  }
-
-  .kb-key{
-    height:clamp(2.6rem,6.35svh,3.55rem);
-    border:.0625rem solid rgba(40,45,52,.12);
   }
 
   @media (max-width:32em){
@@ -1023,13 +933,6 @@
   }
 
 
-  /* Special keys: same visual language as letter keys, slightly darker fill only */
-  .special-key,
-  .space-key,
-
-  /* Enter keeps the same neutral key design even in Solve mode. */
-
-
   /* Canonical keyboard key styling */
   .kb-key,
   .special-key,
@@ -1091,23 +994,9 @@
     flex:1.2 1 0;
     max-width:clamp(3rem,12vw,4.4rem);
   }
-
-
-  /* Symmetrical keyboard deck: matching top/bottom breathing room and radius. */
-  .custom-keyboard{
-    padding-bottom:max(env(safe-area-inset-bottom),clamp(.52rem,1.05svh,.78rem));
-    border-radius:1rem;
-  }
-
-
   /* Solve mode owns the lower controls: New Word must be hidden. */
   .game-card.solve-active #newWordBtn{
     display:none !important;
-  }
-
-  /* Keep the faux input content and caret together, even after spaces. */
-  .solve-display{
-    overflow:hidden;
   }
 
   .solve-entry{
