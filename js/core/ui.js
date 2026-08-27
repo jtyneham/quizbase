@@ -26,3 +26,11 @@ export function bindFullscreenButton({ button, icon, label, app, hapticMs = 12 }
   };
 }
 
+/** Close a popup when a click lands outside its owning element. */
+export function bindOutsideDismiss(root, owner, onDismiss) {
+  const onClick = (event) => {
+    if (!owner.contains(event.target)) onDismiss(event);
+  };
+  root.addEventListener("click", onClick);
+  return () => root.removeEventListener("click", onClick);
+}

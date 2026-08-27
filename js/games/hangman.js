@@ -1,5 +1,6 @@
 import { GAME_DATABASE, RANDOM_POOL } from "../../data/hangman-words.js";
 import { bindFullscreenButton } from "../core/ui.js";
+import { bindOutsideDismiss } from "../core/ui.js";
 
 let appAPI;
 
@@ -529,6 +530,9 @@ function initializeHangman(root, app) {
   clearTopics.addEventListener("click",()=>{draftRandomMode=false;draftTopics.clear();renderTopicChoices();});
   applyTopics.addEventListener("click",applyTopicSelection);
   topicsOverlay.addEventListener("click",e=>{if(e.target===topicsOverlay)closeTopics();});
+  bindOutsideDismiss(root, topicsOverlay, () => {
+    if (topicsOverlay.classList.contains("open")) closeTopics();
+  });
 
 
   bindFullscreenButton({ button: fullscreenBtn, app });

@@ -1,5 +1,6 @@
 import { POKEMON_WORDS } from "../../data/missing-word-pokemon-words.js";
 import { bindFullscreenButton } from "../core/ui.js";
+import { bindOutsideDismiss } from "../core/ui.js";
 
 let appAPI;
 
@@ -560,6 +561,9 @@ function initializeHangmanPokemon(root, app) {
   applyTopics.addEventListener("click",applyTopicSelection);
   topicsOverlay.addEventListener("click",event=>{
     if(event.target===topicsOverlay) closeTopics();
+  });
+  bindOutsideDismiss(root, topicsOverlay, () => {
+    if (topicsOverlay.classList.contains("open")) closeTopics();
   });
 
   bindFullscreenButton({ button: fullscreenBtn, app });
