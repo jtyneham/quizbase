@@ -195,3 +195,27 @@ After meaningful reskin work:
 Do not fork shared engines to make a visual variant. Missing Word siblings share one engine; Hangman siblings share one engine. Keep game-specific data/configuration and visual entry points configurable around those engines.
 
 If a reskin seems to require gameplay-engine duplication, first look for a semantic hook, theme token, configuration option, or component-level presentation extension instead.
+
+## Automated browser regression gate
+
+A reskin is not complete just because it looks correct. Run the real-browser regression suite after meaningful visual or structural work:
+
+```bash
+npm test
+npm run test:e2e
+```
+
+`npm run test:e2e` uses Playwright to exercise the actual app at desktop, phone-portrait, and tablet-portrait sizes. It protects the behaviors most likely to be broken by aggressive visual reconstruction: launcher routing, Home, fullscreen controls, topic pickers, Missing Word generation/difficulty, Hangman keyboard/Solve/New Word, Random Letter generation, and page-level no-scroll behavior.
+
+Semantic `data-ui` hooks are deliberately used by the browser suite where possible. Preserve those hooks even when a reskin completely changes layout or appearance. Do not make tests depend on decorative class names merely to satisfy a theme.
+
+If a reskin intentionally changes a behavior contract, update the corresponding test deliberately. Do not weaken or delete a failing regression test simply because a new layout made the old selector inconvenient.
+
+For first-time Playwright setup after cloning:
+
+```bash
+npm install
+npx playwright install chromium
+```
+
+Failed Playwright runs retain traces/screenshots so layout and interaction regressions can be inspected rather than guessed at.

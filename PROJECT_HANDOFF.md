@@ -206,3 +206,24 @@ Do not make future skins by forking shared engines or by appending increasingly 
 ### Recommended continuation
 
 The major shared-engine and reskin-extension foundations are now in place. Before further architectural refactoring, do a real-device regression pass of all five games. After that, the next useful engineering batch is to expand browser-level smoke coverage around actual interaction flows (route switching, Home, fullscreen state, pickers, round starts/resets) and then address any remaining hard-coded visual fragments discovered during the first real reskin rather than tokenizing values speculatively.
+
+## Browser regression suite added
+
+A Playwright end-to-end layer now complements the fast Node tests. `playwright.config.js` runs against the existing dependency-free preview server and defines desktop (1280×800), phone portrait (Pixel 7), and tablet portrait (800×1280) projects.
+
+Browser specs under `tests/e2e/` cover all five launcher routes and Home navigation, page overflow checks, Missing Word generation/difficulty/topic-picker behavior, Hangman keyboard/Solve/Cancel/New Word/topic-picker behavior, Random Letter repeated generation/Ideas, and fullscreen controls. Stable semantic `data-ui` hooks are preferred so future reskins can radically change decorative markup without gratuitously breaking tests.
+
+New commands:
+
+- `npm run test:unit` — fast Node logic/contract tests;
+- `npm run test:e2e` — Playwright across all configured viewports;
+- `npm run test:e2e:desktop` — quicker desktop-only browser pass;
+- `npm run test:all` — Node tests followed by Playwright.
+
+First-time browser setup requires `npm install` and `npx playwright install chromium`. `node_modules/`, Playwright reports, and test results are ignored by Git.
+
+The existing 29 Node tests still pass after this addition. In the current sandbox the JavaScript Playwright package could not be downloaded from npm, so the committed Playwright specs were syntax-checked but the JavaScript E2E runner could not be executed here. Run `npm install`, `npx playwright install chromium`, and `npm run test:e2e` in the normal local development environment before treating the browser gate as green.
+
+## Recommended continuation after browser-suite setup
+
+Run the new E2E suite locally and fix any real interaction/layout failures it exposes. Once green on the representative viewports, freeze this state as the Quizbase v1 functional/reskin baseline. Further base refactors should be driven by concrete defects or friction discovered during actual reskins rather than speculative cleanup.

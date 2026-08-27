@@ -40,3 +40,34 @@ Quizbase now exposes a semantic visual contract for future reskins:
 - `RESKINNING.md` documents the supported extension points, behavior contracts, responsive/accessibility requirements, and regression checklist.
 
 The default theme intentionally preserves Quizbase's existing appearance. A reskin should normally override semantic tokens first and use semantic hooks only where a new visual language requires structural treatment.
+
+## Browser regression tests
+
+Quizbase also has Playwright end-to-end coverage that drives the real app in Chromium.
+
+First-time setup after cloning:
+
+```bash
+npm install
+npx playwright install chromium
+```
+
+Run the browser suite across desktop, phone portrait, and tablet portrait:
+
+```bash
+npm run test:e2e
+```
+
+For a quicker desktop-only pass:
+
+```bash
+npm run test:e2e:desktop
+```
+
+Run the fast Node tests followed by the browser suite:
+
+```bash
+npm run test:all
+```
+
+The browser suite covers all five launcher routes and Home navigation, Missing Word generation/difficulty/topic-picker flows, Hangman keyboard/Solve/New Word/topic-picker flows, repeated Random Letter generation, fullscreen controls, and viewport overflow checks. Playwright traces and screenshots are retained for failed runs under ignored test-output folders.
