@@ -114,7 +114,7 @@ A reskin may use cards, lists, terminals, diegetic panels, abstract navigation, 
 Unless the product explicitly changes, preserve:
 
 ### App
-- all five routes and Home navigation;
+- all five routes and Home navigation, including direct hash links and browser Back/Forward;
 - fullscreen enter/exit and icon state;
 - haptics where supported;
 - no accidental page scrolling.
@@ -137,6 +137,38 @@ Unless the product explicitly changes, preserve:
 - topic filtering;
 - visible multiline answer slots;
 - gallows progression.
+
+## Routing contract
+
+`js/app.js` owns route resolution.  Keep game screens addressable by their
+canonical hashes when changing the launcher or app shell:
+
+- `#rngl`
+- `#missingword`
+- `#missingwordpokemon`
+- `#hangman`
+- `#hangmanpokemon`
+
+Older human-readable hashes remain accepted as aliases.  A visual reskin may
+replace launcher markup, but launch controls must call the app navigation API
+or provide the matching `data-file` value so direct links, Home, and browser
+history continue to work.
+
+## Missing Word UI boundaries
+
+The two Missing Word variants deliberately share presentation structure as
+well as gameplay behavior:
+
+- `js/core/missing-word-template.js` — static Shadow DOM markup and stable
+  `data-ui` hooks;
+- `js/core/missing-word-topic-picker.js` — topic picker interaction and
+  selection state;
+- `js/core/missing-word-engine.js` — round state, word choice, masking,
+  animation lifecycle, and event wiring.
+
+Changing the template for a creative layout is supported. Preserve the element
+IDs/data hooks consumed by the engine, or update the engine and its regression
+tests in the same change.
 
 ### Random Letter
 - random generation behavior and animation modes;

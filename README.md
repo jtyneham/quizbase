@@ -39,11 +39,13 @@ First-time Playwright setup requires:
 npx playwright install chromium
 ```
 
-The frozen v1 baseline has been validated locally at **30/30 Node tests and 57/57 Playwright tests**.
+The current fast gate contains **32 Node unit/contract tests**. Run the
+Playwright suite in a normal local browser environment for end-to-end visual
+coverage.
 
 ## Architecture
 
-- `js/core/missing-word-engine.js` powers both Missing Word variants; their data/configuration remain separate.
+- `js/core/missing-word-engine.js` powers both Missing Word variants; its static template and topic-picker interaction live in dedicated core modules, while data/configuration remain separate.
 - `js/core/hangman-engine.js` powers both Hangman variants; their data/configuration remain separate.
 - `js/core/*-logic.js` modules hold pure, testable gameplay logic.
 - `js/games/` contains thin game-specific wrappers.
@@ -60,6 +62,6 @@ Do not fork shared gameplay engines for visual variants. Prefer semantic tokens,
 
 ## Regression coverage
 
-The browser suite exercises all five launcher routes and Home navigation, fullscreen controls, Missing Word generation/difficulty/topic-picker flows, Hangman keyboard/Solve/New Word/topic-picker flows, Random Letter generation/Ideas behavior, and representative viewport overflow checks.
+The browser suite exercises all five launcher routes, direct hash routes, Home navigation, fullscreen controls, Missing Word generation/difficulty/topic-picker flows, Hangman keyboard/Solve/New Word/topic-picker flows, Random Letter generation/Ideas behavior, and representative viewport overflow checks.
 
 Failed Playwright runs write ignored traces/screenshots under `test-results/` for diagnosis.

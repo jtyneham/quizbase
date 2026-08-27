@@ -45,15 +45,16 @@ test("Shadow DOM component styles consume inherited theme tokens", async () => {
 });
 
 test("major app and game roles expose semantic data-ui hooks", async () => {
-  const [html, mwEngine, hangmanEngine] = await Promise.all([
+  const [html, mwEngine, mwTemplate, hangmanEngine] = await Promise.all([
     read("index.html"),
     read("js/core/missing-word-engine.js"),
+    read("js/core/missing-word-template.js"),
     read("js/core/hangman-engine.js"),
   ]);
   for (const hook of ["app-shell", "game-launch", "game-root", "home-action", "fullscreen-action", "primary-action"]) {
-    assert.ok(`${html}\n${mwEngine}\n${hangmanEngine}`.includes(`data-ui="${hook}"`), hook);
+    assert.ok(`${html}\n${mwEngine}\n${mwTemplate}\n${hangmanEngine}`.includes(`data-ui="${hook}"`), hook);
   }
-  assert.match(mwEngine, /data-ui="topic-picker"/);
+  assert.match(mwTemplate, /data-ui="topic-picker"/);
   assert.match(hangmanEngine, /data-ui="game-keyboard"/);
   assert.match(hangmanEngine, /data-ui="answer-display"/);
 });
