@@ -532,7 +532,7 @@ function initializeHangman(root, app) {
   topicsOverlay.addEventListener("click",e=>{if(e.target===topicsOverlay)closeTopics();});
   bindOutsideDismiss(root, topicsOverlay, () => {
     if (topicsOverlay.classList.contains("open")) closeTopics();
-  });
+  }, topicsBtn);
 
 
   bindFullscreenButton({ button: fullscreenBtn, app });

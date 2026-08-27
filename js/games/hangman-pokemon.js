@@ -558,7 +558,7 @@ function initializeHangmanPokemon(root, app) {
   });
   bindOutsideDismiss(root, topicsOverlay, () => {
     if (topicsOverlay.classList.contains("open")) closeTopics();
-  });
+  }, topicsBtn);
 
   bindFullscreenButton({ button: fullscreenBtn, app });
 
