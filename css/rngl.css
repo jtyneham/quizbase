@@ -91,7 +91,7 @@
       cursor: pointer;
     }
 
-    .fullscreen-button svg {
+    .fullscreen-button svg, .fullscreen-button img {
       width: 1.35em;
       height: 1.35em;
       fill: none;
@@ -621,11 +621,11 @@
 
     #rnglScreen .rngl-home-button {
       appearance: none;
-      width: auto;
+      width: 2.75rem;
       min-width: 0;
       height: 2.75rem;
       min-height: 2.75rem;
-      padding: 0 1rem;
+      padding: 0;
       border: 0;
       border-radius: 0.65rem;
       background: #ffffff;
@@ -642,4 +642,3 @@
       transform: scale(0.96);
       box-shadow: 0 0.1rem 0.35rem rgba(0, 0, 0, 0.14);
     }
-

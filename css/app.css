@@ -46,8 +46,9 @@ button{font:inherit}
 .hangman-pokemon-icon circle:last-of-type{fill:#fff;stroke:#25282d}
 .pokemon-ball .top{fill:#f5f5f5;stroke:#25282d}.pokemon-ball .bottom{fill:#fff;stroke:#25282d}.pokemon-ball .center{fill:#fff;stroke:#25282d}
 .screen-rngl{background:var(--page-bg)}
-.rngl-topbar{position:relative}.rngl-topbar .rngl-home-button{margin-right:auto}
-.rngl-topbar #fullscreenButton{position:absolute;left:50%;transform:translateX(-50%)}.rngl-topbar #fullscreenButton:active{transform:translateX(-50%) scale(.97)}
+.rngl-topbar .utility-actions{display:inline-flex;align-items:center;gap:.5rem}
+.rngl-topbar .utility-actions .fullscreen-button{position:static;transform:none}
+.rngl-topbar .utility-actions img{width:1.35rem;height:1.35rem;display:block}
 .screen-missing-word{background:var(--page-bg)}quiz-missing-word{display:block;width:100%;height:100%}
 .screen-missing-word-pokemon{background:var(--page-bg)}quiz-missing-word-pokemon{display:block;width:100%;height:100%}
 .screen-hangman{background:#f5f6f8}quiz-hangman{display:block;width:100%;height:100%}

@@ -6,6 +6,7 @@ import { POKEMON_TOPICS } from "../core/pokemon-topics.js";
 const templateHTML = `
   <div class="app">
     <header class="topbar">
+      <div class="utility-actions">
       <button id="homeButton" class="home-button" type="button" aria-label="Back to Home" title="Home">
         <img src="assets/home.svg" alt="" aria-hidden="true">
       </button>
@@ -17,14 +18,10 @@ const templateHTML = `
         aria-label="Enter fullscreen"
         title="Fullscreen"
       >
-        <svg id="fullscreenIcon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M8 3H3v5"></path>
-          <path d="M16 3h5v5"></path>
-          <path d="M21 16v5h-5"></path>
-          <path d="M3 16v5h5"></path>
-        </svg>
+        <img id="fullscreenIcon" src="assets/fullscreen.svg" alt="" aria-hidden="true">
         <span id="fullscreenLabel" class="visually-hidden">Fullscreen</span>
       </button>
+      </div>
 
       <div class="difficulty-control" aria-label="Difficulty">
         <button
