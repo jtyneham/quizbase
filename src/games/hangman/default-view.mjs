@@ -22,18 +22,19 @@ export function createHangmanView({ title, engine, topics, applyTopics, app }) {
   screen.innerHTML = `<div class="hangman-layout">
     <div data-region="toolbar"></div>
     <div class="hangman-subbar"><button type="button" class="secondary-control" data-action="topics">Topics <span data-topic-count></span></button><output class="miss-counter"></output></div>
-    <section class="hangman-word" aria-label="Word"><div class="hangman-slots" aria-live="polite"></div></section>
     <section class="hangman-artwork">${hangmanArtwork()}</section>
+    <section class="hangman-word" aria-label="Word"><div class="hangman-slots" aria-live="polite"></div></section>
     <section class="hangman-feedback"><div><span class="feedback-label">Misses</span><div class="miss-list"></div></div><p class="game-message" role="status"></p></section>
     <section class="solve-region">
-      <div class="solve-box" hidden><input type="text" aria-label="Full answer" autocomplete="off"><button type="button" data-action="submit-solve">Submit</button><button type="button" data-action="cancel-solve">Cancel</button></div>
+      <div class="solve-box" hidden><input type="text" aria-label="Full answer" autocomplete="off"><button type="button" data-action="cancel-solve">Cancel</button></div>
       <div class="round-actions"><button type="button" class="secondary-action" data-action="solve">Solve Word</button><button type="button" class="primary-action" data-action="new">New Word</button></div>
     </section>
     <div class="keyboard" aria-label="Letter keyboard"></div>
     <dialog class="topic-dialog"><form method="dialog"><header><h2>Topics</h2><button value="cancel" aria-label="Close">×</button></header><div class="dialog-topics"></div><footer><button value="cancel">Cancel</button><button value="apply" class="primary-action">Apply</button></footer></form></dialog>
   </div>`;
 
-  const toolbar = createUtilityBar({ title, onHome: app.home, fullscreen: app.fullscreen });
+  const topicButton = screen.querySelector('[data-action="topics"]');
+  const toolbar = createUtilityBar({ onHome: app.home, fullscreen: app.fullscreen, center: topicButton });
   screen.querySelector('[data-region="toolbar"]').append(toolbar.element);
   lifecycle.add(toolbar.destroy);
   const slots = screen.querySelector(".hangman-slots");
@@ -47,14 +48,38 @@ export function createHangmanView({ title, engine, topics, applyTopics, app }) {
   let confirmTimer;
   let selectedTopics = new Set(topics.defaultSelection);
 
-  for (const letter of LETTERS) {
-    const key = document.createElement("button");
-    key.type = "button";
-    key.className = "key";
-    key.dataset.letter = letter;
-    key.textContent = letter;
-    lifecycle.listen(key, "click", () => render(engine.guess(letter)));
-    keyboard.append(key);
+  const keyRows = [
+    LETTERS.slice(0, 10),
+    LETTERS.slice(10, 19),
+    LETTERS.slice(19),
+    ["SPACE", "BACKSPACE", "ENTER"]
+  ];
+  for (const rowLetters of keyRows) {
+    const row = document.createElement("div");
+    row.className = "keyboard-row";
+    for (const letter of rowLetters) {
+      const key = document.createElement("button");
+      key.type = "button";
+      key.className = `key key--${letter.toLowerCase()}`;
+      key.dataset.letter = letter;
+      key.textContent = letter === "BACKSPACE" ? "⌫" : letter === "SPACE" ? "" : letter === "ENTER" ? "↵" : letter;
+      lifecycle.listen(key, "click", () => {
+        const state = engine.snapshot();
+        if (letter === "ENTER" && state.phase === "solving") render(engine.submitSolve());
+        else if (letter === "BACKSPACE" && state.phase === "solving") {
+          engine.editSolve(state.solveBuffer.slice(0, -1));
+          render();
+        } else if (letter === "SPACE" && state.phase === "solving" && state.solveBuffer && !state.solveBuffer.endsWith(" ")) {
+          engine.editSolve(`${state.solveBuffer} `);
+          render();
+        } else if (/^[A-Z]$/.test(letter) && state.phase === "solving") {
+          engine.editSolve(`${state.solveBuffer}${letter}`);
+          render();
+        } else if (/^[A-Z]$/.test(letter)) render(engine.guess(letter));
+      });
+      row.append(key);
+    }
+    keyboard.append(row);
   }
 
   function renderTopicOptions() {
@@ -86,11 +111,12 @@ export function createHangmanView({ title, engine, topics, applyTopics, app }) {
     }
     screen.querySelector(".miss-counter").textContent = `${state.wrongCount} / ${state.maxMisses} misses`;
     screen.querySelector(".miss-list").textContent = state.misses.length ? state.misses.join(" · ") : "—";
-    screen.querySelector(".game-message").textContent = state.message;
+    screen.querySelector(".game-message").textContent = (["won", "lost"].includes(state.phase) || state.message.startsWith("Wrong solution")) ? state.message : "";
     screen.querySelectorAll("[data-stage]").forEach((part) => part.classList.toggle("is-visible", Number(part.dataset.stage) <= state.wrongCount));
     keyboard.querySelectorAll(".key").forEach((key) => {
       const used = state.guessed.includes(key.dataset.letter) || state.misses.includes(key.dataset.letter);
-      key.disabled = state.phase !== "playing" || used;
+      const special = ["SPACE", "BACKSPACE", "ENTER"].includes(key.dataset.letter);
+      key.disabled = special ? state.phase !== "solving" : state.phase !== "playing" || used;
       key.classList.toggle("is-correct", state.guessed.includes(key.dataset.letter));
       key.classList.toggle("is-wrong", state.misses.includes(key.dataset.letter));
     });
@@ -98,13 +124,12 @@ export function createHangmanView({ title, engine, topics, applyTopics, app }) {
     solveBox.hidden = !solving;
     screen.querySelector(".round-actions").hidden = solving;
     screen.querySelector('[data-action="solve"]').hidden = !["playing"].includes(state.phase);
-    if (solving && document.activeElement !== solveInput) { solveInput.value = state.solveBuffer; solveInput.focus(); }
+    if (solving) solveInput.value = state.solveBuffer;
     if (["won", "lost"].includes(state.phase)) { newButton.textContent = "New Word"; confirmNew = false; }
   }
 
   lifecycle.listen(screen.querySelector('[data-action="solve"]'), "click", () => render(engine.enterSolve()));
   lifecycle.listen(screen.querySelector('[data-action="cancel-solve"]'), "click", () => render(engine.cancelSolve()));
-  lifecycle.listen(screen.querySelector('[data-action="submit-solve"]'), "click", () => { engine.editSolve(solveInput.value); render(engine.submitSolve()); });
   lifecycle.listen(solveInput, "input", () => engine.editSolve(solveInput.value));
   lifecycle.listen(solveInput, "keydown", (event) => { if (event.key === "Enter") { event.preventDefault(); engine.editSolve(solveInput.value); render(engine.submitSolve()); } });
   lifecycle.listen(newButton, "click", () => {
@@ -115,6 +140,8 @@ export function createHangmanView({ title, engine, topics, applyTopics, app }) {
   });
   lifecycle.add(() => window.clearTimeout(confirmTimer));
   lifecycle.listen(screen.querySelector('[data-action="topics"]'), "click", () => { renderTopicOptions(); dialog.showModal(); });
+  lifecycle.listen(document, "pointerdown", (event) => { if (dialog.open && event.target === dialog) dialog.close("cancel"); });
+  lifecycle.listen(dialog, "click", (event) => { if (event.target === dialog) dialog.close("cancel"); });
   lifecycle.listen(dialog, "close", () => {
     if (dialog.returnValue !== "apply") return;
     selectedTopics = new Set([...topicContainer.querySelectorAll("input:checked")].map((input) => input.value));

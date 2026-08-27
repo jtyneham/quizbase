@@ -19,7 +19,8 @@ export function createHomeView({ destinations }) {
     button.className = "game-destination";
     button.dataset.game = destination.id;
     button.setAttribute("aria-label", destination.label);
-    button.innerHTML = `<span class="game-destination__art"><svg viewBox="0 0 80 68" aria-hidden="true">${ICONS[destination.id] || ""}</svg></span><span class="game-destination__label">${destination.label}</span>`;
+    const offsets = { "missing-word": "4 8", "missing-word-pokemon": "-8 4", hangman: "3 0", "hangman-pokemon": "3 -4", "random-letter": "0 8" };
+    button.innerHTML = `<span class="game-destination__art"><svg viewBox="0 0 80 80" aria-hidden="true"><g transform="translate(${offsets[destination.id] || "0 0"})">${ICONS[destination.id] || ""}</g></svg></span><span class="game-destination__label">${destination.label}</span>`;
     button.addEventListener("click", destination.open);
     list.append(button);
   }

@@ -26,7 +26,8 @@ const app = {
 };
 
 const generalMissingTopics = [...new Set(WORDS.flatMap((entry) => entry.topics))];
-const pokemonTopics = [...new Set(POKEMON_WORDS.flatMap((entry) => entry.topics))];
+const pokemonTopicOrder = ["Pokemon All Names", ...Array.from({ length: 9 }, (_, index) => `Gen ${index + 1}`), "Final Evolutions", "Moves + Abilities", "Moves", "Abilities", "Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison", "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"];
+const pokemonTopics = [...new Set(POKEMON_WORDS.flatMap((entry) => entry.topics))].sort((a, b) => pokemonTopicOrder.indexOf(a) - pokemonTopicOrder.indexOf(b));
 const generalHangmanTopics = [...new Set(GAME_DATABASE.map((entry) => entry.category))];
 const randomAnswers = new Set(RANDOM_POOL);
 

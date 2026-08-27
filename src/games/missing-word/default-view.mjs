@@ -13,7 +13,6 @@ export function createMissingWordView({ title, engine, topics, app }) {
           <details class="topic-picker">
             <summary><span data-topic-label>Topics</span><span aria-hidden="true">▾</span></summary>
             <div class="topic-panel">
-              <label class="search-field"><span class="sr-only">Search topics</span><input type="search" placeholder="Search topics…"></label>
               <div class="topic-options"></div>
               <div class="topic-actions"><button type="button" data-action="all">Use all</button><button type="button" data-action="done">Done</button></div>
             </div>
@@ -30,23 +29,27 @@ export function createMissingWordView({ title, engine, topics, app }) {
       </main>
     </div>`;
 
-  const toolbar = createUtilityBar({ title, onHome: app.home, fullscreen: app.fullscreen });
+  const topicPicker = screen.querySelector(".topic-picker");
+  const difficulty = screen.querySelector(".segmented-control");
+  const toolbar = createUtilityBar({ onHome: app.home, fullscreen: app.fullscreen, center: topicPicker, trailing: difficulty });
   screen.querySelector('[data-region="toolbar"]').append(toolbar.element);
+  screen.querySelector(".selector-row").remove();
   lifecycle.add(toolbar.destroy);
   const slots = screen.querySelector(".word-slots");
   const primary = screen.querySelector('[data-action="primary"]');
   const message = screen.querySelector(".game-message");
-  const details = screen.querySelector(".topic-picker");
   const options = screen.querySelector(".topic-options");
-  const search = screen.querySelector('input[type="search"]');
   const topicLabel = screen.querySelector("[data-topic-label]");
   let pendingTopics = new Set(engine.snapshot().selectedTopics);
   let pendingAll = engine.snapshot().allTopics;
+  let generationRunning = false;
+  let generationTimer = null;
+  let reelTimer = null;
+  const reelAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
   function renderTopics() {
-    const query = search.value.trim().toLowerCase();
     options.replaceChildren();
-    for (const topic of topics.filter((value) => value.toLowerCase().includes(query))) {
+    for (const topic of topics) {
       const option = document.createElement("label");
       option.className = "topic-option";
       const checkbox = document.createElement("input");
@@ -61,14 +64,20 @@ export function createMissingWordView({ title, engine, topics, app }) {
     }
   }
 
-  function render(state = engine.snapshot()) {
+  function render(state = engine.snapshot(), { spinning = false } = {}) {
     slots.replaceChildren();
     if (!state.word) slots.textContent = "?";
     else [...state.word].forEach((character, index) => {
       const slot = document.createElement("span");
       slot.className = /[A-Z]/.test(character) ? "word-slot" : character === " " ? "word-space" : "word-punctuation";
       if (state.mask[index] && state.phase === "masked") { slot.classList.add("is-blank"); slot.textContent = ""; }
-      else slot.textContent = character;
+      else {
+        slot.textContent = character;
+        if (spinning && !state.mask[index]) {
+          slot.classList.add("is-reeling");
+          slot.textContent = "X";
+        }
+      }
       slots.append(slot);
     });
     primary.textContent = state.phase === "masked" ? "Reveal" : "Next Word";
@@ -79,14 +88,42 @@ export function createMissingWordView({ title, engine, topics, app }) {
   }
 
   async function act() {
+    if (generationRunning) {
+      generationRunning = false;
+      window.clearTimeout(generationTimer);
+      window.clearInterval(reelTimer);
+      screen.classList.remove("is-generating");
+      render(engine.snapshot());
+      primary.disabled = false;
+      return;
+    }
     const state = engine.snapshot();
-    if (state.phase === "masked") render(engine.reveal());
+    if (state.phase === "masked") {
+      screen.classList.add("is-revealing");
+      await new Promise((resolve) => setTimeout(resolve, app.reducedMotion ? 0 : 180));
+      render(engine.reveal());
+      screen.classList.remove("is-revealing");
+    }
     else {
       primary.disabled = true;
       screen.classList.add("is-generating");
       const next = engine.next();
+      generationRunning = true;
+      render(next, { spinning: !app.reducedMotion });
+      if (!app.reducedMotion) {
+        reelTimer = window.setInterval(() => {
+          screen.querySelectorAll(".word-slot.is-reeling").forEach((slot) => {
+            slot.textContent = reelAlphabet[Math.floor(Math.random() * reelAlphabet.length)];
+          });
+        }, 68);
+      }
+      await new Promise((resolve) => {
+        generationTimer = window.setTimeout(resolve, app.reducedMotion ? 0 : 1150);
+      });
+      if (!generationRunning) return;
+      generationRunning = false;
+      window.clearInterval(reelTimer);
       render(next);
-      if (!app.reducedMotion && next.word) await new Promise((resolve) => setTimeout(resolve, 320));
       screen.classList.remove("is-generating");
       primary.disabled = false;
     }
@@ -95,10 +132,12 @@ export function createMissingWordView({ title, engine, topics, app }) {
   lifecycle.listen(primary, "click", act);
   lifecycle.listen(screen.querySelector('[data-action="word"]'), "click", act);
   screen.querySelectorAll("[data-difficulty]").forEach((button) => lifecycle.listen(button, "click", () => { engine.setDifficulty(button.dataset.difficulty); render(); }));
-  lifecycle.listen(search, "input", renderTopics);
   lifecycle.listen(screen.querySelector('[data-action="all"]'), "click", () => { pendingTopics.clear(); pendingAll = true; renderTopics(); });
-  lifecycle.listen(screen.querySelector('[data-action="done"]'), "click", () => { engine.setTopics(pendingTopics, pendingAll); details.open = false; render(); });
-  lifecycle.listen(details, "toggle", () => { if (details.open) { const state = engine.snapshot(); pendingTopics = new Set(state.selectedTopics); pendingAll = state.allTopics; renderTopics(); } });
+  lifecycle.listen(screen.querySelector('[data-action="done"]'), "click", () => { engine.setTopics(pendingTopics, pendingAll); topicPicker.open = false; render(); });
+  lifecycle.listen(topicPicker, "toggle", () => { if (topicPicker.open) { const state = engine.snapshot(); pendingTopics = new Set(state.selectedTopics); pendingAll = state.allTopics; renderTopics(); } });
+  lifecycle.listen(document, "pointerdown", (event) => { if (topicPicker.open && !topicPicker.contains(event.target)) topicPicker.open = false; });
+  lifecycle.add(() => window.clearTimeout(generationTimer));
+  lifecycle.add(() => window.clearInterval(reelTimer));
   lifecycle.listen(window, "keydown", (event) => { if (event.code === "Space" && !event.target.closest("button,input,summary")) { event.preventDefault(); act(); } });
   renderTopics();
   render();
