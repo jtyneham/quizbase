@@ -26,16 +26,17 @@ test("all five route hashes are represented by app screen names", async () => {
   }
 });
 
-test("every game module exposes Home navigation", async () => {
-  for (const path of [
-    "js/games/rngl.js",
-    "js/games/missing-word.js",
-    "js/games/missing-word-pokemon.js",
-    "js/games/hangman.js",
-    "js/games/hangman-pokemon.js"
-  ]) {
+test("every game exposes Home navigation directly or through its shared engine", async () => {
+  for (const path of ["js/games/rngl.js", "js/games/hangman.js", "js/games/hangman-pokemon.js"]) {
     const source = await read(path);
     assert.match(source, /showHome\(\)/, `${path} should call the shared Home API`);
+  }
+
+  const engine = await read("js/core/missing-word-engine.js");
+  assert.match(engine, /showHome\(\)/, "the shared Missing Word engine should call the Home API");
+  for (const path of ["js/games/missing-word.js", "js/games/missing-word-pokemon.js"]) {
+    const source = await read(path);
+    assert.match(source, /registerMissingWordGame/, `${path} should register through the shared engine`);
   }
 });
 

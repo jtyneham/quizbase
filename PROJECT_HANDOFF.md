@@ -154,3 +154,19 @@ The recommended foundation batch has now been completed:
 - Updated `README.md` with the development and test workflow.
 
 The next major phase should still be the Missing Word shared-engine refactor. Keep it incremental: extract pure selection/masking behavior with tests first, then round state, then DOM/rendering contracts. Do not begin the Hangman engine merge until the Missing Word extraction pattern is proven and the multiline behavior remains protected by tests.
+
+
+## Continuation update — shared Missing Word engine
+
+The Missing Word sibling refactor has now reached its first stable shared-engine milestone:
+
+- `js/core/missing-word-engine.js` now owns the common Missing Word UI/controller, round flow, reel/reveal animation lifecycle, difficulty behavior, topic-picker wiring, Home/fullscreen behavior, and Shadow DOM setup.
+- `js/games/missing-word.js` and `js/games/missing-word-pokemon.js` are now thin configuration/data wrappers instead of duplicated ~30k-line-equivalent controllers. Their separate CSS files and datasets remain independent.
+- General Missing Word preserves its default `General` topic and legacy empty-selection-means-all behavior. Pokémon Missing Word preserves its distinct `None` versus explicit `All` topic state and shared Pokémon topic order.
+- `js/core/missing-word-logic.js` extracts testable pure selection/masking helpers: pool filtering, difficulty eligibility, weighted selection, blank-count calculation, word grouping, blank-run measurement, and visible-letter validation.
+- Tests were expanded to protect topic/difficulty/recent-word filtering, all-topic behavior, weighted selection boundaries, multi-word mask grouping, blank-run constraints, and wrapper-to-engine registration.
+- The full Node suite passes after the refactor.
+
+### Next recommended phase
+
+Do not immediately rewrite the Hangman siblings. First perform a real browser/device regression pass on both Missing Word variants, especially generation interruption, reveal, topic Apply/Clear/All semantics, difficulty changes, Home, fullscreen, and multi-word animation. Once that shared-engine pattern is visually validated, use the same gradual approach for Hangman: extract pure guessing/round logic with tests first, then keyboard/solve/topic behavior, and only then consolidate DOM/controller code.
