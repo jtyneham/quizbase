@@ -35,9 +35,16 @@ export function bindFullscreenButton({ button, icon, label, app, hapticMs = 12 }
 export function bindOutsideDismiss(root, owner, onDismiss, ignored = []) {
   const ignoredNodes = Array.isArray(ignored) ? ignored : [ignored];
   const onClick = (event) => {
-    if (!owner.contains(event.target) && !ignoredNodes.some((node) => node?.contains(event.target))) {
-      onDismiss(event);
-    }
+    // Use the composed event path rather than only `contains(event.target)`.
+    // Popup controls may re-render themselves during their click handler, which
+    // detaches the original target before the event reaches this listener.
+    // The composed path still records that the click originated inside owner.
+    const path = typeof event.composedPath === "function" ? event.composedPath() : [];
+    const clickedInsideOwner = path.includes(owner) || owner.contains(event.target);
+    const clickedIgnored = ignoredNodes.some((node) =>
+      node && (path.includes(node) || node.contains(event.target))
+    );
+    if (!clickedInsideOwner && !clickedIgnored) onDismiss(event);
   };
   root.addEventListener("click", onClick);
   return () => root.removeEventListener("click", onClick);

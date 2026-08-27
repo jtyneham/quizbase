@@ -28,6 +28,30 @@ for (const variant of variants) {
       await expect(trigger).toHaveAttribute("aria-expanded", "false");
     });
 
+
+    test("real Next Word and word-card cycle never gets stuck", async ({ page }) => {
+      const screen = await openGame(page, variant);
+      const action = screen.locator("#actionButton");
+      const card = screen.locator("#wordCard");
+      const display = screen.locator("#wordDisplay");
+
+      await expect(action).toHaveText("Next Word");
+      await action.click();
+      await expect(action).toHaveText("Reveal", { timeout: 3000 });
+      await expect(action).not.toBeDisabled();
+      await expect(display).not.toContainText("No matching words");
+      await expect(display.locator(".slot").first()).toBeVisible();
+
+      await card.click();
+      await expect(action).toHaveText("Next Word", { timeout: 1500 });
+      await expect(action).not.toBeDisabled();
+
+      await action.click();
+      await expect(action).toHaveText("Reveal", { timeout: 3000 });
+      await expect(action).not.toBeDisabled();
+      await expect(display.locator(".slot").first()).toBeVisible();
+    });
+
     test("topic picker dismisses on outside click and can reopen", async ({ page }) => {
       const screen = await openGame(page, variant);
       const trigger = screen.locator('[data-ui="topic-picker-trigger"]');

@@ -172,8 +172,10 @@ function initializeGame(root, app, config) {
     const TOPICS = configuredTopics;
     let selectedTopics = new Set(initialTopics);
     let pendingTopics = new Set(initialTopics);
-    let allTopicsMode = false;
-    let pendingAllTopicsMode = false;
+    // Pokémon starts in its documented "All" mode when no explicit topics
+    // are supplied. General Missing Word starts on its configured topic(s).
+    let allTopicsMode = topicMode === "pokemon" && initialTopics.length === 0;
+    let pendingAllTopicsMode = allTopicsMode;
 
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const recentWords = [];
@@ -605,7 +607,17 @@ function initializeGame(root, app, config) {
             });
         });
 
-      await Promise.all(animations);
+      // Web Animations promises can be interrupted by browser/page lifecycle
+      // changes. Never let a round remain permanently in the generating state.
+      await Promise.race([
+        Promise.allSettled(animations),
+        wait(duration + 250)
+      ]);
+
+      reels.forEach(({ reelStrip, finalIndex, isBlank, isStructural }) => {
+        if (isBlank || isStructural) return;
+        reelStrip.style.transform = `translateY(-${finalIndex * cellHeight}em)`;
+      });
       activeReelAnimations = [];
     }
 
@@ -706,22 +718,23 @@ function initializeGame(root, app, config) {
       void actionButton.offsetWidth;
       actionButton.classList.add("press");
 
-      if (gameState === "masked") {
-        // Reveal itself is intentionally non-interruptible.
-        actionButton.disabled = true;
-        await revealWord();
+      try {
+        if (gameState === "masked") {
+          // Reveal itself is intentionally non-interruptible.
+          actionButton.disabled = true;
+          await revealWord();
+        } else {
+          // Keep the button enabled during generation so a second tap can stop it.
+          actionButton.disabled = false;
+          actionButton.classList.add("generating");
+          await nextWord();
+        }
+      } finally {
+        // A failed/interrupted animation must never strand the primary action.
+        actionButton.classList.remove("press", "generating");
         actionButton.disabled = false;
-      } else {
-        // Keep the button enabled during generation so a second tap can stop it.
-        actionButton.disabled = false;
-        actionButton.classList.add("generating");
-        await nextWord();
-        actionButton.classList.remove("generating");
+        isAnimating = false;
       }
-
-      actionButton.classList.remove("press");
-      actionButton.disabled = false;
-      isAnimating = false;
     }
 
     function setDifficulty(level) {

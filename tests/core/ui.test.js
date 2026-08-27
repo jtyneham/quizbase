@@ -21,3 +21,14 @@ test("outside dismiss ignores clicks inside the owner and opener", () => {
   click({ target: outside });
   assert.equal(dismissals, 1);
 });
+
+test("outside dismiss respects composed path when clicked child is re-rendered", () => {
+  let click;
+  const root = { addEventListener(type, fn) { if (type === "click") click = fn; }, removeEventListener() {} };
+  const owner = node("sheet");
+  const detachedChip = node("chip");
+  let dismissals = 0;
+  bindOutsideDismiss(root, owner, () => { dismissals += 1; });
+  click({ target: detachedChip, composedPath: () => [detachedChip, owner, root] });
+  assert.equal(dismissals, 0);
+});
