@@ -163,8 +163,10 @@ well as gameplay behavior:
   `data-ui` hooks;
 - `js/core/missing-word-topic-picker.js` — topic picker interaction and
   selection state;
-- `js/core/missing-word-engine.js` — round state, word choice, masking,
-  animation lifecycle, and event wiring.
+- `js/core/missing-word-renderer.js` — slot layout, reel generation, static
+  fallback rendering, and reveal animation;
+- `js/core/missing-word-engine.js` — round state, word choice, masking, and
+  event wiring.
 
 Changing the template for a creative layout is supported. Preserve the element
 IDs/data hooks consumed by the engine, or update the engine and its regression

@@ -45,7 +45,7 @@ coverage.
 
 ## Architecture
 
-- `js/core/missing-word-engine.js` powers both Missing Word variants; its static template and topic-picker interaction live in dedicated core modules, while data/configuration remain separate.
+- `js/core/missing-word-engine.js` powers both Missing Word variants; its template, topic picker, and reel renderer live in dedicated core modules, while data/configuration remain separate.
 - `js/core/hangman-engine.js` powers both Hangman variants; their data/configuration remain separate.
 - `js/core/*-logic.js` modules hold pure, testable gameplay logic.
 - `js/games/` contains thin game-specific wrappers.
