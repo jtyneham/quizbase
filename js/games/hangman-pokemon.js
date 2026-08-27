@@ -9,7 +9,7 @@ const templateHTML = `<div class="hangman-root">
 <div class="app">
   <main class="game-card" id="gameCard">
     <div class="status-row">
-      <div class="status-actions"><button class="home-button" id="homeButton" type="button" aria-label="Back to Home" title="Home">Home</button><button class="fullscreen-btn" id="fullscreenBtn" type="button" aria-label="Toggle fullscreen" title="Fullscreen">⛶</button></div>
+      <div class="status-actions"><button class="home-button" id="homeButton" type="button" aria-label="Back to Home" title="Home"><img src="assets/home.svg" alt="" aria-hidden="true"></button><button class="fullscreen-btn" id="fullscreenBtn" type="button" aria-label="Toggle fullscreen" title="Fullscreen"><img src="assets/fullscreen.svg" alt="" aria-hidden="true"></button></div>
       <button class="topics-btn" id="topicsBtn" type="button">Topics <span id="topicsCount">1</span></button>
 <span class="tries-text" id="triesText">0 / 6 misses</span>
     </div>
@@ -560,7 +560,7 @@ function initializeHangmanPokemon(root, app) {
     if (topicsOverlay.classList.contains("open")) closeTopics();
   }, topicsBtn);
 
-  bindFullscreenButton({ button: fullscreenBtn, app });
+  bindFullscreenButton({ button: fullscreenBtn, icon: fullscreenBtn.querySelector("img"), app });
 
   root.getElementById("homeButton").addEventListener("click", () => {
     app.haptic(12);

@@ -7,7 +7,7 @@ const templateHTML = `
   <div class="app">
     <header class="topbar">
       <button id="homeButton" class="home-button" type="button" aria-label="Back to Home" title="Home">
-        <span>Home</span>
+        <img src="assets/home.svg" alt="" aria-hidden="true">
       </button>
 
       <button
@@ -23,7 +23,7 @@ const templateHTML = `
           <path d="M21 16v5h-5"></path>
           <path d="M3 16v5h5"></path>
         </svg>
-        <span id="fullscreenLabel">Fullscreen</span>
+        <span id="fullscreenLabel" class="visually-hidden">Fullscreen</span>
       </button>
 
       <div class="difficulty-control" aria-label="Difficulty">

@@ -10,7 +10,12 @@ export function bindFullscreenButton({ button, icon, label, app, hapticMs = 12 }
     button.setAttribute("aria-label", text);
     button.title = text;
     if (label) label.textContent = text;
-    if (icon) icon.innerHTML = active ? exitIcon : enterIcon;
+    if (icon?.tagName === "IMG") {
+      icon.src = active ? "assets/fullscreen-exit.svg" : "assets/fullscreen.svg";
+    } else if (icon) {
+      icon.innerHTML = active ? exitIcon : enterIcon;
+      icon.setAttribute("viewBox", "0 0 24 24");
+    }
   };
   const onClick = async () => {
     if (hapticMs && app.haptic) app.haptic(hapticMs);
