@@ -1,5 +1,6 @@
 import { WORDS } from "../../data/missing-word-words.js";
 import { bindFullscreenButton } from "../core/ui.js";
+import { randomInteger, chooseRandom, countLetters, countWords } from "../core/missing-word-utils.js";
 
 const templateHTML = `
   <div class="app">
@@ -192,24 +193,6 @@ function initializeGame(root, app) {
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
-
-    function randomInteger(maximum) {
-      return Math.floor(Math.random() * maximum);
-    }
-
-    function chooseRandom(items) {
-      return items[randomInteger(items.length)];
-    }
-
-    function countLetters(value) {
-      return [...value].filter((character) =>
-        /[A-Za-z]/.test(character)
-      ).length;
-    }
-
-    function countWords(value) {
-      return value.trim().split(/\s+/).filter(Boolean).length;
-    }
 
     function pickRoundDifficulty() {
       if (GAME_CONFIG.difficulty.activeLevel !== "mixed") {
