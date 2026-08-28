@@ -10,7 +10,7 @@ Quizbase is a functional base for visual-language reconstruction. A reskin may r
 - `css/theme.css` is the first-stop visual contract.
 - `data-ui` attributes are stable semantic presentation hooks.
 
-A reskin is not required to keep the current five-card launcher, current component geometry, or current arrangement of controls. Preserve what an element *does*, not where the default skin happens to put it.
+A reskin is not required to keep the default vertical launcher, current component geometry, or current arrangement of controls. Preserve what an element *does*, not where the default skin happens to put it. The launcher may become cards, a list, a diegetic menu, a radial selector, or an entirely custom scene.
 
 ## Recommended workflow
 

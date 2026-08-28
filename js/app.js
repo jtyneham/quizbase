@@ -87,7 +87,7 @@ async function openTile(tile) {
   await navigate(target);
 }
 
-document.querySelectorAll(".app-tile").forEach((tile) => {
+document.querySelectorAll('[data-ui="game-launch"]').forEach((tile) => {
   tile.addEventListener("pointerdown", () => tile.classList.add("pressed"));
   ["pointerup", "pointercancel", "pointerleave"].forEach((eventName) => {
     tile.addEventListener(eventName, () => tile.classList.remove("pressed"));
