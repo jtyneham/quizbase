@@ -7,20 +7,29 @@ import { fileURLToPath } from "node:url";
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, "../..");
 
-test("Missing Word renderer owns character measurement while the engine uses it", () => {
+test("Missing Word keeps a swappable visual-renderer contract", () => {
   const engine = fs.readFileSync(
     path.join(root, "js/core/missing-word-engine.js"),
     "utf8"
   );
-  const renderer = fs.readFileSync(
-    path.join(root, "js/core/missing-word-renderer.js"),
+  const domRenderer = fs.readFileSync(
+    path.join(root, "js/core/missing-word-dom-renderer.js"),
+    "utf8"
+  );
+  const rendererContract = fs.readFileSync(
+    path.join(root, "js/core/missing-word-visual-renderer.js"),
     "utf8"
   );
 
   assert.match(
-    renderer,
+    domRenderer,
     /import\s*\{\s*countLetters\s*\}\s*from\s*["']\.\/missing-word-utils\.js["']/,
-    "countLetters must be explicitly imported by the Missing Word renderer"
+    "countLetters must be explicitly imported by the DOM visual renderer"
   );
-  assert.match(engine, /createMissingWordRenderer/);
+  assert.match(rendererContract, /registerMissingWordVisualRenderer/);
+  assert.match(rendererContract, /createMissingWordVisualRenderer/);
+  assert.match(domRenderer, /return \{ renderRound, playGeneration, settleGeneration, reveal, destroy \}/);
+  assert.match(engine, /createMissingWordVisualRenderer/);
+  assert.match(engine, /renderer\.playGeneration/);
+  assert.match(engine, /renderer\.settleGeneration/);
 });

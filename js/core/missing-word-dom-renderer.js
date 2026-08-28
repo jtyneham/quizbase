@@ -1,10 +1,11 @@
 import { countLetters } from "./missing-word-utils.js";
 
 /**
- * Owns Missing Word's Shadow DOM rendering and decorative reel lifecycle.
- * Game state, selection, and button state remain in missing-word-engine.js.
+ * Default Missing Word visual renderer: real DOM slots plus CSS reel motion.
+ * It implements the visual-renderer contract defined in
+ * missing-word-visual-renderer.js; game state remains in the engine.
  */
-export function createMissingWordRenderer({ wordDisplay }) {
+export function createMissingWordDomRenderer({ wordDisplay }) {
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)"
@@ -128,7 +129,7 @@ export function createMissingWordRenderer({ wordDisplay }) {
     });
   }
 
-  function renderMaskedWord(word, mask) {
+  function renderRound({ word, mask }) {
     wordDisplay.replaceChildren();
     wordDisplay.classList.remove("empty");
     const fontSize = slotFontSize(countLetters(word));
@@ -153,7 +154,7 @@ export function createMissingWordRenderer({ wordDisplay }) {
     });
   }
 
-  function settleGeneration() {
+  function settleReels() {
     activeReelAnimations.forEach(({ reelStrip, finalOffset }) => {
       reelStrip.style.transition = "none";
       reelStrip.style.transform = `translateY(${finalOffset}em)`;
@@ -161,18 +162,20 @@ export function createMissingWordRenderer({ wordDisplay }) {
     activeReelAnimations = [];
   }
 
-  function cancelGeneration() {
-    settleGeneration();
+  // Settling is also the public "skip" action: finish the visual state and
+  // resolve the waiting generation promise so the engine can enable Reveal.
+  function settleGeneration() {
+    settleReels();
     finishGeneration?.();
   }
 
-  async function animateNextWord(word, mask, duration) {
+  async function playGeneration({ word, mask, duration }) {
     let reels;
     try {
       reels = createSpinningSlots(word, mask);
     } catch (error) {
       console.error("Missing Word reel rendering failed; using static fallback.", error);
-      renderMaskedWord(word, mask);
+      renderRound({ word, mask });
       return;
     }
 
@@ -185,7 +188,7 @@ export function createMissingWordRenderer({ wordDisplay }) {
       }));
 
     if (prefersReducedMotion || activeReelAnimations.length === 0) {
-      settleGeneration();
+      settleReels();
       return;
     }
 
@@ -196,7 +199,7 @@ export function createMissingWordRenderer({ wordDisplay }) {
         if (done) return;
         done = true;
         window.clearTimeout(timer);
-        settleGeneration();
+      settleReels();
         if (finishGeneration === finish) finishGeneration = null;
         resolve();
       };
@@ -216,7 +219,7 @@ export function createMissingWordRenderer({ wordDisplay }) {
     });
   }
 
-  async function revealWord(word, duration) {
+  async function reveal({ word, duration }) {
     const newlyRevealed = [];
 
     [...wordDisplay.querySelectorAll(".slot")].forEach((slot, index) => {
@@ -245,5 +248,9 @@ export function createMissingWordRenderer({ wordDisplay }) {
     }
   }
 
-  return { animateNextWord, cancelGeneration, clearGeneration: cancelGeneration, renderMaskedWord, revealWord };
+  function destroy() {
+    settleGeneration();
+  }
+
+  return { renderRound, playGeneration, settleGeneration, reveal, destroy };
 }

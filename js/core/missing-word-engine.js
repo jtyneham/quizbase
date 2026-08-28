@@ -2,9 +2,9 @@ import { bindFullscreenButton } from "./ui.js";
 import { filterWordPool, weightedWordChoice, blankCountFor, wordLetterGroups, longestBlankRun, eachWordKeepsVisibleLetter } from "./missing-word-logic.js";
 import { createMissingWordTopicPicker } from "./missing-word-topic-picker.js";
 import { missingWordTemplate } from "./missing-word-template.js";
-import { createMissingWordRenderer } from "./missing-word-renderer.js";
+import { createMissingWordVisualRenderer } from "./missing-word-visual-renderer.js";
 function initializeGame(root, app, config) {
-    const { wordPool, topics: configuredTopics, screenId, topicMode = "general", initialTopics = ["General"] } = config;
+    const { wordPool, topics: configuredTopics, screenId, topicMode = "general", initialTopics = ["General"], visualRenderer = "dom" } = config;
 
     // Shared Missing Word engine. Game-specific data/topic behavior is injected by the wrapper.
     const GAME_CONFIG = {
@@ -70,7 +70,12 @@ function initializeGame(root, app, config) {
       initialTopics
     });
 
-    const renderer = createMissingWordRenderer({ wordDisplay });
+    // A reskin can register a Pixi/SVG renderer and select it through config;
+    // the round rules below deliberately remain unaware of the visual medium.
+    const renderer = createMissingWordVisualRenderer({
+      type: visualRenderer,
+      wordDisplay
+    });
     const recentWords = [];
     const previousMasks = new Map();
 
@@ -254,11 +259,11 @@ function initializeGame(root, app, config) {
       // during a page lifecycle change, so a round must never depend on the
       // animation promise alone to become playable.
       let animationSettled = false;
-      const generation = renderer.animateNextWord(
-        currentWord,
-        currentMask,
-        GAME_CONFIG.animation.nextWordDuration
-      )
+      const generation = renderer.playGeneration({
+        word: currentWord,
+        mask: currentMask,
+        duration: GAME_CONFIG.animation.nextWordDuration
+      })
         .then(() => {
           animationSettled = true;
         })
@@ -272,8 +277,8 @@ function initializeGame(root, app, config) {
       ]);
 
       if (!animationSettled) {
-        renderer.cancelGeneration();
-        renderer.renderMaskedWord(currentWord, currentMask);
+        renderer.settleGeneration();
+        renderer.renderRound({ word: currentWord, mask: currentMask });
       }
 
       gameState = "masked";
@@ -283,7 +288,7 @@ function initializeGame(root, app, config) {
 
     async function handleAction() {
       if (isAnimating) {
-        if (gameState === "generating") renderer.cancelGeneration();
+        if (gameState === "generating") renderer.settleGeneration();
         return;
       }
 
@@ -295,10 +300,10 @@ function initializeGame(root, app, config) {
       try {
         if (gameState === "masked") {
           actionButton.disabled = true;
-          await renderer.revealWord(
-            currentWord,
-            GAME_CONFIG.animation.revealDuration
-          );
+          await renderer.reveal({
+            word: currentWord,
+            duration: GAME_CONFIG.animation.revealDuration
+          });
           gameState = "revealed";
           actionButton.textContent = "Next Word";
           actionButton.classList.remove("reveal-mode");
@@ -312,7 +317,7 @@ function initializeGame(root, app, config) {
         // Never leave the game visually or logically locked. If a word was
         // already selected, show the playable masked round without animation.
         if (currentWord && currentMask.length) {
-          renderer.renderMaskedWord(currentWord, currentMask);
+          renderer.renderRound({ word: currentWord, mask: currentMask });
           gameState = "masked";
           actionButton.textContent = "Reveal";
           actionButton.classList.add("reveal-mode");
@@ -321,7 +326,7 @@ function initializeGame(root, app, config) {
           actionButton.textContent = "Next Word";
         }
       } finally {
-        renderer.clearGeneration();
+        renderer.settleGeneration();
         actionButton.classList.remove("generating", "press");
         actionButton.disabled = false;
         isAnimating = false;

@@ -178,14 +178,23 @@ well as gameplay behavior:
   `data-ui` hooks;
 - `js/core/missing-word-topic-picker.js` — topic picker interaction and
   selection state;
-- `js/core/missing-word-renderer.js` — slot layout, reel generation, static
-  fallback rendering, and reveal animation;
+- `js/core/missing-word-visual-renderer.js` — renderer registry and the
+  swappable visual-renderer contract;
+- `js/core/missing-word-dom-renderer.js` — default accessible DOM slot layout,
+  reel generation, static fallback rendering, and reveal animation;
 - `js/core/missing-word-engine.js` — round state, word choice, masking, and
   event wiring.
 
 Changing the template for a creative layout is supported. Preserve the element
 IDs/data hooks consumed by the engine, or update the engine and its regression
 tests in the same change.
+
+The default DOM renderer is selected with `visualRenderer: "dom"`. A reskin
+that needs canvas effects can register a separate renderer (for example a Pixi
+module) with `registerMissingWordVisualRenderer(name, factory)`, then pass its
+name as `visualRenderer`. It must implement `renderRound`, `playGeneration`,
+`settleGeneration`, `reveal`, and `destroy`; it must never own word selection,
+masking, or button/round state.
 
 ### Random Letter
 - random generation behavior and animation modes;
