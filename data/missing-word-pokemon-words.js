@@ -15933,7 +15933,7 @@ export const POKEMON_WORDS = [
                   "Moves",
                   "Moves + Abilities"
             ]
-      },,,,,,,,,,
+      },
       {
             "word": "clangorous soul",
             "difficulty": 2,
