@@ -1,5 +1,6 @@
 import { topics } from "../../data/rngl-topics.js";
 import { bindFullscreenButton } from "../core/ui.js";
+import { createRandomLetterTicker } from "../core/random-letter-ticker.js";
 
 let initialized = false;
 
@@ -56,64 +57,12 @@ export function initRandomLetter(root, app) {
     const ideasToggle = root.querySelector("#ideasToggle");
     const tickerShell = root.querySelector("#tickerShell");
 
-    const tickerRows = [
-      {
-        track: root.querySelector("#tickerTrack1"),
-        groupA: root.querySelector("#tickerGroup1A"),
-        groupB: root.querySelector("#tickerGroup1B"),
-        offset: 0,
-        width: 0,
-        speedFactor: 1
-      },
-      {
-        track: root.querySelector("#tickerTrack2"),
-        groupA: root.querySelector("#tickerGroup2A"),
-        groupB: root.querySelector("#tickerGroup2B"),
-        offset: -180,
-        width: 0,
-        speedFactor: 0.94
-      },
-      {
-        track: root.querySelector("#tickerTrack3"),
-        groupA: root.querySelector("#tickerGroup3A"),
-        groupB: root.querySelector("#tickerGroup3B"),
-        offset: -360,
-        width: 0,
-        speedFactor: 1.06
-      },
-      {
-        track: root.querySelector("#tickerTrack4"),
-        groupA: root.querySelector("#tickerGroup4A"),
-        groupB: root.querySelector("#tickerGroup4B"),
-        offset: -540,
-        width: 0,
-        speedFactor: 0.98
-      }
-    ];
-
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
     let isGenerating = false;
-    let previousTimestamp = performance.now();
     let wheelRotation = 0;
-
-    // Slightly faster than the earlier version.
-    function tickerSpeed() {
-      return Math.max(window.innerWidth / 13.33, 130);
-    }
-
-    function shuffle(items) {
-      const result = [...items];
-
-      for (let i = result.length - 1; i > 0; i -= 1) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [result[i], result[j]] = [result[j], result[i]];
-      }
-
-      return result;
-    }
 
     function randomWeightedLetter() {
       return weightedLetters[
@@ -467,66 +416,6 @@ export function initRandomLetter(root, app) {
       isGenerating = false;
     }
 
-    function fillTopicGroup(group, topicList) {
-      group.replaceChildren();
-
-      topicList.forEach((topic) => {
-        const topicElement = document.createElement("span");
-        topicElement.className = "topic";
-        topicElement.textContent = topic;
-        group.appendChild(topicElement);
-
-        const separator = document.createElement("span");
-        separator.className = "separator";
-        separator.textContent = "•";
-        separator.setAttribute("aria-hidden", "true");
-        group.appendChild(separator);
-      });
-    }
-
-    function buildTicker() {
-      tickerRows.forEach((row) => {
-        fillTopicGroup(row.groupA, shuffle(topics));
-        fillTopicGroup(row.groupB, shuffle(topics));
-      });
-
-      requestAnimationFrame(() => {
-        tickerRows.forEach((row) => {
-          row.width = row.groupA.getBoundingClientRect().width;
-        });
-      });
-    }
-
-    function animateTicker(timestamp) {
-      const elapsedSeconds = Math.min(
-        (timestamp - previousTimestamp) / 1000,
-        0.1
-      );
-
-      previousTimestamp = timestamp;
-      const baseSpeed = tickerSpeed();
-
-      tickerRows.forEach((row) => {
-        row.offset -= baseSpeed * row.speedFactor * elapsedSeconds;
-
-        if (row.width > 0 && Math.abs(row.offset) >= row.width) {
-          row.offset += row.width;
-
-          fillTopicGroup(row.groupA, shuffle(topics));
-          fillTopicGroup(row.groupB, shuffle(topics));
-
-          requestAnimationFrame(() => {
-            row.width = row.groupA.getBoundingClientRect().width;
-          });
-        }
-
-        row.track.style.transform =
-          `translate3d(${row.offset}px, 0, 0)`;
-      });
-
-      requestAnimationFrame(animateTicker);
-    }
-
     bindFullscreenButton({ button: fullscreenButton, icon: fullscreenIcon, label: fullscreenLabel, app });
 
     root.querySelector("#rnglHomeButton").addEventListener("click", () => {
@@ -555,16 +444,9 @@ export function initRandomLetter(root, app) {
       }
     });
 
-    window.addEventListener("resize", () => {
-      tickerRows.forEach((row) => {
-        row.width = row.groupA.getBoundingClientRect().width;
-      });
-    });
-
     buildLetterWheel();
     wheelSpinner.style.transform = "rotate(0deg)";
-    buildTicker();
-    requestAnimationFrame(animateTicker);
+    createRandomLetterTicker({ root, topics });
   
 
 }
