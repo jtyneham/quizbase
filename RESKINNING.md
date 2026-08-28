@@ -146,10 +146,12 @@ Hangman topic selection is shared through
 `js/core/hangman-topic-picker.js`. Keep its selection, random-mode, Apply,
 Cancel, and outside-dismiss contracts when changing the picker presentation.
 
-Hangman artwork state is isolated in `js/core/hangman-artwork.js`. A new
-gallows/character may use any SVG composition or visual language as long as it
-provides six ordered `.draw-part` elements and a `.hangman` host. The engine
-does not depend on SVG coordinates, element IDs, or a stickman drawing.
+Hangman artwork state is isolated in `js/core/hangman-artwork.js`. The default
+renderer is a small PixiJS scene mounted in `#hangmanPixiStage`; it receives
+only `reset()` and `render(missCount)` calls from the game engine. A reskin may
+replace that adapter with SVG, Canvas, Rive, or another Pixi scene, provided it
+keeps those two methods. The rules engine does not depend on drawing
+coordinates, element IDs, or a stickman design.
 
 ## Routing contract
 

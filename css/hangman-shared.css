@@ -99,11 +99,15 @@
   }
 
   .hangman-wrap{
+    position:relative;
     min-height:0;
     display:grid;
     place-items:center;
     overflow:hidden;
   }
+
+  .hangman-pixi-stage{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;}
+  .hangman-pixi-stage canvas{position:absolute;inset:0;width:100%!important;height:100%!important;display:block;}
 
   .hangman{
     width:min(48vw,30svh);

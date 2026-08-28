@@ -12,7 +12,7 @@ export const HANGMAN_TEMPLATE = `<div class="hangman-root" data-ui="game-root">
       <span class="tries-text" data-ui="status-counter" id="triesText">0 / 6 misses</span>
     </div>
 
-    <div class="hangman-wrap" data-ui="game-artwork">
+    <div class="hangman-wrap" data-ui="game-artwork"><div class="hangman-pixi-stage" id="hangmanPixiStage" aria-hidden="true"></div>
       <svg class="hangman" viewBox="0 0 300 240" preserveAspectRatio="xMidYMid meet" aria-label="Hangman drawing">
         <defs>
           <linearGradient id="woodMain" x1="0" y1="0" x2="1" y2="1">

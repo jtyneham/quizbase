@@ -4,6 +4,10 @@ Quizbase is the reusable functional base for five browser quiz games: Missing Wo
 
 ## Development
 
+PixiJS is installed for the Hangman artwork renderer and its browser module is
+vendored in `vendor/` (including its MIT licence) so the static GitHub Pages
+build works without a bundler.
+
 Requires Node.js 20 or newer.
 
 ```bash
