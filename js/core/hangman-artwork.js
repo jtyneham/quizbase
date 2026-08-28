@@ -87,6 +87,9 @@ function drawDeathEyes(graphics) {
 export function createHangmanArtwork(root) {
   const host = root.querySelector("#hangmanPixiStage");
   const fallbackSvg = root.querySelector(".hangman");
+  // Accessibility setting only changes animation, never the six-miss rules or
+  // the final drawing state. Normal players retain the sketch effect.
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let app;
   let scene;
   let graphics;
@@ -199,7 +202,12 @@ export function createHangmanArtwork(root) {
       const isNewMiss = safeMisses > completedMisses && !activeStage;
       misses = safeMisses;
 
-      if (isNewMiss && app) animateNextStage(safeMisses);
+      if (prefersReducedMotion && isNewMiss) {
+        completedMisses = safeMisses;
+        activeStage = 0;
+        showDeathEyes = safeMisses === 6;
+        draw();
+      } else if (isNewMiss && app) animateNextStage(safeMisses);
       else draw();
     },
   };

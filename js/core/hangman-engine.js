@@ -2,6 +2,7 @@ import { bindFullscreenButton } from "./ui.js";
 import { isCorrectGuess, isSolved, normalizePlayableChar, normalizePlayableAnswer, normalizeSolveAttempt, pickDifferent, uniquePlayableLetters } from "./hangman-logic.js";
 import { createHangmanTopicPicker } from "./hangman-topic-picker.js";
 import { createHangmanArtwork } from "./hangman-artwork.js";
+import { createHangmanVisualEffects } from "./hangman-visual-effects.js";
 
 export const HANGMAN_TEMPLATE = `<div class="hangman-root" data-ui="game-root">
 <div class="app">
@@ -203,51 +204,15 @@ export function initializeHangmanEngine(root, app, config) {
   const gameCard = root.getElementById("gameCard");
   const keyboard = root.getElementById("customKeyboard");
   const artwork = createHangmanArtwork(root);
+  const effects = createHangmanVisualEffects({ gameCard, slots, keyboard });
   const solveUi = root.getElementById("solveUi");
   const solveText = root.getElementById("solveText");
   const solveCancelBtn = root.getElementById("solveCancelBtn");
   let answer="", guessed=new Set(), misses=[], wrongCount=0;
   let active=false, solveMode=false, solveBuffer="", confirmNewWord=false, confirmTimer=null;
   let backspaceHoldTimer=null, backspaceRepeatTimer=null, backspaceHoldActive=false, backspaceConsumedClick=false;
-  const KEY_HAPTIC_MS=6, ENTER_HAPTIC_MS=8, KEY_POPUP_MS=105;
+  const KEY_HAPTIC_MS=6, ENTER_HAPTIC_MS=8;
   const vibrate = pattern => app?.haptic ? app.haptic(pattern) : navigator.vibrate?.(pattern);
-
-  function showKeyPopup(key, value) {
-    if (!/^[A-Z]$/.test(value)) return;
-
-    key.querySelector(".key-popup")?.remove();
-    const popup = document.createElement("span");
-    popup.className = "key-popup";
-    popup.textContent = value;
-    key.appendChild(popup);
-
-    setTimeout(() => {
-      popup.classList.add("hide");
-      setTimeout(() => popup.remove(), 80);
-    }, KEY_POPUP_MS);
-  }
-
-  function flashWrong() {
-    gameCard.classList.remove("wrong-flash", "solve-active");
-    void gameCard.offsetWidth;
-    gameCard.classList.add("wrong-flash");
-    setTimeout(() => gameCard.classList.remove("wrong-flash"), 320);
-  }
-
-  function pulseCorrect(letter) {
-    const hits = [
-      ...slots.querySelectorAll(`.letter-slot[data-letter="${letter}"]`)
-    ];
-
-    hits.forEach((element) => {
-      element.classList.remove("correct-hit");
-      void element.offsetWidth;
-      element.classList.add("correct-hit");
-    });
-    setTimeout(() => {
-      hits.forEach((element) => element.classList.remove("correct-hit"));
-    }, 360);
-  }
 
   function getActivePool() {
     return config.getPool(topicPicker.getState());
@@ -255,13 +220,6 @@ export function initializeHangmanEngine(root, app, config) {
 
   function pickWord() {
     return pickDifferent(getActivePool(), answer, config.getAnswer);
-  }
-
-  function resetKeys() {
-    keyboard.querySelectorAll(".letter-key").forEach((key) => {
-      key.classList.remove("used", "guessed-correct", "guessed-wrong", "key-pressed");
-      key.querySelector(".key-popup")?.remove();
-    });
   }
 
   const topicPicker = createHangmanTopicPicker({
@@ -287,8 +245,7 @@ export function initializeHangmanEngine(root, app, config) {
     clearTimeout(confirmTimer);
 
     artwork.reset();
-    slots.classList.remove("win", "loss");
-    gameCard.classList.remove("wrong-flash");
+    effects.reset();
     triesText.classList.remove("warning");
     newWordBtn.textContent = "New Word";
     newWordBtn.className = "btn btn-primary";
@@ -300,7 +257,6 @@ export function initializeHangmanEngine(root, app, config) {
     keyboard.classList.remove("solve-mode");
     message.className = "message";
     message.textContent = "";
-    resetKeys();
     render();
   }
 
@@ -331,10 +287,10 @@ export function initializeHangmanEngine(root, app, config) {
 
     artwork.render(wrongCount);
   }
-  function finishWin(){ uniquePlayableLetters(answer).forEach(l=>guessed.add(l));active=false;solveMode=false;solveBtn.style.display="none";solveUi.classList.remove("open");keyboard.classList.remove("solve-mode");gameCard.classList.remove("solve-active");newWordBtn.hidden=false;message.className="message success";message.textContent="Correct.";slots.classList.add("win");vibrate([45,35,70]);render(); }
-  function finishLoss(){ uniquePlayableLetters(answer).forEach(l=>guessed.add(l));active=false;solveMode=false;solveBtn.style.display="none";solveUi.classList.remove("open");keyboard.classList.remove("solve-mode");gameCard.classList.remove("solve-active");newWordBtn.hidden=false;message.className="message danger";message.textContent=`The answer was ${answer}.`;slots.classList.add("loss");vibrate([120,60,120]);flashWrong();render(); }
-  function wrongGuess(text){wrongCount++;vibrate(90);flashWrong();render();if(wrongCount>=6)finishLoss();else{message.className="message";message.textContent=text;}}
-  function guessLetter(letter){if(!active||solveMode||guessed.has(letter)||misses.includes(letter))return;const key=keyboard.querySelector(`[data-key="${letter}"]`);if(isCorrectGuess(answer,letter)){guessed.add(letter);key?.classList.add("guessed-correct","used");render();pulseCorrect(letter);if(isSolved(answer,guessed))finishWin();}else{misses.push(letter);key?.classList.add("guessed-wrong","used");wrongGuess(`${letter} is not in the word.`);}}
+  function finishWin(){ uniquePlayableLetters(answer).forEach(l=>guessed.add(l));active=false;solveMode=false;solveBtn.style.display="none";solveUi.classList.remove("open");keyboard.classList.remove("solve-mode");gameCard.classList.remove("solve-active");newWordBtn.hidden=false;message.className="message success";message.textContent="Correct.";effects.roundEnded({result:"win"});vibrate([45,35,70]);render(); }
+  function finishLoss(){ uniquePlayableLetters(answer).forEach(l=>guessed.add(l));active=false;solveMode=false;solveBtn.style.display="none";solveUi.classList.remove("open");keyboard.classList.remove("solve-mode");gameCard.classList.remove("solve-active");newWordBtn.hidden=false;message.className="message danger";message.textContent=`The answer was ${answer}.`;effects.roundEnded({result:"loss"});vibrate([120,60,120]);render(); }
+  function wrongGuess(text){wrongCount++;vibrate(90);effects.wrongGuess();render();if(wrongCount>=6)finishLoss();else{message.className="message";message.textContent=text;}}
+  function guessLetter(letter){if(!active||solveMode||guessed.has(letter)||misses.includes(letter))return;const key=keyboard.querySelector(`[data-key="${letter}"]`);if(isCorrectGuess(answer,letter)){guessed.add(letter);effects.guessMarked({key,correct:true});render();effects.correctGuess({letter});if(isSolved(answer,guessed))finishWin();}else{misses.push(letter);effects.guessMarked({key,correct:false});wrongGuess(`${letter} is not in the word.`);}}
   function updateSolve(){solveText.textContent=solveBuffer;}
   function enterSolve(){if(!active)return;solveMode=true;solveBuffer="";keyboard.classList.add("solve-mode");solveUi.classList.add("open");solveBtn.style.display="none";newWordBtn.hidden=true;message.textContent="";updateSolve();}
   function stopBackspaceHold(){clearTimeout(backspaceHoldTimer);clearInterval(backspaceRepeatTimer);backspaceHoldTimer=null;backspaceRepeatTimer=null;backspaceHoldActive=false;}
@@ -344,7 +300,7 @@ export function initializeHangmanEngine(root, app, config) {
   const backspaceKey=keyboard.querySelector('[data-key="BACKSPACE"]');
   backspaceKey?.addEventListener("pointerdown",e=>{if(!active||!solveMode)return;e.preventDefault();backspaceConsumedClick=false;backspaceHoldActive=true;vibrate(KEY_HAPTIC_MS);deleteOneSolveChar();backspaceHoldTimer=setTimeout(()=>{if(!backspaceHoldActive)return;backspaceConsumedClick=true;backspaceRepeatTimer=setInterval(()=>{if(!backspaceHoldActive||!solveMode||!solveBuffer){stopBackspaceHold();return;}deleteOneSolveChar();},70);},360);});
   ["pointerup","pointercancel","pointerleave"].forEach(type=>backspaceKey?.addEventListener(type,stopBackspaceHold));
-  keyboard.addEventListener("click",e=>{const key=e.target.closest(".kb-key");if(!key||!active)return;const v=key.dataset.key;vibrate(v==="ENTER"?ENTER_HAPTIC_MS:KEY_HAPTIC_MS);key.classList.remove("key-pressed");void key.offsetWidth;key.classList.add("key-pressed");setTimeout(()=>key.classList.remove("key-pressed"),82);showKeyPopup(key,v);if(!solveMode){if(/^[A-Z]$/.test(v))guessLetter(v);return;}if(/^[A-Z]$/.test(v))solveBuffer+=v;else if(v==="SPACE"&&solveBuffer&&!solveBuffer.endsWith(" "))solveBuffer+=" ";else if(v==="BACKSPACE"){if(backspaceConsumedClick){backspaceConsumedClick=false;return;}deleteOneSolveChar();return;}else if(v==="ENTER"){submitSolve();return;}updateSolve();});
+  keyboard.addEventListener("click",e=>{const key=e.target.closest(".kb-key");if(!key||!active)return;const v=key.dataset.key;vibrate(v==="ENTER"?ENTER_HAPTIC_MS:KEY_HAPTIC_MS);effects.keyPressed({key,value:v});if(!solveMode){if(/^[A-Z]$/.test(v))guessLetter(v);return;}if(/^[A-Z]$/.test(v))solveBuffer+=v;else if(v==="SPACE"&&solveBuffer&&!solveBuffer.endsWith(" "))solveBuffer+=" ";else if(v==="BACKSPACE"){if(backspaceConsumedClick){backspaceConsumedClick=false;return;}deleteOneSolveChar();return;}else if(v==="ENTER"){submitSolve();return;}updateSolve();});
   solveBtn.addEventListener("click",enterSolve);solveCancelBtn.addEventListener("click",leaveSolve);
   newWordBtn.addEventListener("click",()=>{if(!active){startRound();return;}if(!confirmNewWord){confirmNewWord=true;newWordBtn.textContent="New Word?";newWordBtn.className="btn btn-danger";clearTimeout(confirmTimer);confirmTimer=setTimeout(()=>{confirmNewWord=false;newWordBtn.textContent="New Word";newWordBtn.className="btn btn-primary";},2200);return;}startRound();});
   bindFullscreenButton({button:fullscreenBtn,icon:fullscreenBtn.querySelector("img"),app});

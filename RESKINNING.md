@@ -153,6 +153,14 @@ replace that adapter with SVG, Canvas, Rive, or another Pixi scene, provided it
 keeps those two methods. The rules engine does not depend on drawing
 coordinates, element IDs, or a stickman design.
 
+Hangman interface feedback is separately isolated in
+`js/core/hangman-visual-effects.js`. Its default DOM/CSS adapter handles key
+presses, key popups, correct/wrong guess feedback, and win/loss presentation.
+A creative reskin may replace that adapter while preserving the engine's
+gameplay events. The Pixi artwork honours `prefers-reduced-motion`: normal
+players retain sketching limbs, while reduced-motion users see each state
+immediately.
+
 ## Routing contract
 
 `js/app.js` owns route resolution.  Keep game screens addressable by their
