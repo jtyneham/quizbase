@@ -24,6 +24,10 @@ A reskin is not required to keep the current five-card launcher, current compone
 8. Validate every affected state on phone portrait, phone landscape, tablet portrait, and desktop.
 9. Run `npm test` after changes.
 
+For visual work, also run `npm run test:e2e`. The browser gate covers direct
+links, topic overlays, Missing Word generation/reveal, Hangman solve mode, the
+keyboard, Random Letter Ideas, fullscreen controls, and viewport overflow.
+
 ## Theme tokens and Shadow DOM
 
 `css/theme.css` defines the public `--qb-*` theme variables on `:root`. CSS custom properties inherit through Shadow DOM hosts, so Missing Word and Hangman components can consume the same global theme without piercing their Shadow DOM.
