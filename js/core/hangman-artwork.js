@@ -8,20 +8,22 @@ import { Application, Container, Graphics } from "pixi.js";
  * completely different Pixi scene without touching the rules engine.
  */
 
-const ART_WIDTH = 300;
-const ART_HEIGHT = 240;
+// These are the reference illustration's native proportions. Keeping this
+// coordinate system makes future visual adjustments direct and predictable.
+const ART_WIDTH = 452;
+const ART_HEIGHT = 557;
 const INK = 0x111111;
-const STROKE_WIDTH = 4.5;
+const STROKE_WIDTH = 6;
 const STAGE_DURATION_MS = 220;
 const DEATH_EYES_DELAY_MS = 80;
 
 // Each entry after the head is one line segment: torso, arms, then legs.
 const LIMBS = [
-  [204, 112, 204, 150],
-  [204, 119, 174, 140],
-  [204, 119, 234, 140],
-  [204, 150, 181, 191],
-  [204, 150, 227, 191],
+  [370, 220, 370, 300],
+  [370, 238, 315, 278],
+  [370, 238, 425, 278],
+  [370, 300, 327, 378],
+  [370, 300, 413, 378],
 ];
 
 function drawLine(graphics, x1, y1, x2, y2, progress = 1) {
@@ -36,27 +38,32 @@ function drawLine(graphics, x1, y1, x2, y2, progress = 1) {
 }
 
 function drawStaticGallows(graphics) {
-  // Minimal line structure based on the supplied reference: base, post, beam,
-  // brace, and a deliberately empty noose before the first missed letter.
-  drawLine(graphics, 31, 213, 124, 213);
-  drawLine(graphics, 31, 213, 31, 229);
-  drawLine(graphics, 31, 229, 124, 229);
-  drawLine(graphics, 124, 229, 124, 213);
-  drawLine(graphics, 54, 213, 54, 196);
-  drawLine(graphics, 54, 196, 105, 196);
-  drawLine(graphics, 105, 196, 105, 213);
-  drawLine(graphics, 73, 196, 73, 28);
-  drawLine(graphics, 73, 28, 252, 28);
-  drawLine(graphics, 252, 28, 252, 47);
-  drawLine(graphics, 252, 47, 73, 47);
-  drawLine(graphics, 73, 47, 73, 98);
-  drawLine(graphics, 73, 98, 135, 28);
-  drawLine(graphics, 204, 47, 204, 74);
+  // Exact construction of the supplied reference: a stepped base, a hollow
+  // post that shares its outer edge with the boxed beam, and a two-line brace
+  // which ends on the beam's underside rather than crossing its face.
+  drawLine(graphics, 30, 509, 30, 483);
+  drawLine(graphics, 30, 483, 198, 483);
+  drawLine(graphics, 198, 483, 198, 509);
+  drawLine(graphics, 198, 509, 30, 509);
+
+  drawLine(graphics, 54, 483, 54, 459);
+  drawLine(graphics, 54, 459, 174, 459);
+  drawLine(graphics, 174, 459, 174, 483);
+
+  drawLine(graphics, 101, 459, 101, 27);
+  drawLine(graphics, 101, 27, 394, 27);
+  drawLine(graphics, 394, 27, 394, 51);
+  drawLine(graphics, 394, 51, 126, 51);
+  drawLine(graphics, 126, 51, 126, 459);
+
+  drawLine(graphics, 126, 98, 172, 51);
+  drawLine(graphics, 126, 128, 218, 51);
+  drawLine(graphics, 369, 51, 369, 133);
 }
 
 function drawHead(graphics, progress) {
   const start = -Math.PI / 2;
-  graphics.arc(204, 93, 19, start, start + Math.PI * 2 * progress).stroke({
+  graphics.arc(370, 176, 43, start, start + Math.PI * 2 * progress).stroke({
     color: INK,
     width: STROKE_WIDTH,
     cap: "round",
@@ -66,9 +73,9 @@ function drawHead(graphics, progress) {
 
 function drawDeathEyes(graphics) {
   const eyeSize = 4;
-  for (const centerX of [197, 211]) {
-    drawLine(graphics, centerX - eyeSize, 88 - eyeSize, centerX + eyeSize, 88 + eyeSize);
-    drawLine(graphics, centerX + eyeSize, 88 - eyeSize, centerX - eyeSize, 88 + eyeSize);
+  for (const centerX of [353, 387]) {
+    drawLine(graphics, centerX - eyeSize, 168 - eyeSize, centerX + eyeSize, 168 + eyeSize);
+    drawLine(graphics, centerX + eyeSize, 168 - eyeSize, centerX - eyeSize, 168 + eyeSize);
   }
 }
 
