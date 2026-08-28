@@ -423,11 +423,14 @@ export function initRandomLetter(root, app) {
       app.showHome();
     });
 
+    let ticker;
     ideasToggle.addEventListener("change", () => {
       const visible = ideasToggle.checked;
 
       tickerShell.classList.toggle("visible", visible);
       tickerShell.setAttribute("aria-hidden", String(!visible));
+      if (visible) ticker?.start();
+      else ticker?.stop();
     });
 
     generateButton.addEventListener("click", generateLetter);
@@ -446,7 +449,8 @@ export function initRandomLetter(root, app) {
 
     buildLetterWheel();
     wheelSpinner.style.transform = "rotate(0deg)";
-    createRandomLetterTicker({ root, topics });
+    ticker = createRandomLetterTicker({ root, topics });
+    if (!ideasToggle.checked) ticker.stop();
   
 
 }

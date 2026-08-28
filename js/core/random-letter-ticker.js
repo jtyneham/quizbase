@@ -15,6 +15,8 @@ export function createRandomLetterTicker({ root, topics }) {
   }));
 
   let previousTimestamp = performance.now();
+  let frameId = 0;
+  let running = false;
 
   function shuffle(items) {
     const result = [...items];
@@ -51,6 +53,7 @@ export function createRandomLetterTicker({ root, topics }) {
   }
 
   function animate(timestamp) {
+    if (!running) return;
     const elapsedSeconds = Math.min((timestamp - previousTimestamp) / 1000, 0.1);
     previousTimestamp = timestamp;
     const speed = Math.max(window.innerWidth / 13.33, 130);
@@ -65,11 +68,32 @@ export function createRandomLetterTicker({ root, topics }) {
       row.track.style.transform = `translate3d(${row.offset}px, 0, 0)`;
     });
 
-    requestAnimationFrame(animate);
+    frameId = requestAnimationFrame(animate);
+  }
+
+  function start() {
+    if (running) return;
+    running = true;
+    previousTimestamp = performance.now();
+    requestAnimationFrame(measure);
+    frameId = requestAnimationFrame(animate);
+  }
+
+  function stop() {
+    running = false;
+    cancelAnimationFrame(frameId);
   }
 
   rows.forEach(populate);
-  requestAnimationFrame(measure);
-  requestAnimationFrame(animate);
+  start();
   window.addEventListener("resize", measure);
+
+  return {
+    start,
+    stop,
+    destroy() {
+      stop();
+      window.removeEventListener("resize", measure);
+    },
+  };
 }
