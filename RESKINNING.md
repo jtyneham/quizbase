@@ -138,6 +138,10 @@ Unless the product explicitly changes, preserve:
 - visible multiline answer slots;
 - gallows progression.
 
+Hangman topic selection is shared through
+`js/core/hangman-topic-picker.js`. Keep its selection, random-mode, Apply,
+Cancel, and outside-dismiss contracts when changing the picker presentation.
+
 ## Routing contract
 
 `js/app.js` owns route resolution.  Keep game screens addressable by their

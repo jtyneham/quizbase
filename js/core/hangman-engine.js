@@ -1,5 +1,6 @@
-import { bindFullscreenButton, bindOutsideDismiss } from "./ui.js";
+import { bindFullscreenButton } from "./ui.js";
 import { isCorrectGuess, isSolved, normalizePlayableChar, normalizePlayableAnswer, normalizeSolveAttempt, pickDifferent, uniquePlayableLetters } from "./hangman-logic.js";
+import { createHangmanTopicPicker } from "./hangman-topic-picker.js";
 
 export const HANGMAN_TEMPLATE = `<div class="hangman-root" data-ui="game-root">
 <div class="app">
@@ -191,7 +192,6 @@ export const HANGMAN_TEMPLATE = `<div class="hangman-root" data-ui="game-root">
 </div>`;
 
 export function initializeHangmanEngine(root, app, config) {
-  const TOPICS = config.topics;
   const slots = root.getElementById("slots");
   const missesList = root.getElementById("missesList");
   const triesText = root.getElementById("triesText");
@@ -204,35 +204,138 @@ export function initializeHangmanEngine(root, app, config) {
   const solveUi = root.getElementById("solveUi");
   const solveText = root.getElementById("solveText");
   const solveCancelBtn = root.getElementById("solveCancelBtn");
-  const topicsBtn=root.getElementById("topicsBtn"), topicsCount=root.getElementById("topicsCount"), topicsOverlay=root.getElementById("topicsOverlay"), topicsGrid=root.getElementById("topicsGrid"), topicsClose=root.getElementById("topicsClose"), selectAllTopics=root.getElementById("selectAllTopics"), clearTopics=root.getElementById("clearTopics"), cancelTopics=root.getElementById("cancelTopics"), applyTopics=root.getElementById("applyTopics");
-
   let answer="", guessed=new Set(), misses=[], wrongCount=0;
   let active=false, solveMode=false, solveBuffer="", confirmNewWord=false, confirmTimer=null;
-  let selectedTopics=new Set(config.initialTopics || []), draftTopics=new Set(config.initialTopics || []);
-  let randomMode=Boolean(config.randomMode), draftRandomMode=Boolean(config.randomMode);
   let backspaceHoldTimer=null, backspaceRepeatTimer=null, backspaceHoldActive=false, backspaceConsumedClick=false;
   const KEY_HAPTIC_MS=6, ENTER_HAPTIC_MS=8, KEY_POPUP_MS=105;
   const vibrate = pattern => app?.haptic ? app.haptic(pattern) : navigator.vibrate?.(pattern);
 
-  function showKeyPopup(key,value){ if(!/^[A-Z]$/.test(value))return; key.querySelector(".key-popup")?.remove(); const popup=document.createElement("span"); popup.className="key-popup"; popup.textContent=value; key.appendChild(popup); setTimeout(()=>{popup.classList.add("hide");setTimeout(()=>popup.remove(),80);},KEY_POPUP_MS); }
-  function flashWrong(){ gameCard.classList.remove("wrong-flash","solve-active"); void gameCard.offsetWidth; gameCard.classList.add("wrong-flash"); setTimeout(()=>gameCard.classList.remove("wrong-flash"),320); }
-  function pulseCorrect(letter){ const hits=[...slots.querySelectorAll(`.letter-slot[data-letter="${letter}"]`)]; hits.forEach(el=>{el.classList.remove("correct-hit");void el.offsetWidth;el.classList.add("correct-hit");}); setTimeout(()=>hits.forEach(el=>el.classList.remove("correct-hit")),360); }
-  function getActivePool(){ return config.getPool({selectedTopics,randomMode}); }
-  function pickWord(){ return pickDifferent(getActivePool(),answer,config.getAnswer); }
-  function resetKeys(){ keyboard.querySelectorAll(".letter-key").forEach(key=>{key.classList.remove("used","guessed-correct","guessed-wrong","key-pressed");key.querySelector(".key-popup")?.remove();}); }
+  function showKeyPopup(key, value) {
+    if (!/^[A-Z]$/.test(value)) return;
 
-  function renderTopicChoices(){
-    topicsGrid.innerHTML="";
-    if(config.randomMode){ const button=document.createElement("button"); button.type="button"; button.className="topic-chip random-topic"; button.textContent="Random"; button.classList.toggle("selected",draftRandomMode); button.addEventListener("click",()=>{draftRandomMode=true;draftTopics.clear();renderTopicChoices();}); topicsGrid.appendChild(button); }
-    TOPICS.forEach(topic=>{ const button=document.createElement("button"); button.type="button"; button.className="topic-chip"; button.textContent=topic; button.classList.toggle("selected",!draftRandomMode&&draftTopics.has(topic)); button.addEventListener("click",()=>{draftRandomMode=false;if(draftTopics.has(topic))draftTopics.delete(topic);else draftTopics.add(topic);renderTopicChoices();}); topicsGrid.appendChild(button); });
+    key.querySelector(".key-popup")?.remove();
+    const popup = document.createElement("span");
+    popup.className = "key-popup";
+    popup.textContent = value;
+    key.appendChild(popup);
+
+    setTimeout(() => {
+      popup.classList.add("hide");
+      setTimeout(() => popup.remove(), 80);
+    }, KEY_POPUP_MS);
   }
-  function updateTopicsLabel(){ if(config.randomMode&&randomMode)topicsCount.textContent="Random"; else if(selectedTopics.size===TOPICS.length)topicsCount.textContent="All"; else topicsCount.textContent=selectedTopics.size; }
-  function openTopics(){ draftTopics=new Set(selectedTopics);draftRandomMode=randomMode;renderTopicChoices();topicsOverlay.classList.add("open");topicsOverlay.setAttribute("aria-hidden","false"); }
-  function closeTopics(){ topicsOverlay.classList.remove("open");topicsOverlay.setAttribute("aria-hidden","true"); }
-  function applyTopicSelection(){ if(!draftRandomMode&&!draftTopics.size)return;randomMode=draftRandomMode;selectedTopics=new Set(draftTopics);updateTopicsLabel();closeTopics();startRound(); }
 
-  function startRound(){ answer=pickWord(); if(!answer)return; guessed=new Set();misses=[];wrongCount=0;active=true; root.querySelectorAll(".draw-part").forEach(part=>part.classList.remove("drawn")); solveMode=false;solveBuffer="";confirmNewWord=false;clearTimeout(confirmTimer); slots.classList.remove("win","loss");gameCard.classList.remove("wrong-flash");triesText.classList.remove("warning"); newWordBtn.textContent="New Word";newWordBtn.className="btn btn-primary";newWordBtn.style.display="";newWordBtn.hidden=false; solveBtn.style.display="";solveUi.classList.remove("open");solveText.textContent=""; keyboard.classList.remove("solve-mode");message.className="message";message.textContent="";resetKeys();render(); }
-  function render(){ slots.innerHTML=""; for(const ch of answer){const el=document.createElement("span");const playable=normalizePlayableChar(ch);if(ch===" ")el.className="space-slot";else if(playable){el.className="letter-slot";el.dataset.letter=playable;el.textContent=guessed.has(playable)?ch:"";}else{el.className="punct";el.textContent=ch;}slots.appendChild(el);} missesList.textContent=misses.length?misses.join(" · "):"";triesText.textContent=`${wrongCount} / 6 misses`;triesText.classList.toggle("warning",wrongCount>=4);for(let i=1;i<=6;i++)root.getElementById(`s${i}`)?.classList.toggle("show",i<=wrongCount);root.querySelector(".hangman")?.classList.toggle("head-revealed",wrongCount>=1);root.querySelector(".hangman")?.classList.toggle("game-over",wrongCount>=6); }
+  function flashWrong() {
+    gameCard.classList.remove("wrong-flash", "solve-active");
+    void gameCard.offsetWidth;
+    gameCard.classList.add("wrong-flash");
+    setTimeout(() => gameCard.classList.remove("wrong-flash"), 320);
+  }
+
+  function pulseCorrect(letter) {
+    const hits = [
+      ...slots.querySelectorAll(`.letter-slot[data-letter="${letter}"]`)
+    ];
+
+    hits.forEach((element) => {
+      element.classList.remove("correct-hit");
+      void element.offsetWidth;
+      element.classList.add("correct-hit");
+    });
+    setTimeout(() => {
+      hits.forEach((element) => element.classList.remove("correct-hit"));
+    }, 360);
+  }
+
+  function getActivePool() {
+    return config.getPool(topicPicker.getState());
+  }
+
+  function pickWord() {
+    return pickDifferent(getActivePool(), answer, config.getAnswer);
+  }
+
+  function resetKeys() {
+    keyboard.querySelectorAll(".letter-key").forEach((key) => {
+      key.classList.remove("used", "guessed-correct", "guessed-wrong", "key-pressed");
+      key.querySelector(".key-popup")?.remove();
+    });
+  }
+
+  const topicPicker = createHangmanTopicPicker({
+    root,
+    topics: config.topics,
+    supportsRandom: config.randomMode,
+    initialTopics: config.initialTopics,
+    initialRandomMode: config.randomMode,
+    onApply: startRound
+  });
+
+  function startRound() {
+    answer = pickWord();
+    if (!answer) return;
+
+    guessed = new Set();
+    misses = [];
+    wrongCount = 0;
+    active = true;
+    solveMode = false;
+    solveBuffer = "";
+    confirmNewWord = false;
+    clearTimeout(confirmTimer);
+
+    root.querySelectorAll(".draw-part").forEach((part) => {
+      part.classList.remove("drawn");
+    });
+    slots.classList.remove("win", "loss");
+    gameCard.classList.remove("wrong-flash");
+    triesText.classList.remove("warning");
+    newWordBtn.textContent = "New Word";
+    newWordBtn.className = "btn btn-primary";
+    newWordBtn.style.display = "";
+    newWordBtn.hidden = false;
+    solveBtn.style.display = "";
+    solveUi.classList.remove("open");
+    solveText.textContent = "";
+    keyboard.classList.remove("solve-mode");
+    message.className = "message";
+    message.textContent = "";
+    resetKeys();
+    render();
+  }
+
+  function render() {
+    slots.replaceChildren();
+
+    for (const character of answer) {
+      const slot = document.createElement("span");
+      const playable = normalizePlayableChar(character);
+
+      if (character === " ") {
+        slot.className = "space-slot";
+      } else if (playable) {
+        slot.className = "letter-slot";
+        slot.dataset.letter = playable;
+        slot.textContent = guessed.has(playable) ? character : "";
+      } else {
+        slot.className = "punct";
+        slot.textContent = character;
+      }
+
+      slots.appendChild(slot);
+    }
+
+    missesList.textContent = misses.length ? misses.join(" · ") : "";
+    triesText.textContent = `${wrongCount} / 6 misses`;
+    triesText.classList.toggle("warning", wrongCount >= 4);
+
+    for (let index = 1; index <= 6; index += 1) {
+      root.getElementById(`s${index}`)?.classList.toggle("show", index <= wrongCount);
+    }
+
+    root.querySelector(".hangman")?.classList.toggle("head-revealed", wrongCount >= 1);
+    root.querySelector(".hangman")?.classList.toggle("game-over", wrongCount >= 6);
+  }
   root.querySelectorAll(".draw-part").forEach(part=>part.addEventListener("animationend",()=>{if(part.classList.contains("show"))part.classList.add("drawn");}));
   function finishWin(){ uniquePlayableLetters(answer).forEach(l=>guessed.add(l));active=false;solveMode=false;solveBtn.style.display="none";solveUi.classList.remove("open");keyboard.classList.remove("solve-mode");gameCard.classList.remove("solve-active");newWordBtn.hidden=false;message.className="message success";message.textContent="Correct.";slots.classList.add("win");vibrate([45,35,70]);render(); }
   function finishLoss(){ uniquePlayableLetters(answer).forEach(l=>guessed.add(l));active=false;solveMode=false;solveBtn.style.display="none";solveUi.classList.remove("open");keyboard.classList.remove("solve-mode");gameCard.classList.remove("solve-active");newWordBtn.hidden=false;message.className="message danger";message.textContent=`The answer was ${answer}.`;slots.classList.add("loss");vibrate([120,60,120]);flashWrong();render(); }
@@ -250,10 +353,9 @@ export function initializeHangmanEngine(root, app, config) {
   keyboard.addEventListener("click",e=>{const key=e.target.closest(".kb-key");if(!key||!active)return;const v=key.dataset.key;vibrate(v==="ENTER"?ENTER_HAPTIC_MS:KEY_HAPTIC_MS);key.classList.remove("key-pressed");void key.offsetWidth;key.classList.add("key-pressed");setTimeout(()=>key.classList.remove("key-pressed"),82);showKeyPopup(key,v);if(!solveMode){if(/^[A-Z]$/.test(v))guessLetter(v);return;}if(/^[A-Z]$/.test(v))solveBuffer+=v;else if(v==="SPACE"&&solveBuffer&&!solveBuffer.endsWith(" "))solveBuffer+=" ";else if(v==="BACKSPACE"){if(backspaceConsumedClick){backspaceConsumedClick=false;return;}deleteOneSolveChar();return;}else if(v==="ENTER"){submitSolve();return;}updateSolve();});
   solveBtn.addEventListener("click",enterSolve);solveCancelBtn.addEventListener("click",leaveSolve);
   newWordBtn.addEventListener("click",()=>{if(!active){startRound();return;}if(!confirmNewWord){confirmNewWord=true;newWordBtn.textContent="New Word?";newWordBtn.className="btn btn-danger";clearTimeout(confirmTimer);confirmTimer=setTimeout(()=>{confirmNewWord=false;newWordBtn.textContent="New Word";newWordBtn.className="btn btn-primary";},2200);return;}startRound();});
-  topicsBtn.addEventListener("click",openTopics);topicsClose.addEventListener("click",closeTopics);cancelTopics.addEventListener("click",closeTopics);selectAllTopics.addEventListener("click",()=>{draftRandomMode=false;draftTopics=new Set(TOPICS);renderTopicChoices();});clearTopics.addEventListener("click",()=>{draftRandomMode=false;draftTopics.clear();renderTopicChoices();});applyTopics.addEventListener("click",applyTopicSelection);topicsOverlay.addEventListener("click",e=>{if(e.target===topicsOverlay)closeTopics();});bindOutsideDismiss(root,topicsOverlay,()=>{if(topicsOverlay.classList.contains("open"))closeTopics();},topicsBtn);
   bindFullscreenButton({button:fullscreenBtn,icon:fullscreenBtn.querySelector("img"),app});
-  root.getElementById("homeButton").addEventListener("click",()=>{app.haptic(12);closeTopics();app.showHome();});
-  updateTopicsLabel();startRound();
+  root.getElementById("homeButton").addEventListener("click",()=>{app.haptic(12);topicPicker.close();app.showHome();});
+  startRound();
 }
 
 export function defineHangmanElement({ tagName, stylesheet, app, config }) {
