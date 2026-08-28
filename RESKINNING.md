@@ -205,6 +205,16 @@ name as `visualRenderer`. It must implement `renderRound`, `playGeneration`,
 masking, or button/round state.
 
 ### Random Letter
+
+Random Letter separates its rules/lifecycle (`js/core/random-letter-engine.js`)
+from its reveal medium. The default four effects are in
+`js/core/random-letter-reveal-renderer.js`; a themed Pixi implementation can
+register through `registerRandomLetterVisualRenderer(name, factory)` in
+`js/core/random-letter-visual-renderer.js`. A renderer implements
+`play({ finalLetter })`, `reset()`, and `destroy()` and must not choose the
+letter or control button state. The Ideas ticker has `start`, `stop`, and
+`destroy` lifecycle methods and remains paused while hidden.
+
 - random generation behavior and animation modes;
 - Ideas toggle and ticker behavior;
 - generation interruption/acceleration behavior where present.

@@ -8,8 +8,9 @@
 export function createRandomLetterDomRevealRenderer({
   letterElement, letterCard, tunnelLayer, wheelScene, wheelLayout,
   wheelVisual, wheelSpinner, wheelWinner, randomDisplayLetter, reducedMotion,
+  timing: configuredTiming, effects: configuredEffects,
 }) {
-  const timing = { reveal: 1150, pop: 360, flipCount: 5, tunnelPasses: 5, wheelTurns: 5, wheelHold: 110, wheelTravel: 300 };
+  const timing = { reveal: 1150, pop: 360, flipCount: 5, tunnelPasses: 5, wheelTurns: 5, wheelHold: 110, wheelTravel: 300, ...configuredTiming };
   let wheelRotation = 0;
   const wait = (milliseconds) => new Promise((resolve) => window.setTimeout(resolve, milliseconds));
   const polar = (cx, cy, radius, degrees) => {
@@ -51,7 +52,10 @@ export function createRandomLetterDomRevealRenderer({
     wheelWinner.textContent = finalLetter; wheelWinner.style.display = "grid"; wheelWinner.style.fontSize = `${startSize}px`; wheelWinner.style.opacity = "1"; wheelWinner.style.transform = "translate(-50%, -50%) scale(1)"; wheelVisual.classList.add("greyed");
     const reveal = wheelWinner.animate([{transform:"translate(-50%, -50%) scale(1)",opacity:1},{transform:`translate(-50%, calc(-50% + ${travel}px)) scale(${scale})`,opacity:1,offset:.455},{transform:`translate(-50%, calc(-50% + ${travel}px)) scale(${scale*1.13})`,opacity:1,offset:.735},{transform:`translate(-50%, calc(-50% + ${travel}px)) scale(${scale})`,opacity:1}], {duration:timing.wheelTravel+timing.pop,easing:"linear",fill:"forwards"}); await reveal.finished; wheelScene.classList.remove("visible"); wheelScene.setAttribute("aria-hidden","true"); wheelWinner.style.display="none"; reveal.cancel(); letterElement.hidden=false; letterElement.textContent=finalLetter;
   }
-  const effects = [slot, flip, tunnel, wheel];
+  const effectMap = { slot, flip, tunnel, wheel };
+  const effects = (configuredEffects || ["slot", "flip", "tunnel", "wheel"])
+    .map((name) => effectMap[name])
+    .filter(Boolean);
   buildWheel(); wheelSpinner.style.transform = "rotate(0deg)";
   return { async play({ finalLetter }) { reset(); if (reducedMotion) { letterElement.textContent = finalLetter; return; } await effects[Math.floor(Math.random() * effects.length)](finalLetter); }, reset, destroy() { reset(); } };
 }
