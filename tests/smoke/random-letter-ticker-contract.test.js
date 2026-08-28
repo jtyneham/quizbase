@@ -6,7 +6,7 @@ const read = (path) => readFile(new URL(`../../${path}`, import.meta.url), "utf8
 
 test("Random Letter delegates its Ideas ticker to a shared module", async () => {
   const [game, ticker] = await Promise.all([
-    read("js/games/rngl.js"),
+    read("js/core/random-letter-engine.js"),
     read("js/core/random-letter-ticker.js")
   ]);
 

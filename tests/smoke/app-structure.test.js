@@ -26,7 +26,7 @@ test("all five route hashes are represented by app screen names", async () => {
 });
 
 test("every game exposes Home navigation directly or through its shared engine", async () => {
-  const rngl = await read("js/games/rngl.js");
+  const rngl = await read("js/core/random-letter-engine.js");
   assert.match(rngl, /showHome\(\)/, "Random Letter should call the shared Home API");
 
   const missingWordEngine = await read("js/core/missing-word-engine.js");
