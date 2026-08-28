@@ -1,6 +1,7 @@
 import { bindFullscreenButton } from "./ui.js";
 import { isCorrectGuess, isSolved, normalizePlayableChar, normalizePlayableAnswer, normalizeSolveAttempt, pickDifferent, uniquePlayableLetters } from "./hangman-logic.js";
 import { createHangmanTopicPicker } from "./hangman-topic-picker.js";
+import { createHangmanArtwork } from "./hangman-artwork.js";
 
 export const HANGMAN_TEMPLATE = `<div class="hangman-root" data-ui="game-root">
 <div class="app">
@@ -201,6 +202,7 @@ export function initializeHangmanEngine(root, app, config) {
   const fullscreenBtn = root.getElementById("fullscreenBtn");
   const gameCard = root.getElementById("gameCard");
   const keyboard = root.getElementById("customKeyboard");
+  const artwork = createHangmanArtwork(root);
   const solveUi = root.getElementById("solveUi");
   const solveText = root.getElementById("solveText");
   const solveCancelBtn = root.getElementById("solveCancelBtn");
@@ -284,9 +286,7 @@ export function initializeHangmanEngine(root, app, config) {
     confirmNewWord = false;
     clearTimeout(confirmTimer);
 
-    root.querySelectorAll(".draw-part").forEach((part) => {
-      part.classList.remove("drawn");
-    });
+    artwork.reset();
     slots.classList.remove("win", "loss");
     gameCard.classList.remove("wrong-flash");
     triesText.classList.remove("warning");
@@ -329,14 +329,8 @@ export function initializeHangmanEngine(root, app, config) {
     triesText.textContent = `${wrongCount} / 6 misses`;
     triesText.classList.toggle("warning", wrongCount >= 4);
 
-    for (let index = 1; index <= 6; index += 1) {
-      root.getElementById(`s${index}`)?.classList.toggle("show", index <= wrongCount);
-    }
-
-    root.querySelector(".hangman")?.classList.toggle("head-revealed", wrongCount >= 1);
-    root.querySelector(".hangman")?.classList.toggle("game-over", wrongCount >= 6);
+    artwork.render(wrongCount);
   }
-  root.querySelectorAll(".draw-part").forEach(part=>part.addEventListener("animationend",()=>{if(part.classList.contains("show"))part.classList.add("drawn");}));
   function finishWin(){ uniquePlayableLetters(answer).forEach(l=>guessed.add(l));active=false;solveMode=false;solveBtn.style.display="none";solveUi.classList.remove("open");keyboard.classList.remove("solve-mode");gameCard.classList.remove("solve-active");newWordBtn.hidden=false;message.className="message success";message.textContent="Correct.";slots.classList.add("win");vibrate([45,35,70]);render(); }
   function finishLoss(){ uniquePlayableLetters(answer).forEach(l=>guessed.add(l));active=false;solveMode=false;solveBtn.style.display="none";solveUi.classList.remove("open");keyboard.classList.remove("solve-mode");gameCard.classList.remove("solve-active");newWordBtn.hidden=false;message.className="message danger";message.textContent=`The answer was ${answer}.`;slots.classList.add("loss");vibrate([120,60,120]);flashWrong();render(); }
   function wrongGuess(text){wrongCount++;vibrate(90);flashWrong();render();if(wrongCount>=6)finishLoss();else{message.className="message";message.textContent=text;}}

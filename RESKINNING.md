@@ -146,6 +146,11 @@ Hangman topic selection is shared through
 `js/core/hangman-topic-picker.js`. Keep its selection, random-mode, Apply,
 Cancel, and outside-dismiss contracts when changing the picker presentation.
 
+Hangman artwork state is isolated in `js/core/hangman-artwork.js`. A new
+gallows/character may use any SVG composition or visual language as long as it
+provides six ordered `.draw-part` elements and a `.hangman` host. The engine
+does not depend on SVG coordinates, element IDs, or a stickman drawing.
+
 ## Routing contract
 
 `js/app.js` owns route resolution.  Keep game screens addressable by their
