@@ -17,7 +17,14 @@ export async function openGame(page, game) {
   }
 
   await page.goto("/");
-  await page.getByRole("button", { name: canonicalGame.name, exact: true }).click();
+  // The mobile-first home rows append a decorative chevron to their accessible
+  // text.  Match the game label while keeping the locator constrained to its
+  // button, so a visual navigation affordance does not invalidate the route
+  // regression suite.
+  const escapedName = canonicalGame.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  await page.getByRole("button", {
+    name: new RegExp(`^${escapedName}(?:\\s+›)?$`)
+  }).click();
   const screen = page.locator(`#${canonicalGame.screen}`);
   await expect(screen).toHaveClass(/active/);
   await expect(page).toHaveURL(new RegExp(`${canonicalGame.hash}$`));

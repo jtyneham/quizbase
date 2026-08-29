@@ -5,12 +5,31 @@ Quizbase is a functional base for visual-language reconstruction. A reskin may r
 ## Source-of-truth rule
 
 - `data/` is content/data source of truth.
+- `js/core/*-data-curator.js` owns player-facing data corrections without
+  mutating the reusable raw files.
 - `js/core/` owns shared game behavior.
 - `js/games/` should stay thin configuration wrappers.
 - `css/theme.css` is the first-stop visual contract.
 - `data-ui` attributes are stable semantic presentation hooks.
 
 A reskin is not required to keep the default vertical launcher, current component geometry, or current arrangement of controls. Preserve what an element *does*, not where the default skin happens to put it. The launcher may become cards, a list, a diegetic menu, a radial selector, or an entirely custom scene.
+
+## Content and curation boundaries
+
+Raw pools in `data/` are intentionally preserved as broad reusable source
+material. Player-facing cleanup happens at runtime:
+
+- `js/core/missing-word-data-curator.js` removes unreachable answers and
+  topic-specific fragments, then applies the explicit General vocabulary;
+- `js/core/general-word-pool.js` defines the deliberate, broadly accessible
+  default vocabulary shared by Missing Word General and Hangman General;
+- `js/core/hangman-data-curator.js` removes duplicate/context-free Hangman
+  answers and exposes a reliable primary category.
+
+For a reskin, create a small, documented curator/configuration layer when its
+content rules differ. Do not rewrite the raw pool merely to make a themed
+variant work. A dedicated game data file is preferable when a theme needs
+different factual content rather than a correction to the base pool.
 
 ## Recommended workflow
 
@@ -143,8 +162,12 @@ Unless the product explicitly changes, preserve:
 - gallows progression.
 
 Hangman topic selection is shared through
-`js/core/hangman-topic-picker.js`. Keep its selection, random-mode, Apply,
+`js/core/hangman-topic-picker.js`. Keep its selection, General-mode, Apply,
 Cancel, and outside-dismiss contracts when changing the picker presentation.
+
+The standard Hangman game exposes the curated default as **General**; this is
+not an unbounded random selection. Pokémon Hangman has no General default and
+uses its dedicated Pokémon topic collection.
 
 Hangman artwork state is isolated in `js/core/hangman-artwork.js`. The default
 renderer is a small PixiJS scene mounted in `#hangmanPixiStage`; it receives
