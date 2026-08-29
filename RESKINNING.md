@@ -31,6 +31,19 @@ content rules differ. Do not rewrite the raw pool merely to make a themed
 variant work. A dedicated game data file is preferable when a theme needs
 different factual content rather than a correction to the base pool.
 
+### Dedicated topic modules
+
+`data/business-money-words.js` is the reference pattern for a topic added
+after the original pools: it is a single curated source, with a 100-word
+easy/medium core used by both standard games and a 20-word Missing Word-only
+Hard layer. Its integration helpers rehome any matching legacy entries so an
+answer has one player-facing specialist topic. It deliberately never becomes
+part of either game's **General** default.
+
+Use the same pattern for future subjects whose content needs independent
+editorial rules: keep the vocabulary, difficulty decisions, game-specific
+subset, and integration/rehome logic together in one named data module.
+
 ## Recommended workflow
 
 1. Inspect the current product and understand all five game flows before styling.

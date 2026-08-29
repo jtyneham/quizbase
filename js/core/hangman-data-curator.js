@@ -31,7 +31,10 @@ export function curateHangmanDatabase(entries) {
 
   return entries.flatMap((entry) => {
     const canonical = canonicalAnswer(entry.answer);
-    if (UNSUITABLE_STANDALONE_ANSWERS.has(entry.answer) || seenAnswers.has(canonical)) {
+    if (
+      (UNSUITABLE_STANDALONE_ANSWERS.has(entry.answer) && entry.category !== "Business & Money") ||
+      seenAnswers.has(canonical)
+    ) {
       return [];
     }
 
