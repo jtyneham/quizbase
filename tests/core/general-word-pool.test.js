@@ -54,3 +54,17 @@ test("Missing Word curation removes unreachable and cross-topic noise", () => {
   assert.deepEqual(find("fire")?.topics, ["General", "Nature", "Nouns", "Verbs"]);
   assert.deepEqual(find("table")?.topics, ["General", "Household", "Everyday Objects", "Nouns"]);
 });
+
+test("Missing Word specialist audit removes incomplete contextual answers only", () => {
+  const curated = curateMissingWordPool(WORDS);
+  const find = (word) => curated.find((entry) => entry.word === word);
+
+  assert.equal(find("spinal")?.topics.includes("Human Body"), false);
+  assert.equal(find("black")?.topics.includes("Space"), false);
+  assert.equal(find("black")?.topics.includes("Geography"), false);
+  assert.equal(find("federation")?.topics.includes("Science"), false);
+  assert.equal(find("bad")?.topics.includes("Games"), false);
+  assert.ok(find("elephant")?.topics.includes("Animals"));
+  assert.ok(find("astronaut")?.topics.includes("Space"));
+  assert.ok(find("guitar")?.topics.includes("Music"));
+});
