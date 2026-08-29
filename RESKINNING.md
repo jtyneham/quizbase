@@ -33,12 +33,19 @@ different factual content rather than a correction to the base pool.
 
 ### Dedicated topic modules
 
-`data/business-money-words.js` is the reference pattern for a topic added
-after the original pools: it is a single curated source, with a 100-word
-easy/medium core used by both standard games and a 20-word Missing Word-only
-Hard layer. Its integration helpers rehome any matching legacy entries so an
-answer has one player-facing specialist topic. It deliberately never becomes
-part of either game's **General** default.
+`data/business-money-words.js`, `data/comics-words.js`, and
+`data/manga-anime-words.js` are reference patterns for topics added after the
+original pools: each is a single curated source, with a 100-word easy/medium
+core used by both standard games and a 20-word Missing Word-only Hard layer.
+Their integration helpers rehome matching legacy entries so an answer has one
+player-facing specialist topic. They deliberately never become part of either
+game's **General** default.
+
+The editorial boundaries are explicit: **Comics** means comic-origin stories,
+characters, creators, and publishers—not generic format labels or Japanese
+manga/anime. **Manga & Anime** means Japanese-origin series, characters,
+distinctive demographics/genres, and lingo—not generic cross-media genres,
+western comics, or gaming-first properties.
 
 Use the same pattern for future subjects whose content needs independent
 editorial rules: keep the vocabulary, difficulty decisions, game-specific

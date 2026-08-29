@@ -47,40 +47,16 @@ export const BUSINESS_MONEY_TOPIC = "Business & Money";
 export const BUSINESS_MONEY_HANGMAN_WORDS = BUSINESS_MONEY_WORDS
   .filter(([, difficulty]) => difficulty <= 2);
 
-function canonicalWord(value) {
-  return String(value).toLowerCase().replace(/[^a-z0-9]/g, "");
-}
-
-const BUSINESS_MONEY_BY_CANONICAL_WORD = new Map(
-  BUSINESS_MONEY_WORDS.map(([word, difficulty]) => [canonicalWord(word), { word, difficulty }])
-);
-
 /**
  * Rehomes matching legacy entries under Business & Money and appends the
  * vocabulary that the original source did not contain. Grammar metadata is
  * deliberately kept only as Nouns; no previous specialist topic is retained.
  */
 export function withBusinessMoneyMissingWordPool(entries) {
-  const found = new Set();
-  const updated = entries.map((entry) => {
-    const definition = BUSINESS_MONEY_BY_CANONICAL_WORD.get(canonicalWord(entry.word));
-    if (!definition) return entry;
-    found.add(definition.word);
-    return {
-      ...entry,
-      word: definition.word,
-      difficulty: definition.difficulty,
-      topics: [BUSINESS_MONEY_TOPIC, "Nouns"]
-    };
+  return withCuratedMissingWordTopic(entries, {
+    topic: BUSINESS_MONEY_TOPIC,
+    words: BUSINESS_MONEY_WORDS
   });
-
-  BUSINESS_MONEY_WORDS.forEach(([word, difficulty]) => {
-    if (!found.has(word)) {
-      updated.push({ word, difficulty, topics: [BUSINESS_MONEY_TOPIC, "Nouns"] });
-    }
-  });
-
-  return updated;
 }
 
 /**
@@ -88,15 +64,9 @@ export function withBusinessMoneyMissingWordPool(entries) {
  * easy/medium vocabulary. This keeps each answer in one player-facing topic.
  */
 export function withBusinessMoneyHangmanPool(entries) {
-  const businessAnswers = new Set(
-    BUSINESS_MONEY_HANGMAN_WORDS.map(([word]) => canonicalWord(word))
-  );
-  const retained = entries.filter((entry) => !businessAnswers.has(canonicalWord(entry.answer)));
-  const additions = BUSINESS_MONEY_HANGMAN_WORDS.map(([answer]) => ({
-    answer: answer.toUpperCase(),
-    category: BUSINESS_MONEY_TOPIC,
-    subcategory: BUSINESS_MONEY_TOPIC,
-    difficulty: "normal"
-  }));
-  return [...retained, ...additions];
+  return withCuratedHangmanTopic(entries, {
+    topic: BUSINESS_MONEY_TOPIC,
+    words: BUSINESS_MONEY_HANGMAN_WORDS
+  });
 }
+import { withCuratedHangmanTopic, withCuratedMissingWordTopic } from "./topic-pool-utils.js";
