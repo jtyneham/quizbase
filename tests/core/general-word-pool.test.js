@@ -7,6 +7,7 @@ import {
   isGeneralHangmanEntry,
   withCuratedGeneralTopic
 } from "../../js/core/general-word-pool.js";
+import { curateHangmanDatabase } from "../../js/core/hangman-data-curator.js";
 
 test("General defaults use an explicit, specialist-free vocabulary", () => {
   const specialistTerms = ["acer", "amaterasu", "aim reticle", "and", "be"];
@@ -28,4 +29,15 @@ test("Hangman General only includes explicitly curated answers", () => {
   assert.ok(featured.length >= 180);
   assert.ok(featured.every((entry) => GENERAL_TERMS.has(entry.answer.toLowerCase())));
   assert.equal(featured.some((entry) => entry.answer === "SHOT"), false);
+});
+
+test("Hangman curation removes duplicate spellings and context-free fragments", () => {
+  const curated = curateHangmanDatabase(GAME_DATABASE);
+  const canonical = (answer) => answer.replace(/[^A-Z0-9]/g, "");
+  const answers = curated.map((entry) => canonical(entry.answer));
+
+  assert.equal(new Set(answers).size, answers.length);
+  assert.equal(curated.some((entry) => entry.answer === "SHOT"), false);
+  assert.equal(curated.some((entry) => entry.answer === "SMART WATCH"), false);
+  assert.equal(curated.every((entry) => entry.subcategory === entry.category), true);
 });
