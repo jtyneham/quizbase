@@ -63,7 +63,41 @@ const TOPIC_REMOVALS = new Map([
   ])],
   // These are generic qualifiers, not usable Games answers by themselves.
   ["Games", new Set(["bad", "best", "good", "new", "open", "true", "weak"])],
-  ["Music", new Set(["grand"])]
+  ["Music", new Set(["grand"])],
+  // Second specialist-audit batch: practical and everyday subjects.
+  ["Books & Literature", new Set(["science", "short"])],
+  ["People & Professions", new Set(["police"])],
+  ["Vehicles", new Set([
+    "armored", "cable", "cargo", "cruise", "delivery", "dirt", "dump",
+    "electric", "fire", "formula", "freight", "garbage", "mountain", "one",
+    "police", "racing", "school", "ski", "sports"
+  ])],
+  ["Household", new Set([
+    "air", "backyard", "bedside", "board", "cleaner", "coffee", "control",
+    "cutting", "dressing", "frying", "hair", "home", "ironing", "machine",
+    "paper", "remote", "washing"
+  ])],
+  ["Clothing", new Set([
+    "ankle", "baseball", "bow", "cargo", "dressing", "high", "polo", "winter"
+  ])],
+  ["Tools", new Set([
+    "adjustable", "allen", "angle", "box", "garden", "hand", "hex", "hook",
+    "measuring", "phillips", "power", "spirit", "utility"
+  ])],
+  ["Buildings & Places", new Set([
+    "art", "bus", "fire", "gas", "grocery", "movie", "parking", "police",
+    "post", "railway", "shopping", "sports", "station", "train", "water"
+  ])],
+  ["Everyday Objects", new Set([
+    "ballpoint", "band", "credit", "drinking", "frying", "lunch", "mobile",
+    "shopping", "sticky"
+  ])],
+  ["Brands", new Set(["burger", "king"])],
+  // These are not standalone English verb/adjective answers in this base pool.
+  ["Verbs", new Set(["pomegranate"])],
+  ["Adjectives", new Set([
+    "bake", "bulldog", "iguana", "jackal", "montreal", "ostrich", "portugal", "starfish"
+  ])]
 ]);
 
 const OMITTED_ANSWERS = new Set([

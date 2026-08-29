@@ -68,3 +68,20 @@ test("Missing Word specialist audit removes incomplete contextual answers only",
   assert.ok(find("astronaut")?.topics.includes("Space"));
   assert.ok(find("guitar")?.topics.includes("Music"));
 });
+
+test("Missing Word practical-topic audit removes fragments without thinning valid pools", () => {
+  const curated = curateMissingWordPool(WORDS);
+  const find = (word) => curated.find((entry) => entry.word === word);
+
+  assert.equal(find("cargo")?.topics.includes("Vehicles"), false);
+  assert.equal(find("bedside")?.topics.includes("Household"), false);
+  assert.equal(find("ballpoint")?.topics.includes("Everyday Objects"), false);
+  assert.equal(find("burger")?.topics.includes("Brands"), false);
+  assert.equal(find("pomegranate")?.topics.includes("Verbs"), false);
+  assert.equal(find("iguana")?.topics.includes("Adjectives"), false);
+  assert.ok(find("submarine")?.topics.includes("Vehicles"));
+  assert.ok(find("toaster")?.topics.includes("Household"));
+  assert.ok(find("screwdriver")?.topics.includes("Tools"));
+  assert.ok(find("restaurant")?.topics.includes("Buildings & Places"));
+  assert.ok(find("umbrella")?.topics.includes("Everyday Objects"));
+});
