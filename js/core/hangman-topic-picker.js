@@ -4,9 +4,10 @@ import { bindOutsideDismiss } from "./ui.js";
 export function createHangmanTopicPicker({
   root,
   topics,
-  supportsRandom,
+  supportsFeatured = false,
+  featuredModeLabel = "General",
   initialTopics = [],
-  initialRandomMode = false,
+  initialFeaturedMode = false,
   onApply
 }) {
   const trigger = root.getElementById("topicsBtn");
@@ -21,12 +22,12 @@ export function createHangmanTopicPicker({
 
   let selectedTopics = new Set(initialTopics);
   let draftTopics = new Set(initialTopics);
-  let randomMode = Boolean(initialRandomMode);
-  let draftRandomMode = Boolean(initialRandomMode);
+  let featuredMode = Boolean(initialFeaturedMode);
+  let draftFeaturedMode = Boolean(initialFeaturedMode);
 
   function updateLabel() {
-    if (supportsRandom && randomMode) {
-      count.textContent = "Random";
+    if (supportsFeatured && featuredMode) {
+      count.textContent = featuredModeLabel;
     } else if (selectedTopics.size === topics.length) {
       count.textContent = "All";
     } else {
@@ -37,18 +38,18 @@ export function createHangmanTopicPicker({
   function renderChoices() {
     grid.replaceChildren();
 
-    if (supportsRandom) {
-      const randomButton = document.createElement("button");
-      randomButton.type = "button";
-      randomButton.className = "topic-chip random-topic";
-      randomButton.textContent = "Random";
-      randomButton.classList.toggle("selected", draftRandomMode);
-      randomButton.addEventListener("click", () => {
-        draftRandomMode = true;
+    if (supportsFeatured) {
+      const featuredButton = document.createElement("button");
+      featuredButton.type = "button";
+      featuredButton.className = "topic-chip featured-topic";
+      featuredButton.textContent = featuredModeLabel;
+      featuredButton.classList.toggle("selected", draftFeaturedMode);
+      featuredButton.addEventListener("click", () => {
+        draftFeaturedMode = true;
         draftTopics.clear();
         renderChoices();
       });
-      grid.appendChild(randomButton);
+      grid.appendChild(featuredButton);
     }
 
     topics.forEach((topic) => {
@@ -58,10 +59,10 @@ export function createHangmanTopicPicker({
       button.textContent = topic;
       button.classList.toggle(
         "selected",
-        !draftRandomMode && draftTopics.has(topic)
+        !draftFeaturedMode && draftTopics.has(topic)
       );
       button.addEventListener("click", () => {
-        draftRandomMode = false;
+        draftFeaturedMode = false;
         if (draftTopics.has(topic)) {
           draftTopics.delete(topic);
         } else {
@@ -75,7 +76,7 @@ export function createHangmanTopicPicker({
 
   function open() {
     draftTopics = new Set(selectedTopics);
-    draftRandomMode = randomMode;
+    draftFeaturedMode = featuredMode;
     renderChoices();
     overlay.classList.add("open");
     overlay.setAttribute("aria-hidden", "false");
@@ -87,9 +88,9 @@ export function createHangmanTopicPicker({
   }
 
   function apply() {
-    if (!draftRandomMode && draftTopics.size === 0) return;
+    if (!draftFeaturedMode && draftTopics.size === 0) return;
 
-    randomMode = draftRandomMode;
+    featuredMode = draftFeaturedMode;
     selectedTopics = new Set(draftTopics);
     updateLabel();
     close();
@@ -99,7 +100,7 @@ export function createHangmanTopicPicker({
   function getState() {
     return {
       selectedTopics: new Set(selectedTopics),
-      randomMode
+      featuredMode
     };
   }
 
@@ -107,12 +108,12 @@ export function createHangmanTopicPicker({
   closeButton.addEventListener("click", close);
   cancelButton.addEventListener("click", close);
   selectAllButton.addEventListener("click", () => {
-    draftRandomMode = false;
+    draftFeaturedMode = false;
     draftTopics = new Set(topics);
     renderChoices();
   });
   clearButton.addEventListener("click", () => {
-    draftRandomMode = false;
+    draftFeaturedMode = false;
     draftTopics.clear();
     renderChoices();
   });

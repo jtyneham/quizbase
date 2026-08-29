@@ -225,9 +225,10 @@ export function initializeHangmanEngine(root, app, config) {
   const topicPicker = createHangmanTopicPicker({
     root,
     topics: config.topics,
-    supportsRandom: config.randomMode,
+    supportsFeatured: config.featuredMode,
+    featuredModeLabel: config.featuredModeLabel,
     initialTopics: config.initialTopics,
-    initialRandomMode: config.randomMode,
+    initialFeaturedMode: config.featuredMode,
     onApply: startRound
   });
 

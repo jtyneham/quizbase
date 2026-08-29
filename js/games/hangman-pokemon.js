@@ -9,7 +9,7 @@ export function registerHangmanPokemon(app) {
     app,
     config: {
       topics: POKEMON_TOPICS,
-      randomMode: false,
+      featuredMode: false,
       initialTopics: ["Pokemon All Names"],
       getAnswer: entry => entry.word.toUpperCase(),
       getPool: ({ selectedTopics }) => POKEMON_WORDS.filter(entry =>
