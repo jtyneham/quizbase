@@ -8,6 +8,7 @@ import {
   withCuratedGeneralTopic
 } from "../../js/core/general-word-pool.js";
 import { curateHangmanDatabase } from "../../js/core/hangman-data-curator.js";
+import { curateMissingWordPool } from "../../js/core/missing-word-data-curator.js";
 
 test("General defaults use an explicit, specialist-free vocabulary", () => {
   const specialistTerms = ["acer", "amaterasu", "aim reticle", "and", "be"];
@@ -40,4 +41,16 @@ test("Hangman curation removes duplicate spellings and context-free fragments", 
   assert.equal(curated.some((entry) => entry.answer === "SHOT"), false);
   assert.equal(curated.some((entry) => entry.answer === "SMART WATCH"), false);
   assert.equal(curated.every((entry) => entry.subcategory === entry.category), true);
+});
+
+test("Missing Word curation removes unreachable and cross-topic noise", () => {
+  const curated = curateMissingWordPool(WORDS);
+  const find = (word) => curated.find((entry) => entry.word === word);
+
+  assert.equal(find("and"), undefined);
+  assert.equal(find("declaration of independence"), undefined);
+  assert.equal(find("lord of the rings"), undefined);
+  assert.equal(curated.some((entry) => entry.topics.includes("Pokemon")), false);
+  assert.deepEqual(find("fire")?.topics, ["General", "Nature", "Nouns", "Verbs"]);
+  assert.deepEqual(find("table")?.topics, ["General", "Household", "Everyday Objects", "Nouns"]);
 });
