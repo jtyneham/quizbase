@@ -18,10 +18,17 @@ function wait(milliseconds) {
   return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
 }
 
-export function createOddOneOutDomRenderer({ root }) {
-  const cards = requiredElement(root, "#oddOneOutCards");
-  const feedback = requiredElement(root, "#oddOneOutFeedback");
-  const primaryAction = requiredElement(root, "#oddOneOutNextButton");
+export function createOddOneOutDomRenderer({
+  root,
+  selectors = {
+    cards: "#oddOneOutCards",
+    feedback: "#oddOneOutFeedback",
+    primaryAction: "#oddOneOutNextButton"
+  }
+}) {
+  const cards = requiredElement(root, selectors.cards);
+  const feedback = requiredElement(root, selectors.feedback);
+  const primaryAction = requiredElement(root, selectors.primaryAction);
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let generateHandler = null;
 

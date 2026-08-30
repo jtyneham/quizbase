@@ -7,6 +7,7 @@ export const games = [
   { name: "Hangman - Pokemon", screen: "hangmanPokemonScreen", hash: "#hangmanpokemon" },
   { name: "Random Letter", screen: "rnglScreen", hash: "#rngl" },
   { name: "Odd One Out", screen: "oddOneOutScreen", hash: "#odd-one-out" },
+  { name: "Odd One Out - Pokemon", screen: "oddOneOutPokemonScreen", hash: "#odd-one-out-pokemon" },
 ];
 
 export async function openGame(page, game) {

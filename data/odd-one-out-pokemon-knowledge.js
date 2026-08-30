@@ -549,3 +549,32 @@ export const POKEMON_ODD_ONE_OUT_PILOT_ROUNDS = [
     explanation: "Oran Berry is an HP-restoring Berry.\nThe others are status-curing Berries."
   }
 ];
+
+/**
+ * Adapts the reviewed pilot rounds to the shared procedural Odd One Out
+ * selector. This is intentionally a small preview pool: every blueprint has
+ * exactly one approved quartet until broader Pokémon curation is complete.
+ */
+export function createPokemonOddOneOutPilotBlueprints() {
+  const termsById = new Map(POKEMON_ODD_ONE_OUT_PILOT_TERMS.map((term) => [term.id, term]));
+  const contractsById = new Map(POKEMON_ODD_ONE_OUT_BLUEPRINTS.map((blueprint) => [blueprint.id, blueprint]));
+
+  return POKEMON_ODD_ONE_OUT_PILOT_ROUNDS.map((round) => {
+    const contract = contractsById.get(round.blueprintId);
+    const terms = round.termIds.map((id) => termsById.get(id));
+    const oddTerm = termsById.get(round.oddTermId);
+
+    if (!contract || terms.some((term) => !term) || !oddTerm) {
+      throw new Error(`Pokémon Odd One Out pilot '${round.id}' references incomplete reviewed data.`);
+    }
+
+    return {
+      id: round.id,
+      family: contract.family,
+      difficulty: contract.difficulty === "hard" ? 3 : 2,
+      matches: terms.filter((term) => term.id !== oddTerm.id).map((term) => term.label),
+      intruders: [oddTerm.label],
+      explanation: () => round.explanation
+    };
+  });
+}

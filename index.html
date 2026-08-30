@@ -92,6 +92,20 @@
             <span class="game-launcher-label" data-ui="game-launch-label">Odd One Out</span>
           </button>
 
+          <button class="game-launcher-item" data-ui="game-launch" type="button" data-file="oddoneoutpokemon.html" data-name="Odd One Out - Pokemon">
+            <div class="game-launcher-icon" data-ui="game-launch-surface">
+              <svg class="icon odd-one-out-icon odd-one-out-pokemon-icon" viewBox="0 0 120 120" aria-hidden="true">
+                <rect x="18" y="18" width="34" height="34" rx="5"></rect>
+                <rect x="68" y="18" width="34" height="34" rx="5"></rect>
+                <rect x="18" y="68" width="34" height="34" rx="5"></rect>
+                <circle cx="85" cy="85" r="18"></circle>
+                <path d="M67 85h36"></path>
+                <circle cx="85" cy="85" r="6" fill="var(--qb-color-surface)"></circle>
+              </svg>
+            </div>
+            <span class="game-launcher-label" data-ui="game-launch-label">Odd One Out - Pokemon</span>
+          </button>
+
         
         </section>
       </main>
@@ -263,6 +277,35 @@
             <div id="oddOneOutCards" class="odd-one-out-cards" data-ui="game-primary-surface" aria-live="polite"></div>
             <p id="oddOneOutFeedback" class="odd-one-out-feedback" aria-live="polite"></p>
             <button id="oddOneOutNextButton" class="odd-one-out-next" data-ui="primary-action" type="button">Generate Set</button>
+          </section>
+        </main>
+      </div>
+    </section>
+
+    <section id="oddOneOutPokemonScreen" class="screen screen-odd-one-out" aria-label="Odd One Out - Pokemon">
+      <div class="odd-one-out-app" data-ui="game-root">
+        <header class="odd-one-out-topbar" data-ui="game-toolbar">
+          <div class="utility-actions" data-ui="utility-actions">
+            <button id="oddOneOutPokemonHomeButton" class="odd-one-out-utility" data-ui="home-action" type="button" aria-label="Back to Home" title="Home">
+              <img src="assets/home.svg" alt="" aria-hidden="true">
+            </button>
+            <button id="oddOneOutPokemonFullscreenButton" class="odd-one-out-utility" data-ui="fullscreen-action" type="button" aria-label="Enter fullscreen" title="Fullscreen">
+              <img id="oddOneOutPokemonFullscreenIcon" src="assets/fullscreen.svg" alt="" aria-hidden="true">
+              <span class="visually-hidden" id="oddOneOutPokemonFullscreenLabel">Fullscreen</span>
+            </button>
+          </div>
+          <div class="odd-one-out-difficulty" data-ui="option-control" role="group" aria-label="Difficulty">
+            <button type="button" data-difficulty="mixed" aria-pressed="true">Mixed</button>
+            <button type="button" data-difficulty="medium" aria-pressed="false">Medium</button>
+            <button type="button" data-difficulty="hard" aria-pressed="false">Hard</button>
+          </div>
+        </header>
+
+        <main class="odd-one-out-main">
+          <section class="odd-one-out-round" aria-label="Odd One Out Pokemon round">
+            <div id="oddOneOutPokemonCards" class="odd-one-out-cards" data-ui="game-primary-surface" aria-live="polite"></div>
+            <p id="oddOneOutPokemonFeedback" class="odd-one-out-feedback" aria-live="polite"></p>
+            <button id="oddOneOutPokemonNextButton" class="odd-one-out-next" data-ui="primary-action" type="button">Generate Set</button>
           </section>
         </main>
       </div>

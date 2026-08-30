@@ -1,9 +1,10 @@
-#oddOneOutScreen {
+#oddOneOutScreen, #oddOneOutPokemonScreen {
   --ooo-page-inline: clamp(0.75rem, 3.8vw, 2rem);
   --ooo-control-height: 2.75rem;
 }
 
-#oddOneOutScreen *, #oddOneOutScreen *::before, #oddOneOutScreen *::after { box-sizing: border-box; }
+#oddOneOutScreen *, #oddOneOutScreen *::before, #oddOneOutScreen *::after,
+#oddOneOutPokemonScreen *, #oddOneOutPokemonScreen *::before, #oddOneOutPokemonScreen *::after { box-sizing: border-box; }
 
 .odd-one-out-app {
   width: 100%;

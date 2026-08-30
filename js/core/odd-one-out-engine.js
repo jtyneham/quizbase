@@ -21,7 +21,14 @@ const ERROR_HAPTIC = [82, 32, 82];
  */
 export function initOddOneOut(root, app, {
   visualRenderer = "dom",
-  visualRendererConfig = {}
+  visualRendererConfig = {},
+  blueprints = ODD_ONE_OUT_BLUEPRINTS,
+  controls = {
+    fullscreenButton: "#oddOneOutFullscreenButton",
+    fullscreenIcon: "#oddOneOutFullscreenIcon",
+    fullscreenLabel: "#oddOneOutFullscreenLabel",
+    homeButton: "#oddOneOutHomeButton"
+  }
 } = {}) {
   if (INITIALISED_ROOTS.has(root)) return;
   INITIALISED_ROOTS.add(root);
@@ -77,7 +84,7 @@ export function initOddOneOut(root, app, {
     isChangingSet = true;
     renderer.setPrimaryAction({ label: currentRound ? "Next Set" : "Generate Set", disabled: true });
     const round = chooseRound(
-      ODD_ONE_OUT_BLUEPRINTS,
+      blueprints,
       setting,
       recentBlueprintIds,
       Math.random,
@@ -99,12 +106,12 @@ export function initOddOneOut(root, app, {
   }
 
   bindFullscreenButton({
-    button: root.querySelector("#oddOneOutFullscreenButton"),
-    icon: root.querySelector("#oddOneOutFullscreenIcon"),
-    label: root.querySelector("#oddOneOutFullscreenLabel"),
+    button: root.querySelector(controls.fullscreenButton),
+    icon: root.querySelector(controls.fullscreenIcon),
+    label: root.querySelector(controls.fullscreenLabel),
     app
   });
-  root.querySelector("#oddOneOutHomeButton").addEventListener("click", () => {
+  root.querySelector(controls.homeButton).addEventListener("click", () => {
     app.haptic?.(12);
     app.showHome();
   });

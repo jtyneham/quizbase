@@ -4,7 +4,8 @@ import {
   POKEMON_ODD_ONE_OUT_BLUEPRINTS,
   POKEMON_ODD_ONE_OUT_FAMILY_TARGETS,
   POKEMON_ODD_ONE_OUT_PILOT_ROUNDS,
-  POKEMON_ODD_ONE_OUT_PILOT_TERMS
+  POKEMON_ODD_ONE_OUT_PILOT_TERMS,
+  createPokemonOddOneOutPilotBlueprints
 } from "../../data/odd-one-out-pokemon-knowledge.js";
 import {
   findSurfaceGiveaway,
@@ -128,4 +129,13 @@ test("every reviewed Pokémon pilot round passes the content validation matrix",
       explanation: round.explanation
     }), [], round.id);
   }
+});
+
+test("the reviewed Pokémon pilot adapts to the shared Odd One Out selector without duplicating data", () => {
+  const blueprints = createPokemonOddOneOutPilotBlueprints();
+
+  assert.equal(blueprints.length, POKEMON_ODD_ONE_OUT_PILOT_ROUNDS.length);
+  assert.ok(blueprints.every((blueprint) => blueprint.matches.length === 3 && blueprint.intruders.length === 1));
+  assert.ok(blueprints.every((blueprint) => [2, 3].includes(blueprint.difficulty)));
+  assert.ok(blueprints.every((blueprint) => /\nThe others are .+\.$/.test(blueprint.explanation())));
 });
