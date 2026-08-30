@@ -3,8 +3,10 @@ import { chooseRound } from "./odd-one-out-logic.js";
 import { bindFullscreenButton } from "./ui.js";
 
 const INITIALISED_ROOTS = new WeakSet();
-const RECENT_BLUEPRINT_LIMIT = 6;
-const RECENT_FAMILY_LIMIT = 3;
+// The expanded 14-family pool supports a longer cooldown without making a
+// Medium or Hard draw run out of suitable alternatives.
+const RECENT_BLUEPRINT_LIMIT = 8;
+const RECENT_FAMILY_LIMIT = 5;
 const SUCCESS_HAPTIC = [22, 35, 48];
 const ERROR_HAPTIC = [82, 32, 82];
 

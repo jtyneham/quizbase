@@ -22,7 +22,11 @@ export const ODD_ONE_OUT_FAMILY_TARGETS = {
   "time-language-and-symbols": { medium: 3, hard: 2 },
   "energy-environment-and-nature": { medium: 3, hard: 2 },
   "everyday-life": { medium: 4, hard: 3 },
-  "sport-and-games": { medium: 3, hard: 3 }
+  "sport-and-games": { medium: 3, hard: 3 },
+  "food-and-drink": { medium: 3, hard: 2 },
+  "technology-and-inventions": { medium: 3, hard: 2 },
+  "entertainment-and-media": { medium: 3, hard: 2 },
+  "history-and-civilization": { medium: 3, hard: 2 }
 };
 
 export const ODD_ONE_OUT_BLUEPRINTS = [
@@ -297,5 +301,125 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     matches: ["Carbon Dioxide", "Methane", "Nitrous Oxide", "Water Vapour", "Ozone"],
     intruders: ["Nitrogen", "Oxygen", "Argon", "Helium", "Neon"],
     explanation: (odd) => `${odd} is not a greenhouse gas. The other choices are greenhouse gases.`
+  },
+  {
+    id: "pasta-shapes-and-breads",
+    family: "food-and-drink",
+    difficulty: 2,
+    matches: ["Spaghetti", "Penne", "Fusilli", "Farfalle", "Rigatoni", "Tagliatelle"],
+    intruders: ["Bagel", "Croissant", "Pretzel", "Brioche", "Sourdough"],
+    explanation: (odd) => `${odd} is bread or pastry. The other choices are pasta shapes.`
+  },
+  {
+    id: "cooking-oils-and-vinegars",
+    family: "food-and-drink",
+    difficulty: 2,
+    matches: ["Olive Oil", "Sunflower Oil", "Sesame Oil", "Canola Oil", "Coconut Oil"],
+    intruders: ["Balsamic Vinegar", "Apple Cider Vinegar", "Rice Vinegar", "Malt Vinegar", "White Wine Vinegar"],
+    explanation: (odd) => `${odd} is vinegar. The other choices are cooking oils.`
+  },
+  {
+    id: "legumes-and-grains",
+    family: "food-and-drink",
+    difficulty: 3,
+    matches: ["Chickpea", "Lentil", "Black Bean", "Kidney Bean", "Split Pea", "Peanut"],
+    intruders: ["Rice", "Oats", "Wheat", "Barley", "Quinoa"],
+    explanation: (odd) => `${odd} is a grain. The other choices are legumes.`
+  },
+  {
+    id: "computer-input-devices",
+    family: "technology-and-inventions",
+    difficulty: 2,
+    matches: ["Keyboard", "Mouse", "Scanner", "Microphone", "Webcam", "Trackpad"],
+    intruders: ["Monitor", "Printer", "Speaker", "Projector", "Headphones"],
+    explanation: (odd) => `${odd} is an output device. The other choices are input devices.`
+  },
+  {
+    id: "web-browsers-and-search-engines",
+    family: "technology-and-inventions",
+    difficulty: 2,
+    matches: ["Chrome", "Firefox", "Safari", "Edge", "Opera", "Brave"],
+    intruders: ["Google", "Bing", "Yahoo", "DuckDuckGo", "Baidu"],
+    explanation: (odd) => `${odd} is a search engine. The other choices are web browsers.`
+  },
+  {
+    id: "image-and-audio-file-formats",
+    family: "technology-and-inventions",
+    difficulty: 3,
+    matches: ["JPEG", "PNG", "GIF", "SVG", "WebP"],
+    intruders: ["MP3", "WAV", "AAC", "FLAC", "OGG"],
+    explanation: (odd) => `${odd} is an audio format. The other choices are image formats.`
+  },
+  {
+    id: "film-directors-and-actors",
+    family: "entertainment-and-media",
+    difficulty: 2,
+    matches: ["Spielberg", "Nolan", "Scorsese", "Tarantino", "Bigelow", "Gerwig"],
+    intruders: ["Streep", "DiCaprio", "Washington", "Johansson", "Pitt"],
+    explanation: (odd) => `${odd} is an actor. The other choices are film directors.`
+  },
+  {
+    id: "bands-and-solo-artists",
+    family: "entertainment-and-media",
+    difficulty: 2,
+    matches: ["The Beatles", "Queen", "ABBA", "U2", "Coldplay", "Nirvana"],
+    intruders: ["Beyoncé", "Adele", "Madonna", "Prince", "Rihanna"],
+    explanation: (odd) => `${odd} is a solo artist. The other choices are bands.`
+  },
+  {
+    id: "fictional-detectives-and-authors",
+    family: "entertainment-and-media",
+    difficulty: 3,
+    matches: ["Sherlock Holmes", "Hercule Poirot", "Miss Marple", "Columbo", "Nancy Drew"],
+    intruders: ["Agatha Christie", "Arthur Conan Doyle", "Raymond Chandler", "P. D. James", "Dashiell Hammett"],
+    explanation: (odd) => `${odd} is an author. The other choices are fictional detectives.`
+  },
+  {
+    id: "ancient-wonders-and-modern-landmarks",
+    family: "history-and-civilization",
+    difficulty: 2,
+    matches: ["Great Pyramid", "Hanging Gardens", "Temple of Artemis", "Statue of Zeus", "Colossus of Rhodes", "Lighthouse of Alexandria"],
+    intruders: ["Eiffel Tower", "Big Ben", "Statue of Liberty", "Sydney Opera House", "Golden Gate Bridge"],
+    explanation: (odd) => `${odd} is a modern landmark. The other choices are ancient wonders.`
+  },
+  {
+    id: "historical-eras-and-empires",
+    family: "history-and-civilization",
+    difficulty: 2,
+    matches: ["Renaissance", "Enlightenment", "Middle Ages", "Victorian Era", "Industrial Revolution"],
+    intruders: ["Roman Empire", "Ottoman Empire", "Persian Empire", "Mongol Empire", "Aztec Empire"],
+    explanation: (odd) => `${odd} is an empire. The other choices are historical eras.`
+  },
+  {
+    id: "roman-emperors-and-greek-philosophers",
+    family: "history-and-civilization",
+    difficulty: 3,
+    matches: ["Augustus", "Nero", "Hadrian", "Claudius", "Marcus Aurelius"],
+    intruders: ["Socrates", "Plato", "Aristotle", "Epicurus", "Pythagoras"],
+    explanation: (odd) => `${odd} was a Greek philosopher. The other choices were Roman emperors.`
+  },
+  {
+    id: "tableware-and-cookware",
+    family: "everyday-life",
+    difficulty: 3,
+    matches: ["Plate", "Bowl", "Mug", "Glass", "Saucer", "Serving Dish"],
+    intruders: ["Saucepan", "Frying Pan", "Wok", "Stockpot", "Casserole Dish"],
+    explanation: (odd) => `${odd} is cookware. The other choices are tableware.`
+  },
+  {
+    id: "tennis-grand-slams-and-other-tournaments",
+    family: "sport-and-games",
+    difficulty: 3,
+    matches: ["Australian Open", "French Open", "Wimbledon", "US Open"],
+    intruders: ["Indian Wells", "Miami Open", "Davis Cup", "ATP Finals", "Laver Cup"],
+    explanation: (odd) => `${odd} is not a tennis Grand Slam. The other choices are.`
+  },
+  {
+    id: "upper-and-lower-limb-bones",
+    family: "human-body-and-health",
+    difficulty: 3,
+    matches: ["Humerus", "Radius", "Ulna", "Scapula", "Clavicle"],
+    intruders: ["Femur", "Tibia", "Fibula", "Patella", "Talus"],
+    explanation: (odd) => `${odd} is a lower-limb bone. The other choices are upper-limb bones.`
   }
 ];
