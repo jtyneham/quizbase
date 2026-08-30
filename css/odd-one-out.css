@@ -176,6 +176,7 @@
   min-height: 2.6em;
   padding: 0;
   background: transparent;
+  box-shadow: none;
 }
 .odd-one-out-feedback[data-state="correct"] { color: var(--qb-color-success); }
 .odd-one-out-feedback[data-state="wrong"] { color: var(--qb-color-danger); }
