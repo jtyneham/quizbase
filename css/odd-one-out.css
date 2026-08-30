@@ -33,7 +33,7 @@
   place-items: center;
   padding: 0;
   border: 0;
-  border-radius: var(--qb-radius-control);
+  border-radius: 0.65rem;
   background: var(--qb-color-surface-muted);
   box-shadow: var(--qb-shadow-control);
   cursor: pointer;
@@ -47,8 +47,8 @@
 .odd-one-out-difficulty {
   display: inline-flex;
   align-items: center;
-  min-height: var(--ooo-control-height);
-  border-radius: var(--qb-radius-control);
+  min-height: 2.75rem;
+  border-radius: 0.65rem;
   gap: 0;
   padding: 0;
   background: var(--qb-picker-control-bg);
@@ -57,6 +57,7 @@
 }
 
 .odd-one-out-difficulty button {
+  align-self: stretch;
   min-width: clamp(3.5rem, 15vw, 4.5rem);
   padding: 0.35rem 0.55rem;
   border: 0;
@@ -68,13 +69,13 @@
 }
 
 .odd-one-out-difficulty button:first-child {
-  border-radius: var(--qb-radius-control) 0 0 var(--qb-radius-control);
+  border-radius: 0.65rem 0 0 0.65rem;
 }
 
 .odd-one-out-difficulty button:nth-child(2) { border-radius: 0; }
 
 .odd-one-out-difficulty button:last-child {
-  border-radius: 0 var(--qb-radius-control) var(--qb-radius-control) 0;
+  border-radius: 0 0.65rem 0.65rem 0;
 }
 
 .odd-one-out-difficulty button.active {
