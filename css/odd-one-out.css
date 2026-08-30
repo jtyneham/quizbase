@@ -110,6 +110,10 @@
 }
 
 .odd-one-out-cards {
+  /* Keep the cards in the flexible second row even after the pre-game
+     prompt is hidden. Without explicit placement, CSS auto-placement moves
+     the feedback panel into this row and leaves the cards at their minimum. */
+  grid-row: 2;
   min-height: 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -155,6 +159,7 @@
 @keyframes odd-one-out-set-enter { from { opacity: 0; transform: translateY(0.35rem) scale(.98); } to { opacity: 1; transform: none; } }
 
 .odd-one-out-feedback {
+  grid-row: 3;
   width: min(100%, 34rem);
   min-height: 2.75rem;
   margin: 0;
@@ -183,6 +188,7 @@
 .odd-one-out-feedback.set-leaving { animation: odd-one-out-set-leave 110ms var(--qb-ease-standard) forwards; }
 
 .odd-one-out-next {
+  grid-row: 4;
   width: min(100%, 22rem);
   min-height: 3.65rem;
   justify-self: center;
