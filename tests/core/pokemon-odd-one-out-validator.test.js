@@ -6,6 +6,7 @@ import {
   POKEMON_ODD_ONE_OUT_ACTIVE_POOLS,
   POKEMON_ODD_ONE_OUT_ACTIVE_TERMS,
   POKEMON_ODD_ONE_OUT_FIRST_BATCH_POOLS,
+  POKEMON_ODD_ONE_OUT_HARD_BATCH_POOLS,
 } from "../../data/odd-one-out-pokemon-knowledge.js";
 import { buildPokemonOddOneOutRoundBlueprints } from "../../js/core/pokemon-odd-one-out-round-builder.js";
 import {
@@ -113,16 +114,20 @@ test("candidate validation enforces the approved two-line explanation format", (
   assert.ok(errors.includes("explanation must use the approved two-line format"));
 });
 
-test("the reviewed Pokémon pilot and first batch build validated shared-engine blueprints without duplicating rounds", () => {
+test("the reviewed Pokémon content banks build many validated shared-engine combinations", () => {
   const { blueprints, rejectedCandidates } = buildPokemonOddOneOutRoundBlueprints({
     contracts: POKEMON_ODD_ONE_OUT_BLUEPRINTS,
     terms: POKEMON_ODD_ONE_OUT_ACTIVE_TERMS,
     pools: POKEMON_ODD_ONE_OUT_ACTIVE_POOLS
   });
 
-  assert.equal(blueprints.length, POKEMON_ODD_ONE_OUT_ACTIVE_POOLS.length);
-  assert.equal(POKEMON_ODD_ONE_OUT_FIRST_BATCH_POOLS.length, 7);
-  assert.deepEqual(rejectedCandidates, []);
+  assert.ok(blueprints.length > POKEMON_ODD_ONE_OUT_ACTIVE_POOLS.length);
+  assert.equal(POKEMON_ODD_ONE_OUT_FIRST_BATCH_POOLS.length, 6);
+  assert.equal(POKEMON_ODD_ONE_OUT_HARD_BATCH_POOLS.length, 5);
+  // Expanded banks intentionally contain some structurally plausible but
+  // unfair trios. They must be reported here and never promoted to play.
+  assert.ok(rejectedCandidates.length > 0);
+  assert.ok(rejectedCandidates.every((candidate) => candidate.errors.length > 0));
   assert.ok(blueprints.every((blueprint) => blueprint.matches.length === 3 && blueprint.intruders.length === 1));
   assert.ok(blueprints.every((blueprint) => [2, 3].includes(blueprint.difficulty)));
   assert.ok(blueprints.every((blueprint) => blueprint.cooldownId));
