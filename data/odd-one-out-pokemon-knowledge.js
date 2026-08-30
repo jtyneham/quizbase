@@ -775,7 +775,7 @@ export const POKEMON_ODD_ONE_OUT_HARD_BATCH_TERMS = [
   }),
   approvedHardBatchTerm({
     id: "species-dragonair", label: "Dragonair", kind: "species",
-    facts: { evolutionStage: "middle", typeKey: "dragon", introductionGeneration: 1 },
+    facts: { evolutionStage: "middle", typeKey: "dragon", evolutionMethod: "level", introductionGeneration: 1 },
     primary: "https://pokeapi.co/api/v2/pokemon/dragonair/", crossCheck: "https://pokemondb.net/pokedex/dragonair"
   }),
   approvedHardBatchTerm({
@@ -873,11 +873,47 @@ export const POKEMON_ODD_ONE_OUT_COMBINATORIAL_TERMS = [
   })
 ];
 
+/** Second expansion pass for the currently thinnest approved relationships. */
+export const POKEMON_ODD_ONE_OUT_SECOND_COMBINATORIAL_TERMS = [
+  approvedFirstBatchTerm({ id: "move-smokescreen", label: "Smokescreen", kind: "move", facts: { type: "normal", damageClass: "status", effectGroup: "accuracy-lowering" }, primary: "https://pokeapi.co/api/v2/move/smokescreen/", crossCheck: "https://pokemondb.net/move/smokescreen" }),
+  approvedFirstBatchTerm({ id: "move-kinesis", label: "Kinesis", kind: "move", facts: { type: "psychic", damageClass: "status", effectGroup: "accuracy-lowering" }, primary: "https://pokeapi.co/api/v2/move/kinesis/", crossCheck: "https://pokemondb.net/move/kinesis" }),
+  approvedFirstBatchTerm({ id: "move-growl", label: "Growl", kind: "move", facts: { type: "normal", damageClass: "status", effectGroup: "attack-lowering" }, primary: "https://pokeapi.co/api/v2/move/growl/", crossCheck: "https://pokemondb.net/move/growl" }),
+  approvedFirstBatchTerm({ id: "move-tail-whip", label: "Tail Whip", kind: "move", facts: { type: "normal", damageClass: "status", effectGroup: "defense-lowering" }, primary: "https://pokeapi.co/api/v2/move/tail-whip/", crossCheck: "https://pokemondb.net/move/tail-whip" }),
+  approvedHardBatchTerm({ id: "move-zen-headbutt", label: "Zen Headbutt", kind: "move", facts: { type: "psychic", damageClass: "physical", fixedBasePower: 80, effectGroup: "flinch-chance" }, primary: "https://pokeapi.co/api/v2/move/zen-headbutt/", crossCheck: "https://pokemondb.net/move/zen-headbutt" }),
+  approvedHardBatchTerm({ id: "move-x-scissor", label: "X-Scissor", kind: "move", facts: { type: "bug", damageClass: "physical", fixedBasePower: 80, effectGroup: "direct" }, primary: "https://pokeapi.co/api/v2/move/x-scissor/", crossCheck: "https://pokemondb.net/move/x-scissor" }),
+  approvedHardBatchTerm({ id: "move-rock-slide", label: "Rock Slide", kind: "move", facts: { type: "rock", damageClass: "physical", fixedBasePower: 75, effectGroup: "flinch-chance" }, primary: "https://pokeapi.co/api/v2/move/rock-slide/", crossCheck: "https://pokemondb.net/move/rock-slide" }),
+  approvedHardBatchTerm({ id: "ability-cute-charm", label: "Cute Charm", kind: "ability", facts: { effectGroup: "contact-punishment", contactEffect: "infatuation", introductionGeneration: 3 }, primary: "https://pokeapi.co/api/v2/ability/cute-charm/", crossCheck: "https://pokemondb.net/ability/cute-charm" }),
+  approvedHardBatchTerm({ id: "ability-poison-point", label: "Poison Point", kind: "ability", facts: { effectGroup: "contact-punishment", contactEffect: "poison", introductionGeneration: 3 }, primary: "https://pokeapi.co/api/v2/ability/poison-point/", crossCheck: "https://pokemondb.net/ability/poison-point" }),
+  approvedHardBatchTerm({ id: "ability-gooey", label: "Gooey", kind: "ability", facts: { effectGroup: "contact-punishment", contactEffect: "speed-reduction", introductionGeneration: 6 }, primary: "https://pokeapi.co/api/v2/ability/gooey/", crossCheck: "https://pokemondb.net/ability/gooey" }),
+  approvedHardBatchTerm({ id: "ability-storm-drain", label: "Storm Drain", kind: "ability", facts: { effectGroup: "type-immunity", blockedType: "water", introductionGeneration: 4 }, primary: "https://pokeapi.co/api/v2/ability/storm-drain/", crossCheck: "https://pokemondb.net/ability/storm-drain" }),
+  approvedHardBatchTerm({ id: "ability-volt-absorb", label: "Volt Absorb", kind: "ability", facts: { effectGroup: "type-immunity", blockedType: "electric", introductionGeneration: 3 }, primary: "https://pokeapi.co/api/v2/ability/volt-absorb/", crossCheck: "https://pokemondb.net/ability/volt-absorb" }),
+  approvedFirstBatchTerm({ id: "species-togepi", label: "Togepi", kind: "species", facts: { speciesClass: "baby", evolutionFamily: "togepi", introductionGeneration: 2 }, primary: "https://pokeapi.co/api/v2/pokemon/togepi/", crossCheck: "https://pokemondb.net/pokedex/togepi" }),
+  approvedFirstBatchTerm({ id: "species-elekid", label: "Elekid", kind: "species", facts: { speciesClass: "baby", evolutionFamily: "electabuzz", introductionGeneration: 2 }, primary: "https://pokeapi.co/api/v2/pokemon/elekid/", crossCheck: "https://pokemondb.net/pokedex/elekid" }),
+  approvedFirstBatchTerm({ id: "species-magby", label: "Magby", kind: "species", facts: { speciesClass: "baby", evolutionFamily: "magmar", introductionGeneration: 2 }, primary: "https://pokeapi.co/api/v2/pokemon/magby/", crossCheck: "https://pokemondb.net/pokedex/magby" }),
+  approvedFirstBatchTerm({ id: "species-azurill", label: "Azurill", kind: "species", facts: { speciesClass: "baby", evolutionFamily: "marill", introductionGeneration: 3 }, primary: "https://pokeapi.co/api/v2/pokemon/azurill/", crossCheck: "https://pokemondb.net/pokedex/azurill" }),
+  approvedFirstBatchTerm({ id: "species-eevee", label: "Eevee", kind: "species", facts: { speciesClass: "regular", evolutionFamily: "eevee", introductionGeneration: 1 }, primary: "https://pokeapi.co/api/v2/pokemon/eevee/", crossCheck: "https://pokemondb.net/pokedex/eevee" }),
+  approvedFirstBatchTerm({ id: "species-lucario", label: "Lucario", kind: "species", facts: { speciesClass: "regular", evolutionFamily: "lucario", introductionGeneration: 4 }, primary: "https://pokeapi.co/api/v2/pokemon/lucario/", crossCheck: "https://pokemondb.net/pokedex/lucario" }),
+  approvedFirstBatchTerm({ id: "species-nidoking", label: "Nidoking", kind: "species", facts: { primaryType: "poison", evolutionFamily: "nidoran", evolutionMethod: "stone", introductionGeneration: 1 }, primary: "https://pokeapi.co/api/v2/pokemon/nidoking/", crossCheck: "https://pokemondb.net/pokedex/nidoking" }),
+  approvedFirstBatchTerm({ id: "species-clefable", label: "Clefable", kind: "species", facts: { primaryType: "fairy", evolutionFamily: "clefairy", evolutionMethod: "stone", introductionGeneration: 1 }, primary: "https://pokeapi.co/api/v2/pokemon/clefable/", crossCheck: "https://pokemondb.net/pokedex/clefable" }),
+  approvedFirstBatchTerm({ id: "species-metang", label: "Metang", kind: "species", facts: { primaryType: "steel", evolutionFamily: "beldum", evolutionMethod: "level", evolutionStage: "middle", typeKey: "steel-psychic", introductionGeneration: 3 }, primary: "https://pokeapi.co/api/v2/pokemon/metang/", crossCheck: "https://pokemondb.net/pokedex/metang" }),
+  approvedFirstBatchTerm({ id: "species-pupitar", label: "Pupitar", kind: "species", facts: { primaryType: "rock", evolutionFamily: "larvitar", evolutionMethod: "level", evolutionStage: "middle", typeKey: "rock-ground", introductionGeneration: 2 }, primary: "https://pokeapi.co/api/v2/pokemon/pupitar/", crossCheck: "https://pokemondb.net/pokedex/pupitar" }),
+  approvedHardBatchTerm({ id: "species-bagon", label: "Bagon", kind: "species", facts: { evolutionStage: "base", typeKey: "dragon", introductionGeneration: 3 }, primary: "https://pokeapi.co/api/v2/pokemon/bagon/", crossCheck: "https://pokemondb.net/pokedex/bagon" }),
+  approvedHardBatchTerm({ id: "species-larvitar", label: "Larvitar", kind: "species", facts: { evolutionStage: "base", typeKey: "rock-ground", introductionGeneration: 2 }, primary: "https://pokeapi.co/api/v2/pokemon/larvitar/", crossCheck: "https://pokemondb.net/pokedex/larvitar" }),
+  approvedHardBatchTerm({ id: "species-deino", label: "Deino", kind: "species", facts: { evolutionStage: "base", typeKey: "dark-dragon", introductionGeneration: 5 }, primary: "https://pokeapi.co/api/v2/pokemon/deino/", crossCheck: "https://pokemondb.net/pokedex/deino" }),
+  approvedHardBatchTerm({ id: "species-shelgon", label: "Shelgon", kind: "species", facts: { evolutionStage: "middle", typeKey: "dragon", introductionGeneration: 3 }, primary: "https://pokeapi.co/api/v2/pokemon/shelgon/", crossCheck: "https://pokemondb.net/pokedex/shelgon" }),
+  approvedFirstBatchTerm({ id: "type-steel", label: "Steel", kind: "type", facts: { weakToType: ["fire", "fighting", "ground"], typeCategory: "steel" }, primary: "https://pokeapi.co/api/v2/type/steel/", crossCheck: "https://pokemondb.net/type/steel" }),
+  approvedFirstBatchTerm({ id: "type-bug", label: "Bug", kind: "type", facts: { weakToType: ["fire", "flying", "rock"], typeCategory: "bug" }, primary: "https://pokeapi.co/api/v2/type/bug/", crossCheck: "https://pokemondb.net/type/bug" }),
+  approvedHardBatchTerm({ id: "item-aspear-berry", label: "Aspear Berry", kind: "item", facts: { itemEffectGroup: "status-cure", curedCondition: "freeze" }, primary: "https://pokeapi.co/api/v2/item/aspear-berry/", crossCheck: "https://pokemondb.net/item/aspear-berry" }),
+  approvedHardBatchTerm({ id: "item-persim-berry", label: "Persim Berry", kind: "item", facts: { itemEffectGroup: "status-cure", curedCondition: "confusion" }, primary: "https://pokeapi.co/api/v2/item/persim-berry/", crossCheck: "https://pokemondb.net/item/persim-berry" }),
+  approvedHardBatchTerm({ id: "item-figy-berry", label: "Figy Berry", kind: "item", facts: { itemEffectGroup: "hp-recovery" }, primary: "https://pokeapi.co/api/v2/item/figy-berry/", crossCheck: "https://pokemondb.net/item/figy-berry" })
+];
+
 export const POKEMON_ODD_ONE_OUT_ACTIVE_TERMS = [
   ...POKEMON_ODD_ONE_OUT_PILOT_TERMS,
   ...POKEMON_ODD_ONE_OUT_FIRST_BATCH_TERMS,
   ...POKEMON_ODD_ONE_OUT_HARD_BATCH_TERMS,
-  ...POKEMON_ODD_ONE_OUT_COMBINATORIAL_TERMS
+  ...POKEMON_ODD_ONE_OUT_COMBINATORIAL_TERMS,
+  ...POKEMON_ODD_ONE_OUT_SECOND_COMBINATORIAL_TERMS
 ];
 
 /**
@@ -918,8 +954,8 @@ export const POKEMON_ODD_ONE_OUT_PILOT_POOLS = [
   {
     id: "pilot-status-curing-berries",
     blueprintId: "status-curing-berries",
-    matchingTermIds: ["item-pecha-berry", "item-cheri-berry", "item-rawst-berry", "item-lum-berry", "item-chesto-berry"],
-    intruderTermIds: ["item-oran-berry", "item-sitrus-berry"],
+    matchingTermIds: ["item-pecha-berry", "item-cheri-berry", "item-rawst-berry", "item-lum-berry", "item-chesto-berry", "item-aspear-berry", "item-persim-berry"],
+    intruderTermIds: ["item-oran-berry", "item-sitrus-berry", "item-figy-berry"],
     relationValue: "status-cure",
     oddDescription: "an HP-restoring Berry",
     matchDescription: "status-curing Berries"
@@ -948,8 +984,8 @@ export const POKEMON_ODD_ONE_OUT_FIRST_BATCH_POOLS = [
   {
     id: "accuracy-lowering-moves",
     blueprintId: "accuracy-lowering-moves",
-    matchingTermIds: ["move-sand-attack", "move-octazooka", "move-mirror-shot"],
-    intruderTermIds: ["move-acid-spray"],
+    matchingTermIds: ["move-sand-attack", "move-octazooka", "move-mirror-shot", "move-smokescreen", "move-kinesis"],
+    intruderTermIds: ["move-acid-spray", "move-growl", "move-tail-whip"],
     relationValue: "accuracy-lowering",
     oddDescription: "a Special Defense-lowering Move",
     matchDescription: "accuracy-lowering Moves"
@@ -957,8 +993,8 @@ export const POKEMON_ODD_ONE_OUT_FIRST_BATCH_POOLS = [
   {
     id: "baby-pokemon-and-regular-species",
     blueprintId: "baby-pokemon-classification",
-    matchingTermIds: ["species-pichu", "species-cleffa", "species-riolu"],
-    intruderTermIds: ["species-pikachu"],
+    matchingTermIds: ["species-pichu", "species-cleffa", "species-riolu", "species-togepi", "species-elekid", "species-magby", "species-azurill"],
+    intruderTermIds: ["species-pikachu", "species-eevee", "species-lucario"],
     relationValue: "baby",
     oddDescription: "not a baby Pokémon",
     matchDescription: "baby Pokémon"
@@ -966,8 +1002,8 @@ export const POKEMON_ODD_ONE_OUT_FIRST_BATCH_POOLS = [
   {
     id: "stone-evolution-and-level-evolution",
     blueprintId: "evolution-method",
-    matchingTermIds: ["species-vaporeon", "species-ninetales", "species-victreebel"],
-    intruderTermIds: ["species-charmeleon"],
+    matchingTermIds: ["species-vaporeon", "species-ninetales", "species-victreebel", "species-nidoking", "species-clefable"],
+    intruderTermIds: ["species-charmeleon", "species-dragonair", "species-metang", "species-pupitar"],
     relationValue: "stone",
     oddDescription: "a Pokémon that evolves by level",
     matchDescription: "Pokémon that evolve with Evolution Stones"
@@ -975,8 +1011,8 @@ export const POKEMON_ODD_ONE_OUT_FIRST_BATCH_POOLS = [
   {
     id: "ground-weak-and-ground-immune-types",
     blueprintId: "type-weaknesses",
-    matchingTermIds: ["type-fire", "type-electric", "type-poison", "type-rock"],
-    intruderTermIds: ["type-flying", "type-grass"],
+    matchingTermIds: ["type-fire", "type-electric", "type-poison", "type-rock", "type-steel"],
+    intruderTermIds: ["type-flying", "type-grass", "type-bug"],
     relationValue: "ground",
     oddDescription: "not weak to Ground",
     matchDescription: "weak to Ground"
@@ -987,8 +1023,8 @@ export const POKEMON_ODD_ONE_OUT_HARD_BATCH_POOLS = [
   {
     id: "eighty-power-moves-and-seventy-five-power-move",
     blueprintId: "fixed-base-power",
-    matchingTermIds: ["move-shadow-ball", "move-crunch", "move-flash-cannon"],
-    intruderTermIds: ["move-air-slash"],
+    matchingTermIds: ["move-shadow-ball", "move-crunch", "move-flash-cannon", "move-zen-headbutt", "move-x-scissor"],
+    intruderTermIds: ["move-air-slash", "move-rock-slide"],
     relationValue: 80,
     oddDescription: "a 75-power Move",
     matchDescription: "80-power Moves"
@@ -1005,7 +1041,7 @@ export const POKEMON_ODD_ONE_OUT_HARD_BATCH_POOLS = [
   {
     id: "type-immunity-abilities-and-stat-lowering-ability",
     blueprintId: "type-immunity-abilities",
-    matchingTermIds: ["ability-levitate", "ability-water-absorb", "ability-sap-sipper", "ability-flash-fire", "ability-motor-drive"],
+    matchingTermIds: ["ability-levitate", "ability-water-absorb", "ability-sap-sipper", "ability-flash-fire", "ability-motor-drive", "ability-storm-drain", "ability-volt-absorb"],
     intruderTermIds: ["ability-intimidate", "ability-static"],
     relationValue: "type-immunity",
     oddDescription: "a stat-lowering Ability",
@@ -1014,7 +1050,7 @@ export const POKEMON_ODD_ONE_OUT_HARD_BATCH_POOLS = [
   {
     id: "contact-punishing-abilities-and-type-immunity-ability",
     blueprintId: "contact-punishing-abilities",
-    matchingTermIds: ["ability-static", "ability-flame-body", "ability-iron-barbs"],
+    matchingTermIds: ["ability-static", "ability-flame-body", "ability-iron-barbs", "ability-cute-charm", "ability-poison-point", "ability-gooey"],
     intruderTermIds: ["ability-levitate"],
     relationValue: "contact-punishment",
     oddDescription: "an Ability that blocks Ground-type Moves",
@@ -1023,8 +1059,8 @@ export const POKEMON_ODD_ONE_OUT_HARD_BATCH_POOLS = [
   {
     id: "base-stage-pseudo-legendaries-and-middle-stage",
     blueprintId: "pseudo-legendary-evolution-stage",
-    matchingTermIds: ["species-dratini", "species-beldum", "species-gible"],
-    intruderTermIds: ["species-dragonair"],
+    matchingTermIds: ["species-dratini", "species-beldum", "species-gible", "species-bagon", "species-larvitar", "species-deino"],
+    intruderTermIds: ["species-dragonair", "species-metang", "species-pupitar", "species-shelgon"],
     relationValue: "base",
     oddDescription: "a middle-stage Pokémon",
     matchDescription: "first-stage pseudo-legendary Pokémon"
