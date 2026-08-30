@@ -7,6 +7,7 @@ import {
   POKEMON_ODD_ONE_OUT_ACTIVE_TERMS,
   POKEMON_ODD_ONE_OUT_FIRST_BATCH_POOLS,
   POKEMON_ODD_ONE_OUT_HARD_BATCH_POOLS,
+  POKEMON_ODD_ONE_OUT_FINAL_RELATIONSHIP_POOLS,
 } from "../../data/odd-one-out-pokemon-knowledge.js";
 import { buildPokemonOddOneOutRoundBlueprints } from "../../js/core/pokemon-odd-one-out-round-builder.js";
 import {
@@ -124,6 +125,11 @@ test("the reviewed Pokémon content banks build many validated shared-engine com
   assert.ok(blueprints.length > POKEMON_ODD_ONE_OUT_ACTIVE_POOLS.length);
   assert.equal(POKEMON_ODD_ONE_OUT_FIRST_BATCH_POOLS.length, 6);
   assert.equal(POKEMON_ODD_ONE_OUT_HARD_BATCH_POOLS.length, 5);
+  assert.equal(POKEMON_ODD_ONE_OUT_FINAL_RELATIONSHIP_POOLS.length, 4);
+  assert.deepEqual(
+    new Set(POKEMON_ODD_ONE_OUT_ACTIVE_POOLS.map((pool) => pool.blueprintId)),
+    new Set(POKEMON_ODD_ONE_OUT_BLUEPRINTS.map((blueprint) => blueprint.id))
+  );
   // Expanded banks intentionally contain some structurally plausible but
   // unfair trios. They must be reported here and never promoted to play.
   assert.ok(rejectedCandidates.length > 0);

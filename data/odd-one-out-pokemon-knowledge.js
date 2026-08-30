@@ -760,7 +760,7 @@ export const POKEMON_ODD_ONE_OUT_HARD_BATCH_TERMS = [
   }),
   approvedHardBatchTerm({
     id: "species-dratini", label: "Dratini", kind: "species",
-    facts: { evolutionStage: "base", typeKey: "dragon", introductionGeneration: 1 },
+    facts: { primaryType: "dragon", evolutionStage: "base", typeKey: "dragon", evolutionLineShape: "linear", introductionGeneration: 1 },
     primary: "https://pokeapi.co/api/v2/pokemon/dratini/", crossCheck: "https://pokemondb.net/pokedex/dratini"
   }),
   approvedHardBatchTerm({
@@ -891,7 +891,7 @@ export const POKEMON_ODD_ONE_OUT_SECOND_COMBINATORIAL_TERMS = [
   approvedFirstBatchTerm({ id: "species-elekid", label: "Elekid", kind: "species", facts: { speciesClass: "baby", evolutionFamily: "electabuzz", introductionGeneration: 2 }, primary: "https://pokeapi.co/api/v2/pokemon/elekid/", crossCheck: "https://pokemondb.net/pokedex/elekid" }),
   approvedFirstBatchTerm({ id: "species-magby", label: "Magby", kind: "species", facts: { speciesClass: "baby", evolutionFamily: "magmar", introductionGeneration: 2 }, primary: "https://pokeapi.co/api/v2/pokemon/magby/", crossCheck: "https://pokemondb.net/pokedex/magby" }),
   approvedFirstBatchTerm({ id: "species-azurill", label: "Azurill", kind: "species", facts: { speciesClass: "baby", evolutionFamily: "marill", introductionGeneration: 3 }, primary: "https://pokeapi.co/api/v2/pokemon/azurill/", crossCheck: "https://pokemondb.net/pokedex/azurill" }),
-  approvedFirstBatchTerm({ id: "species-eevee", label: "Eevee", kind: "species", facts: { speciesClass: "regular", evolutionFamily: "eevee", introductionGeneration: 1 }, primary: "https://pokeapi.co/api/v2/pokemon/eevee/", crossCheck: "https://pokemondb.net/pokedex/eevee" }),
+  approvedFirstBatchTerm({ id: "species-eevee", label: "Eevee", kind: "species", facts: { primaryType: "normal", speciesClass: "regular", evolutionFamily: "eevee", evolutionLineShape: "branched", introductionGeneration: 1 }, primary: "https://pokeapi.co/api/v2/pokemon/eevee/", crossCheck: "https://pokemondb.net/pokedex/eevee" }),
   approvedFirstBatchTerm({ id: "species-lucario", label: "Lucario", kind: "species", facts: { speciesClass: "regular", evolutionFamily: "lucario", introductionGeneration: 4 }, primary: "https://pokeapi.co/api/v2/pokemon/lucario/", crossCheck: "https://pokemondb.net/pokedex/lucario" }),
   approvedFirstBatchTerm({ id: "species-nidoking", label: "Nidoking", kind: "species", facts: { primaryType: "poison", evolutionFamily: "nidoran", evolutionMethod: "stone", introductionGeneration: 1 }, primary: "https://pokeapi.co/api/v2/pokemon/nidoking/", crossCheck: "https://pokemondb.net/pokedex/nidoking" }),
   approvedFirstBatchTerm({ id: "species-clefable", label: "Clefable", kind: "species", facts: { primaryType: "fairy", evolutionFamily: "clefairy", evolutionMethod: "stone", introductionGeneration: 1 }, primary: "https://pokeapi.co/api/v2/pokemon/clefable/", crossCheck: "https://pokemondb.net/pokedex/clefable" }),
@@ -908,12 +908,30 @@ export const POKEMON_ODD_ONE_OUT_SECOND_COMBINATORIAL_TERMS = [
   approvedHardBatchTerm({ id: "item-figy-berry", label: "Figy Berry", kind: "item", facts: { itemEffectGroup: "hp-recovery" }, primary: "https://pokeapi.co/api/v2/item/figy-berry/", crossCheck: "https://pokemondb.net/item/figy-berry" })
 ];
 
+/**
+ * Final planned relationships. This pass prioritises distinct reasoning
+ * patterns over simply enlarging existing term banks: attack class, status
+ * prevention, evolution-tree shape, and held-item evolution mechanics.
+ */
+export const POKEMON_ODD_ONE_OUT_FINAL_RELATIONSHIP_TERMS = [
+  approvedHardBatchTerm({ id: "ability-water-veil", label: "Water Veil", kind: "ability", facts: { effectGroup: "status-prevention", blockedCondition: "burn", introductionGeneration: 3 }, primary: "https://pokeapi.co/api/v2/ability/water-veil/", crossCheck: "https://pokemondb.net/ability/water-veil" }),
+  approvedHardBatchTerm({ id: "ability-limber", label: "Limber", kind: "ability", facts: { effectGroup: "status-prevention", blockedCondition: "paralysis", introductionGeneration: 3 }, primary: "https://pokeapi.co/api/v2/ability/limber/", crossCheck: "https://pokemondb.net/ability/limber" }),
+  approvedHardBatchTerm({ id: "ability-sweet-veil", label: "Sweet Veil", kind: "ability", facts: { effectGroup: "status-prevention", blockedCondition: "sleep", introductionGeneration: 6 }, primary: "https://pokeapi.co/api/v2/ability/sweet-veil/", crossCheck: "https://pokemondb.net/ability/sweet-veil" }),
+  approvedHardBatchTerm({ id: "species-gloom", label: "Gloom", kind: "species", facts: { primaryType: "grass", evolutionFamily: "oddish", evolutionLineShape: "branched", introductionGeneration: 1 }, primary: "https://pokeapi.co/api/v2/pokemon/gloom/", crossCheck: "https://pokemondb.net/pokedex/gloom" }),
+  approvedHardBatchTerm({ id: "species-kirlia", label: "Kirlia", kind: "species", facts: { primaryType: "psychic", evolutionFamily: "ralts", evolutionLineShape: "branched", introductionGeneration: 3 }, primary: "https://pokeapi.co/api/v2/pokemon/kirlia/", crossCheck: "https://pokemondb.net/pokedex/kirlia" }),
+  approvedHardBatchTerm({ id: "item-metal-coat", label: "Metal Coat", kind: "item", facts: { evolutionItem: "held-evolution", itemEffectGroup: "steel-evolution", evolutionMethod: "trade" }, primary: "https://pokeapi.co/api/v2/item/metal-coat/", crossCheck: "https://pokemondb.net/item/metal-coat" }),
+  approvedHardBatchTerm({ id: "item-oval-stone", label: "Oval Stone", kind: "item", facts: { evolutionItem: "held-evolution", itemEffectGroup: "happiny-evolution", evolutionMethod: "level-day" }, primary: "https://pokeapi.co/api/v2/item/oval-stone/", crossCheck: "https://pokemondb.net/item/oval-stone" }),
+  approvedHardBatchTerm({ id: "item-razor-claw", label: "Razor Claw", kind: "item", facts: { evolutionItem: "held-evolution", itemEffectGroup: "sneasel-evolution", evolutionMethod: "level-night" }, primary: "https://pokeapi.co/api/v2/item/razor-claw/", crossCheck: "https://pokemondb.net/item/razor-claw" }),
+  approvedHardBatchTerm({ id: "item-leftovers", label: "Leftovers", kind: "item", facts: { evolutionItem: "battle-item", itemEffectGroup: "hp-recovery", evolutionMethod: "none" }, primary: "https://pokeapi.co/api/v2/item/leftovers/", crossCheck: "https://pokemondb.net/item/leftovers" })
+];
+
 export const POKEMON_ODD_ONE_OUT_ACTIVE_TERMS = [
   ...POKEMON_ODD_ONE_OUT_PILOT_TERMS,
   ...POKEMON_ODD_ONE_OUT_FIRST_BATCH_TERMS,
   ...POKEMON_ODD_ONE_OUT_HARD_BATCH_TERMS,
   ...POKEMON_ODD_ONE_OUT_COMBINATORIAL_TERMS,
-  ...POKEMON_ODD_ONE_OUT_SECOND_COMBINATORIAL_TERMS
+  ...POKEMON_ODD_ONE_OUT_SECOND_COMBINATORIAL_TERMS,
+  ...POKEMON_ODD_ONE_OUT_FINAL_RELATIONSHIP_TERMS
 ];
 
 /**
@@ -1067,9 +1085,50 @@ export const POKEMON_ODD_ONE_OUT_HARD_BATCH_POOLS = [
   },
 ];
 
+/** The final four planned relationships, each independently reviewable. */
+export const POKEMON_ODD_ONE_OUT_FINAL_RELATIONSHIP_POOLS = [
+  {
+    id: "special-moves-and-physical-move",
+    blueprintId: "move-damage-class",
+    matchingTermIds: ["move-thunderbolt", "move-flamethrower", "move-shadow-ball"],
+    intruderTermIds: ["move-earthquake"],
+    relationValue: "special",
+    oddDescription: "a physical Move",
+    matchDescription: "special Moves"
+  },
+  {
+    id: "status-prevention-abilities-and-stat-lowering-ability",
+    blueprintId: "status-prevention-abilities",
+    matchingTermIds: ["ability-water-veil", "ability-limber", "ability-sweet-veil"],
+    intruderTermIds: ["ability-intimidate"],
+    relationValue: "status-prevention",
+    oddDescription: "a stat-lowering Ability",
+    matchDescription: "Abilities that prevent a status condition"
+  },
+  {
+    id: "branched-evolution-lines-and-linear-line",
+    blueprintId: "branched-evolution-lines",
+    matchingTermIds: ["species-eevee", "species-gloom", "species-kirlia"],
+    intruderTermIds: ["species-dratini"],
+    relationValue: "branched",
+    oddDescription: "a Pokémon with a linear evolution line",
+    matchDescription: "Pokémon with branched evolution lines"
+  },
+  {
+    id: "held-evolution-items-and-battle-item",
+    blueprintId: "evolution-enabling-held-items",
+    matchingTermIds: ["item-metal-coat", "item-oval-stone", "item-razor-claw"],
+    intruderTermIds: ["item-leftovers"],
+    relationValue: "held-evolution",
+    oddDescription: "not an evolution-enabling held item",
+    matchDescription: "held evolution items"
+  }
+];
+
 /** The live pilot draws only from this reviewed, validation-gated batch. */
 export const POKEMON_ODD_ONE_OUT_ACTIVE_POOLS = [
   ...POKEMON_ODD_ONE_OUT_PILOT_POOLS,
   ...POKEMON_ODD_ONE_OUT_FIRST_BATCH_POOLS,
-  ...POKEMON_ODD_ONE_OUT_HARD_BATCH_POOLS
+  ...POKEMON_ODD_ONE_OUT_HARD_BATCH_POOLS,
+  ...POKEMON_ODD_ONE_OUT_FINAL_RELATIONSHIP_POOLS
 ];
