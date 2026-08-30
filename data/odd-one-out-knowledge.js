@@ -421,5 +421,133 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     matches: ["Humerus", "Radius", "Ulna", "Scapula", "Clavicle"],
     intruders: ["Femur", "Tibia", "Fibula", "Patella", "Talus"],
     explanation: (odd) => `${odd} is a lower-limb bone.\nThe others are upper-limb bones.`
+  },
+  {
+    id: "big-cats-and-canines",
+    family: "animals",
+    difficulty: 2,
+    matches: ["Lion", "Tiger", "Leopard", "Jaguar", "Cheetah", "Cougar"],
+    intruders: ["Wolf", "Fox", "Coyote", "Jackal", "Dingo"],
+    explanation: (odd) => `${odd} is a canine.\nThe others are big cats.`
+  },
+  {
+    id: "insects-and-arachnids",
+    family: "animals",
+    difficulty: 2,
+    matches: ["Butterfly", "Beetle", "Ant", "Bee", "Dragonfly", "Grasshopper"],
+    intruders: ["Spider", "Scorpion", "Tick", "Mite", "Tarantula"],
+    explanation: (odd) => `${odd} is an arachnid.\nThe others are insects.`
+  },
+  {
+    id: "marsupials-and-rodents",
+    family: "animals",
+    difficulty: 3,
+    matches: ["Kangaroo", "Koala", "Wombat", "Tasmanian Devil", "Possum"],
+    intruders: ["Rat", "Squirrel", "Beaver", "Hamster", "Guinea Pig"],
+    explanation: (odd) => `${odd} is a rodent.\nThe others are marsupials.`
+  },
+  {
+    id: "noble-gases-and-other-elements",
+    family: "science-and-space",
+    difficulty: 2,
+    matches: ["Helium", "Neon", "Argon", "Krypton", "Xenon", "Radon"],
+    intruders: ["Oxygen", "Nitrogen", "Carbon", "Chlorine", "Sulfur"],
+    explanation: (odd) => `${odd} is not a noble gas.\nThe others are noble gases.`
+  },
+  {
+    id: "scientific-disciplines-and-humanities",
+    family: "science-and-space",
+    difficulty: 2,
+    matches: ["Biology", "Chemistry", "Physics", "Astronomy", "Geology"],
+    intruders: ["History", "Literature", "Art", "Music", "Philosophy"],
+    explanation: (odd) => `${odd} is a humanities subject.\nThe others are scientific disciplines.`
+  },
+  {
+    id: "natural-satellites-and-dwarf-planets",
+    family: "science-and-space",
+    difficulty: 3,
+    matches: ["Moon", "Europa", "Titan", "Ganymede", "Callisto", "Enceladus"],
+    intruders: ["Pluto", "Ceres", "Eris", "Haumea", "Makemake"],
+    explanation: (odd) => `${odd} is a dwarf planet.\nThe others are natural satellites.`
+  },
+  {
+    id: "punctuation-and-mathematical-symbols",
+    family: "time-language-and-symbols",
+    difficulty: 2,
+    matches: ["Question Mark", "Exclamation Mark", "Comma", "Semicolon", "Colon", "Apostrophe"],
+    intruders: ["Plus Sign", "Equals Sign", "Percent Sign", "Division Sign", "Multiplication Sign"],
+    explanation: (odd) => `${odd} is a mathematical symbol.\nThe others are punctuation marks.`
+  },
+  {
+    id: "romance-and-germanic-languages",
+    family: "time-language-and-symbols",
+    difficulty: 3,
+    matches: ["Spanish", "French", "Italian", "Portuguese", "Romanian"],
+    intruders: ["English", "German", "Dutch", "Swedish", "Danish"],
+    explanation: (odd) => `${odd} is a Germanic language.\nThe others are Romance languages.`
+  },
+  {
+    id: "sense-organs-and-internal-organs",
+    family: "human-body-and-health",
+    difficulty: 2,
+    matches: ["Eye", "Ear", "Nose", "Tongue", "Skin"],
+    intruders: ["Heart", "Lung", "Liver", "Kidney", "Stomach"],
+    explanation: (odd) => `${odd} is an internal organ.\nThe others are sense organs.`
+  },
+  {
+    id: "tooth-types-and-bones",
+    family: "human-body-and-health",
+    difficulty: 3,
+    matches: ["Incisor", "Canine", "Molar", "Premolar", "Wisdom Tooth"],
+    intruders: ["Femur", "Tibia", "Radius", "Ulna", "Clavicle"],
+    explanation: (odd) => `${odd} is a bone.\nThe others are types of teeth.`
+  },
+  {
+    id: "trees-and-flowers",
+    family: "energy-environment-and-nature",
+    difficulty: 2,
+    matches: ["Oak", "Maple", "Pine", "Birch", "Willow"],
+    intruders: ["Rose", "Tulip", "Lily", "Daffodil", "Orchid"],
+    explanation: (odd) => `${odd} is a flower.\nThe others are trees.`
+  },
+  {
+    id: "precipitation-and-weather-conditions",
+    family: "energy-environment-and-nature",
+    difficulty: 3,
+    matches: ["Rain", "Snow", "Sleet", "Hail", "Drizzle"],
+    intruders: ["Fog", "Mist", "Dew", "Frost", "Humidity"],
+    explanation: (odd) => `${odd} is not precipitation.\nThe others are forms of precipitation.`
+  },
+  {
+    id: "herbs-and-spices",
+    family: "food-and-drink",
+    difficulty: 3,
+    matches: ["Basil", "Parsley", "Oregano", "Thyme", "Rosemary", "Dill"],
+    intruders: ["Cumin", "Paprika", "Turmeric", "Cinnamon", "Nutmeg"],
+    explanation: (odd) => `${odd} is a spice.\nThe others are herbs.`
+  },
+  {
+    id: "operating-systems-and-applications",
+    family: "technology-and-inventions",
+    difficulty: 3,
+    matches: ["Windows", "macOS", "Linux", "Android", "iOS", "ChromeOS"],
+    intruders: ["Word", "Excel", "PowerPoint", "Photoshop", "Zoom"],
+    explanation: (odd) => `${odd} is an application.\nThe others are operating systems.`
+  },
+  {
+    id: "animated-films-and-live-action-films",
+    family: "entertainment-and-media",
+    difficulty: 2,
+    matches: ["Toy Story", "Shrek", "Frozen", "Moana", "Coco", "Spirited Away"],
+    intruders: ["Titanic", "Inception", "Gladiator", "The Godfather", "Jurassic Park"],
+    explanation: (odd) => `${odd} is a live-action film.\nThe others are animated films.`
+  },
+  {
+    id: "british-monarchs-and-us-presidents",
+    family: "history-and-civilization",
+    difficulty: 3,
+    matches: ["Elizabeth II", "Victoria", "Henry VIII", "George VI", "William IV"],
+    intruders: ["Washington", "Lincoln", "Jefferson", "Roosevelt", "Obama"],
+    explanation: (odd) => `${odd} was a US president.\nThe others are British monarchs.`
   }
 ];
