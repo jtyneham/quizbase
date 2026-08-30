@@ -27,6 +27,7 @@ export function initOddOneOut(root, app) {
   let setting = "mixed";
   let currentRound = null;
   let answered = false;
+  let isChangingSet = false;
   let recentBlueprintIds = [];
 
   function setDifficulty(nextSetting) {
@@ -85,10 +86,45 @@ export function initOddOneOut(root, app) {
   }
 
   function generateSet() {
+    if (isChangingSet) return;
     const round = chooseRound(ODD_ONE_OUT_BLUEPRINTS, setting, recentBlueprintIds);
     recentBlueprintIds = [...recentBlueprintIds, round.blueprintId].slice(-RECENT_BLUEPRINT_LIMIT);
-    cards.classList.remove("resolved");
-    renderRound(round);
+
+    const showRound = () => {
+      cards.classList.remove("resolved", "set-leaving");
+      feedback.classList.remove("set-leaving");
+      renderRound(round);
+    };
+
+    if (reducedMotion) {
+      showRound();
+      return;
+    }
+
+    // The first set gets the same entrance as every later set, but has no
+    // outgoing cards or explanation to animate away.
+    if (!currentRound) {
+      showRound();
+      cards.classList.add("set-entering");
+      window.setTimeout(() => cards.classList.remove("set-entering"), 190);
+      return;
+    }
+
+    isChangingSet = true;
+    nextButton.disabled = true;
+    cards.classList.add("set-leaving");
+    feedback.classList.add("set-leaving");
+
+    window.setTimeout(() => {
+      showRound();
+      cards.classList.add("set-entering");
+
+      window.setTimeout(() => {
+        cards.classList.remove("set-entering");
+        nextButton.disabled = false;
+        isChangingSet = false;
+      }, 190);
+    }, 110);
   }
 
   bindFullscreenButton({
