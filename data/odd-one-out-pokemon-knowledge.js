@@ -346,7 +346,13 @@ export const POKEMON_ODD_ONE_OUT_PILOT_TERMS = [
       crossChecks: ["https://pokemondb.net/pokedex/vaporeon"],
       verifiedAt: "2026-08-30"
     },
-    facts: { typeCount: 1, primaryType: "water", evolutionFamily: "eevee", introductionGeneration: 1 }
+    facts: {
+      typeCount: 1,
+      primaryType: "water",
+      evolutionFamily: "eevee",
+      evolutionMethod: "stone",
+      introductionGeneration: 1
+    }
   },
   {
     id: "species-milotic",
@@ -510,71 +516,282 @@ export const POKEMON_ODD_ONE_OUT_PILOT_TERMS = [
   }
 ];
 
+function approvedFirstBatchTerm({ id, label, kind, facts, primary, crossCheck }) {
+  return {
+    id,
+    label,
+    kind,
+    mainSeries: true,
+    modernRule: "current-main-series",
+    familiarity: "general",
+    displayReviewed: true,
+    reviewStatus: "approved",
+    sources: {
+      primary,
+      crossChecks: [crossCheck],
+      verifiedAt: "2026-08-30"
+    },
+    facts
+  };
+}
+
 /**
- * Reviewed pilot rounds. They are data-review fixtures, not a player pool.
- * A future integration can only promote a candidate after the validator and
- * expanded playtesting accept it.
+ * First playable expansion batch. These are deliberately broad, familiar
+ * concepts; deeper mechanics remain reserved for a later Hard pass. Every
+ * fact below is static reviewed data, never a runtime request to PokeAPI.
  */
-export const POKEMON_ODD_ONE_OUT_PILOT_ROUNDS = [
-  {
-    id: "pilot-moves-and-abilities-01",
-    blueprintId: "moves-and-abilities",
-    termIds: ["move-thunderbolt", "move-earthquake", "move-calm-mind", "ability-competitive"],
-    oddTermId: "ability-competitive",
-    relationValue: "move",
-    explanation: "Competitive is an Ability.\nThe others are Moves."
-  },
-  {
-    id: "pilot-pure-and-dual-type-species-01",
-    blueprintId: "pure-and-dual-type-species",
-    termIds: ["species-blastoise", "species-vaporeon", "species-milotic", "species-swampert"],
-    oddTermId: "species-swampert",
-    relationValue: 1,
-    explanation: "Swampert is dual-typed.\nThe others are pure Water-type Pokémon."
-  },
-  {
-    id: "pilot-major-and-volatile-conditions-01",
-    blueprintId: "major-and-volatile-conditions",
-    termIds: ["condition-burn", "condition-poison", "condition-paralysis", "condition-confusion"],
-    oddTermId: "condition-confusion",
-    relationValue: "major",
-    explanation: "Confusion is a volatile condition.\nThe others are major status conditions."
-  },
-  {
-    id: "pilot-status-curing-berries-01",
-    blueprintId: "status-curing-berries",
-    termIds: ["item-pecha-berry", "item-cheri-berry", "item-rawst-berry", "item-oran-berry"],
-    oddTermId: "item-oran-berry",
-    relationValue: "status-cure",
-    explanation: "Oran Berry is an HP-restoring Berry.\nThe others are status-curing Berries."
-  }
+export const POKEMON_ODD_ONE_OUT_FIRST_BATCH_TERMS = [
+  approvedFirstBatchTerm({
+    id: "move-will-o-wisp", label: "Will-O-Wisp", kind: "move",
+    facts: { type: "fire", damageClass: "status", effectGroup: "burn" },
+    primary: "https://pokeapi.co/api/v2/move/will-o-wisp/", crossCheck: "https://pokemondb.net/move/will-o-wisp"
+  }),
+  approvedFirstBatchTerm({
+    id: "move-thunder-wave", label: "Thunder Wave", kind: "move",
+    facts: { type: "electric", damageClass: "status", effectGroup: "paralysis" },
+    primary: "https://pokeapi.co/api/v2/move/thunder-wave/", crossCheck: "https://pokemondb.net/move/thunder-wave"
+  }),
+  approvedFirstBatchTerm({
+    id: "move-leech-seed", label: "Leech Seed", kind: "move",
+    facts: { type: "grass", damageClass: "status", effectGroup: "residual-drain" },
+    primary: "https://pokeapi.co/api/v2/move/leech-seed/", crossCheck: "https://pokemondb.net/move/leech-seed"
+  }),
+  approvedFirstBatchTerm({
+    id: "move-spark", label: "Spark", kind: "move",
+    facts: { type: "electric", damageClass: "physical", fixedBasePower: 65, effectGroup: "paralysis-chance" },
+    primary: "https://pokeapi.co/api/v2/move/spark/", crossCheck: "https://pokemondb.net/move/spark"
+  }),
+  approvedFirstBatchTerm({
+    id: "move-discharge", label: "Discharge", kind: "move",
+    facts: { type: "electric", damageClass: "special", fixedBasePower: 80, effectGroup: "paralysis-chance" },
+    primary: "https://pokeapi.co/api/v2/move/discharge/", crossCheck: "https://pokemondb.net/move/discharge"
+  }),
+  approvedFirstBatchTerm({
+    id: "move-wild-charge", label: "Wild Charge", kind: "move",
+    facts: { type: "electric", damageClass: "physical", fixedBasePower: 90, effectGroup: "recoil" },
+    primary: "https://pokeapi.co/api/v2/move/wild-charge/", crossCheck: "https://pokemondb.net/move/wild-charge"
+  }),
+  approvedFirstBatchTerm({
+    id: "move-surf", label: "Surf", kind: "move",
+    facts: { type: "water", damageClass: "special", fixedBasePower: 90, effectGroup: "direct" },
+    primary: "https://pokeapi.co/api/v2/move/surf/", crossCheck: "https://pokemondb.net/move/surf"
+  }),
+  approvedFirstBatchTerm({
+    id: "move-sand-attack", label: "Sand Attack", kind: "move",
+    facts: { type: "ground", damageClass: "status", effectGroup: "accuracy-lowering" },
+    primary: "https://pokeapi.co/api/v2/move/sand-attack/", crossCheck: "https://pokemondb.net/move/sand-attack"
+  }),
+  approvedFirstBatchTerm({
+    id: "move-octazooka", label: "Octazooka", kind: "move",
+    facts: { type: "water", damageClass: "special", fixedBasePower: 65, effectGroup: "accuracy-lowering" },
+    primary: "https://pokeapi.co/api/v2/move/octazooka/", crossCheck: "https://pokemondb.net/move/octazooka"
+  }),
+  approvedFirstBatchTerm({
+    id: "move-mirror-shot", label: "Mirror Shot", kind: "move",
+    facts: { type: "steel", damageClass: "special", fixedBasePower: 65, effectGroup: "accuracy-lowering" },
+    primary: "https://pokeapi.co/api/v2/move/mirror-shot/", crossCheck: "https://pokemondb.net/move/mirror-shot"
+  }),
+  approvedFirstBatchTerm({
+    id: "move-acid-spray", label: "Acid Spray", kind: "move",
+    facts: { type: "poison", damageClass: "special", fixedBasePower: 40, effectGroup: "special-defense-lowering" },
+    primary: "https://pokeapi.co/api/v2/move/acid-spray/", crossCheck: "https://pokemondb.net/move/acid-spray"
+  }),
+  approvedFirstBatchTerm({
+    id: "species-meganium", label: "Meganium", kind: "species",
+    facts: { typeCount: 1, primaryType: "grass", evolutionFamily: "chikorita", introductionGeneration: 2 },
+    primary: "https://pokeapi.co/api/v2/pokemon/meganium/", crossCheck: "https://pokemondb.net/pokedex/meganium"
+  }),
+  approvedFirstBatchTerm({
+    id: "species-sceptile", label: "Sceptile", kind: "species",
+    facts: { typeCount: 1, primaryType: "grass", evolutionFamily: "treecko", introductionGeneration: 3 },
+    primary: "https://pokeapi.co/api/v2/pokemon/sceptile/", crossCheck: "https://pokemondb.net/pokedex/sceptile"
+  }),
+  approvedFirstBatchTerm({
+    id: "species-serperior", label: "Serperior", kind: "species",
+    facts: { typeCount: 1, primaryType: "grass", evolutionFamily: "snivy", introductionGeneration: 5 },
+    primary: "https://pokeapi.co/api/v2/pokemon/serperior/", crossCheck: "https://pokemondb.net/pokedex/serperior"
+  }),
+  approvedFirstBatchTerm({
+    id: "species-venusaur", label: "Venusaur", kind: "species",
+    facts: { typeCount: 2, primaryType: "grass", evolutionFamily: "bulbasaur", introductionGeneration: 1 },
+    primary: "https://pokeapi.co/api/v2/pokemon/venusaur/", crossCheck: "https://pokemondb.net/pokedex/venusaur"
+  }),
+  approvedFirstBatchTerm({
+    id: "species-pichu", label: "Pichu", kind: "species",
+    facts: { speciesClass: "baby", evolutionFamily: "pikachu", introductionGeneration: 2 },
+    primary: "https://pokeapi.co/api/v2/pokemon/pichu/", crossCheck: "https://pokemondb.net/pokedex/pichu"
+  }),
+  approvedFirstBatchTerm({
+    id: "species-cleffa", label: "Cleffa", kind: "species",
+    facts: { speciesClass: "baby", evolutionFamily: "clefairy", introductionGeneration: 2 },
+    primary: "https://pokeapi.co/api/v2/pokemon/cleffa/", crossCheck: "https://pokemondb.net/pokedex/cleffa"
+  }),
+  approvedFirstBatchTerm({
+    id: "species-riolu", label: "Riolu", kind: "species",
+    facts: { speciesClass: "baby", evolutionFamily: "lucario", introductionGeneration: 4 },
+    primary: "https://pokeapi.co/api/v2/pokemon/riolu/", crossCheck: "https://pokemondb.net/pokedex/riolu"
+  }),
+  approvedFirstBatchTerm({
+    id: "species-pikachu", label: "Pikachu", kind: "species",
+    facts: { speciesClass: "regular", evolutionFamily: "pikachu", introductionGeneration: 1 },
+    primary: "https://pokeapi.co/api/v2/pokemon/pikachu/", crossCheck: "https://pokemondb.net/pokedex/pikachu"
+  }),
+  approvedFirstBatchTerm({
+    id: "species-ninetales", label: "Ninetales", kind: "species",
+    facts: { primaryType: "fire", evolutionFamily: "vulpix", evolutionMethod: "stone", introductionGeneration: 1 },
+    primary: "https://pokeapi.co/api/v2/pokemon/ninetales/", crossCheck: "https://pokemondb.net/pokedex/ninetales"
+  }),
+  approvedFirstBatchTerm({
+    id: "species-victreebel", label: "Victreebel", kind: "species",
+    facts: { primaryType: "grass", evolutionFamily: "bellsprout", evolutionMethod: "stone", introductionGeneration: 1 },
+    primary: "https://pokeapi.co/api/v2/pokemon/victreebel/", crossCheck: "https://pokemondb.net/pokedex/victreebel"
+  }),
+  approvedFirstBatchTerm({
+    id: "species-charmeleon", label: "Charmeleon", kind: "species",
+    facts: { primaryType: "fire", evolutionFamily: "charmander", evolutionMethod: "level", introductionGeneration: 1 },
+    primary: "https://pokeapi.co/api/v2/pokemon/charmeleon/", crossCheck: "https://pokemondb.net/pokedex/charmeleon"
+  }),
+  approvedFirstBatchTerm({
+    id: "type-fire", label: "Fire", kind: "type",
+    facts: { weakToType: ["water", "ground", "rock"], typeCategory: "fire" },
+    primary: "https://pokeapi.co/api/v2/type/fire/", crossCheck: "https://pokemondb.net/type/fire"
+  }),
+  approvedFirstBatchTerm({
+    id: "type-electric", label: "Electric", kind: "type",
+    facts: { weakToType: ["ground"], typeCategory: "electric" },
+    primary: "https://pokeapi.co/api/v2/type/electric/", crossCheck: "https://pokemondb.net/type/electric"
+  }),
+  approvedFirstBatchTerm({
+    id: "type-poison", label: "Poison", kind: "type",
+    facts: { weakToType: ["ground", "psychic"], typeCategory: "poison" },
+    primary: "https://pokeapi.co/api/v2/type/poison/", crossCheck: "https://pokemondb.net/type/poison"
+  }),
+  approvedFirstBatchTerm({
+    id: "type-flying", label: "Flying", kind: "type",
+    facts: { weakToType: ["electric", "ice", "rock"], typeCategory: "flying" },
+    primary: "https://pokeapi.co/api/v2/type/flying/", crossCheck: "https://pokemondb.net/type/flying"
+  })
+];
+
+export const POKEMON_ODD_ONE_OUT_ACTIVE_TERMS = [
+  ...POKEMON_ODD_ONE_OUT_PILOT_TERMS,
+  ...POKEMON_ODD_ONE_OUT_FIRST_BATCH_TERMS
 ];
 
 /**
- * Adapts the reviewed pilot rounds to the shared procedural Odd One Out
- * selector. This is intentionally a small preview pool: every blueprint has
- * exactly one approved quartet until broader Pokémon curation is complete.
+ * Reviewed pilot relationship pools. The builder combines three matching
+ * terms with an approved intruder, then lets the validation matrix decide
+ * whether that four-card candidate is eligible for play. Future pools can
+ * safely grow beyond these initial 3-versus-1 examples without copying round
+ * objects or game logic into this data file.
  */
-export function createPokemonOddOneOutPilotBlueprints() {
-  const termsById = new Map(POKEMON_ODD_ONE_OUT_PILOT_TERMS.map((term) => [term.id, term]));
-  const contractsById = new Map(POKEMON_ODD_ONE_OUT_BLUEPRINTS.map((blueprint) => [blueprint.id, blueprint]));
+export const POKEMON_ODD_ONE_OUT_PILOT_POOLS = [
+  {
+    id: "pilot-moves-and-abilities",
+    blueprintId: "moves-and-abilities",
+    matchingTermIds: ["move-thunderbolt", "move-earthquake", "move-calm-mind"],
+    intruderTermIds: ["ability-competitive"],
+    relationValue: "move",
+    oddDescription: "an Ability",
+    matchDescription: "Moves"
+  },
+  {
+    id: "pilot-pure-and-dual-type-species",
+    blueprintId: "pure-and-dual-type-species",
+    matchingTermIds: ["species-blastoise", "species-vaporeon", "species-milotic"],
+    intruderTermIds: ["species-swampert"],
+    relationValue: 1,
+    oddDescription: "dual-typed",
+    matchDescription: "pure Water-type Pokémon"
+  },
+  {
+    id: "pilot-major-and-volatile-conditions",
+    blueprintId: "major-and-volatile-conditions",
+    matchingTermIds: ["condition-burn", "condition-poison", "condition-paralysis"],
+    intruderTermIds: ["condition-confusion"],
+    relationValue: "major",
+    oddDescription: "a volatile condition",
+    matchDescription: "major status conditions"
+  },
+  {
+    id: "pilot-status-curing-berries",
+    blueprintId: "status-curing-berries",
+    matchingTermIds: ["item-pecha-berry", "item-cheri-berry", "item-rawst-berry"],
+    intruderTermIds: ["item-oran-berry"],
+    relationValue: "status-cure",
+    oddDescription: "an HP-restoring Berry",
+    matchDescription: "status-curing Berries"
+  }
+];
 
-  return POKEMON_ODD_ONE_OUT_PILOT_ROUNDS.map((round) => {
-    const contract = contractsById.get(round.blueprintId);
-    const terms = round.termIds.map((id) => termsById.get(id));
-    const oddTerm = termsById.get(round.oddTermId);
+export const POKEMON_ODD_ONE_OUT_FIRST_BATCH_POOLS = [
+  {
+    id: "status-moves-and-damaging-move",
+    blueprintId: "damaging-and-status-moves",
+    matchingTermIds: ["move-will-o-wisp", "move-thunder-wave", "move-leech-seed"],
+    intruderTermIds: ["move-thunderbolt"],
+    relationValue: "status",
+    oddDescription: "a damaging Move",
+    matchDescription: "status Moves"
+  },
+  {
+    id: "electric-moves-and-water-move",
+    blueprintId: "same-type-moves",
+    matchingTermIds: ["move-spark", "move-discharge", "move-wild-charge"],
+    intruderTermIds: ["move-surf"],
+    relationValue: "electric",
+    oddDescription: "a Water-type Move",
+    matchDescription: "Electric-type Moves"
+  },
+  {
+    id: "accuracy-lowering-moves",
+    blueprintId: "accuracy-lowering-moves",
+    matchingTermIds: ["move-sand-attack", "move-octazooka", "move-mirror-shot"],
+    intruderTermIds: ["move-acid-spray"],
+    relationValue: "accuracy-lowering",
+    oddDescription: "a Special Defense-lowering Move",
+    matchDescription: "accuracy-lowering Moves"
+  },
+  {
+    id: "pure-grass-and-dual-grass-species",
+    blueprintId: "pure-and-dual-type-species",
+    matchingTermIds: ["species-meganium", "species-sceptile", "species-serperior"],
+    intruderTermIds: ["species-venusaur"],
+    relationValue: 1,
+    oddDescription: "dual-typed",
+    matchDescription: "pure Grass-type Pokémon"
+  },
+  {
+    id: "baby-pokemon-and-regular-species",
+    blueprintId: "baby-pokemon-classification",
+    matchingTermIds: ["species-pichu", "species-cleffa", "species-riolu"],
+    intruderTermIds: ["species-pikachu"],
+    relationValue: "baby",
+    oddDescription: "not a baby Pokémon",
+    matchDescription: "baby Pokémon"
+  },
+  {
+    id: "stone-evolution-and-level-evolution",
+    blueprintId: "evolution-method",
+    matchingTermIds: ["species-vaporeon", "species-ninetales", "species-victreebel"],
+    intruderTermIds: ["species-charmeleon"],
+    relationValue: "stone",
+    oddDescription: "a Pokémon that evolves by level",
+    matchDescription: "Pokémon that evolve with Evolution Stones"
+  },
+  {
+    id: "ground-weak-and-ground-immune-types",
+    blueprintId: "type-weaknesses",
+    matchingTermIds: ["type-fire", "type-electric", "type-poison"],
+    intruderTermIds: ["type-flying"],
+    relationValue: "ground",
+    oddDescription: "not weak to Ground",
+    matchDescription: "weak to Ground"
+  }
+];
 
-    if (!contract || terms.some((term) => !term) || !oddTerm) {
-      throw new Error(`Pokémon Odd One Out pilot '${round.id}' references incomplete reviewed data.`);
-    }
-
-    return {
-      id: round.id,
-      family: contract.family,
-      difficulty: contract.difficulty === "hard" ? 3 : 2,
-      matches: terms.filter((term) => term.id !== oddTerm.id).map((term) => term.label),
-      intruders: [oddTerm.label],
-      explanation: () => round.explanation
-    };
-  });
-}
+/** The live pilot draws only from this reviewed, validation-gated batch. */
+export const POKEMON_ODD_ONE_OUT_ACTIVE_POOLS = [
+  ...POKEMON_ODD_ONE_OUT_PILOT_POOLS,
+  ...POKEMON_ODD_ONE_OUT_FIRST_BATCH_POOLS
+];

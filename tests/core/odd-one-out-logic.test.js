@@ -52,6 +52,42 @@ test("round selection honors difficulty and avoids recent relationships and fami
   assert.equal(hard.difficulty, 3);
 });
 
+test("round selection cools down a whole relationship when it has several candidate combinations", () => {
+  const blueprints = [
+    {
+      id: "same-relationship-candidate-a",
+      cooldownId: "shared-relationship",
+      family: "first",
+      difficulty: 2,
+      matches: ["Oak", "Birch", "Maple"],
+      intruders: ["Salmon"],
+      explanation: () => ""
+    },
+    {
+      id: "same-relationship-candidate-b",
+      cooldownId: "shared-relationship",
+      family: "first",
+      difficulty: 2,
+      matches: ["Pine", "Willow", "Cedar"],
+      intruders: ["Trout"],
+      explanation: () => ""
+    },
+    {
+      id: "fresh-relationship",
+      family: "second",
+      difficulty: 2,
+      matches: ["Mercury", "Venus", "Mars"],
+      intruders: ["Tulip"],
+      explanation: () => ""
+    }
+  ];
+
+  const round = chooseRound(blueprints, "medium", ["shared-relationship"], deterministicRandom);
+
+  assert.equal(round.candidateId, "fresh-relationship");
+  assert.equal(round.blueprintId, "fresh-relationship");
+});
+
 test("round selection avoids labels shown in the previous visible sets when possible", () => {
   const blueprints = [
     {

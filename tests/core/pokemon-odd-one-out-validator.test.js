@@ -3,10 +3,11 @@ import assert from "node:assert/strict";
 import {
   POKEMON_ODD_ONE_OUT_BLUEPRINTS,
   POKEMON_ODD_ONE_OUT_FAMILY_TARGETS,
-  POKEMON_ODD_ONE_OUT_PILOT_ROUNDS,
-  POKEMON_ODD_ONE_OUT_PILOT_TERMS,
-  createPokemonOddOneOutPilotBlueprints
+  POKEMON_ODD_ONE_OUT_ACTIVE_POOLS,
+  POKEMON_ODD_ONE_OUT_ACTIVE_TERMS,
+  POKEMON_ODD_ONE_OUT_FIRST_BATCH_POOLS,
 } from "../../data/odd-one-out-pokemon-knowledge.js";
+import { buildPokemonOddOneOutRoundBlueprints } from "../../js/core/pokemon-odd-one-out-round-builder.js";
 import {
   findSurfaceGiveaway,
   validatePokemonOddOneOutCandidate,
@@ -112,30 +113,52 @@ test("candidate validation enforces the approved two-line explanation format", (
   assert.ok(errors.includes("explanation must use the approved two-line format"));
 });
 
-test("every reviewed Pokémon pilot round passes the content validation matrix", () => {
-  const termsById = new Map(POKEMON_ODD_ONE_OUT_PILOT_TERMS.map((term) => [term.id, term]));
-  const blueprintsById = new Map(POKEMON_ODD_ONE_OUT_BLUEPRINTS.map((blueprint) => [blueprint.id, blueprint]));
+test("the reviewed Pokémon pilot and first batch build validated shared-engine blueprints without duplicating rounds", () => {
+  const { blueprints, rejectedCandidates } = buildPokemonOddOneOutRoundBlueprints({
+    contracts: POKEMON_ODD_ONE_OUT_BLUEPRINTS,
+    terms: POKEMON_ODD_ONE_OUT_ACTIVE_TERMS,
+    pools: POKEMON_ODD_ONE_OUT_ACTIVE_POOLS
+  });
 
-  assert.equal(POKEMON_ODD_ONE_OUT_PILOT_ROUNDS.length, 4);
-
-  for (const round of POKEMON_ODD_ONE_OUT_PILOT_ROUNDS) {
-    const terms = round.termIds.map((id) => termsById.get(id));
-    assert.ok(terms.every(Boolean), `${round.id} references a missing reviewed term`);
-    assert.deepEqual(validatePokemonOddOneOutCandidate({
-      blueprint: blueprintsById.get(round.blueprintId),
-      terms,
-      oddTermId: round.oddTermId,
-      relationValue: round.relationValue,
-      explanation: round.explanation
-    }), [], round.id);
-  }
-});
-
-test("the reviewed Pokémon pilot adapts to the shared Odd One Out selector without duplicating data", () => {
-  const blueprints = createPokemonOddOneOutPilotBlueprints();
-
-  assert.equal(blueprints.length, POKEMON_ODD_ONE_OUT_PILOT_ROUNDS.length);
+  assert.equal(blueprints.length, POKEMON_ODD_ONE_OUT_ACTIVE_POOLS.length);
+  assert.equal(POKEMON_ODD_ONE_OUT_FIRST_BATCH_POOLS.length, 7);
+  assert.deepEqual(rejectedCandidates, []);
   assert.ok(blueprints.every((blueprint) => blueprint.matches.length === 3 && blueprint.intruders.length === 1));
   assert.ok(blueprints.every((blueprint) => [2, 3].includes(blueprint.difficulty)));
+  assert.ok(blueprints.every((blueprint) => blueprint.cooldownId));
   assert.ok(blueprints.every((blueprint) => /\nThe others are .+\.$/.test(blueprint.explanation())));
+});
+
+test("the pool builder generates every valid reviewed 3-versus-1 combination", () => {
+  const contract = {
+    id: "test-kind",
+    family: "battle-moves",
+    difficulty: "medium",
+    relation: { field: "kind", operator: "equals" },
+    protectedAttributes: []
+  };
+  const terms = [
+    reviewedTerm("move-one", "Aurora Strike"),
+    reviewedTerm("move-two", "Stone Rush"),
+    reviewedTerm("move-three", "Tidal Blast"),
+    reviewedTerm("move-four", "Volt Slash"),
+    { ...reviewedTerm("ability-one", "Competitive"), kind: "ability" },
+    { ...reviewedTerm("ability-two", "Levitate"), kind: "ability" }
+  ];
+  const { blueprints } = buildPokemonOddOneOutRoundBlueprints({
+    contracts: [contract],
+    terms,
+    pools: [{
+      id: "test-pool",
+      blueprintId: contract.id,
+      matchingTermIds: ["move-one", "move-two", "move-three", "move-four"],
+      intruderTermIds: ["ability-one", "ability-two"],
+      relationValue: "move",
+      oddDescription: "an Ability",
+      matchDescription: "Moves"
+    }]
+  });
+
+  assert.equal(blueprints.length, 8);
+  assert.ok(blueprints.every((blueprint) => blueprint.cooldownId === contract.id));
 });

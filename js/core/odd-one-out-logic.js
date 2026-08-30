@@ -20,6 +20,10 @@ function normalizeChoices(choices = []) {
   return new Set([...choices].map((choice) => choice.toLowerCase()));
 }
 
+function relationshipId(blueprint) {
+  return blueprint.cooldownId ?? blueprint.id;
+}
+
 function canCreateRound(blueprint, excludedChoices) {
   const matches = blueprint.matches.filter((choice) => !excludedChoices.has(choice.toLowerCase()));
   const intruders = blueprint.intruders.filter((choice) => !excludedChoices.has(choice.toLowerCase()));
@@ -49,7 +53,10 @@ export function createRound(blueprint, random = Math.random, excludedChoices = [
   }
 
   return {
-    blueprintId: blueprint.id,
+    // `blueprintId` is the relationship cooldown key. A procedural source
+    // may expose several valid card combinations for one relationship.
+    blueprintId: relationshipId(blueprint),
+    candidateId: blueprint.id,
     family: blueprint.family,
     difficulty: blueprint.difficulty,
     choices: shuffle([...matches, oddChoice], random),
@@ -68,7 +75,7 @@ export function chooseRound(
 ) {
   const difficulty = chooseDifficulty(setting, random);
   const eligible = blueprints.filter((blueprint) => blueprint.difficulty === difficulty);
-  const unseen = eligible.filter((blueprint) => !recentBlueprintIds.includes(blueprint.id));
+  const unseen = eligible.filter((blueprint) => !recentBlueprintIds.includes(relationshipId(blueprint)));
   const familyFresh = unseen.filter((blueprint) => !recentFamilies.includes(blueprint.family));
   const excludedChoices = normalizeChoices(recentChoiceSets.flat());
 

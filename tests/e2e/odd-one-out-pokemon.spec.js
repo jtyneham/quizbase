@@ -1,14 +1,10 @@
 import { test, expect } from "@playwright/test";
+import { POKEMON_ODD_ONE_OUT_ACTIVE_TERMS } from "../../data/odd-one-out-pokemon-knowledge.js";
 import { openGame } from "./helpers.js";
 
-const PILOT_LABELS = new Set([
-  "Thunderbolt", "Earthquake", "Calm Mind", "Competitive",
-  "Blastoise", "Vaporeon", "Milotic", "Swampert",
-  "Burn", "Poison", "Paralysis", "Confusion",
-  "Pecha Berry", "Cheri Berry", "Rawst Berry", "Oran Berry"
-]);
+const ACTIVE_LABELS = new Set(POKEMON_ODD_ONE_OUT_ACTIVE_TERMS.map(({ label }) => label));
 
-test("Pokémon Odd One Out reuses the shared quickfire flow with its reviewed pilot data", async ({ page }) => {
+test("Pokémon Odd One Out reuses the shared quickfire flow with its reviewed data", async ({ page }) => {
   const screen = await openGame(page, { name: "Odd One Out - Pokemon" });
   const next = screen.locator("#oddOneOutPokemonNextButton");
   const cards = screen.locator(".odd-one-out-card");
@@ -18,7 +14,7 @@ test("Pokémon Odd One Out reuses the shared quickfire flow with its reviewed pi
   await expect(cards).toHaveCount(4);
 
   for (const label of await cards.allTextContents()) {
-    expect(PILOT_LABELS.has(label)).toBeTruthy();
+    expect(ACTIVE_LABELS.has(label)).toBeTruthy();
   }
 
   await cards.first().click();

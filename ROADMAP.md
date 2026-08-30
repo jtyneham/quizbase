@@ -29,9 +29,9 @@ topic-driven.
 
 ## Odd One Out — Pokémon Edition
 
-**Status:** Deferred concept.
+**Status:** Playable first batch; broader content expansion remains deferred.
 
-Potential sibling game using Pokémon main-series game mechanics only: moves,
+The playable pilot uses Pokémon main-series game mechanics only: moves,
 Abilities, items, types, species, evolutions, and battle terms. Exclude anime,
 movies, NPCs, city names, and story/lore questions. Reuse the standard Odd One
 Out engine and keep its dedicated Pokémon content in a separate reviewed data
@@ -39,4 +39,5 @@ file.
 
 **Launcher icon concept:** retain the four-choice Odd One Out motif, but make
 the circular lower-right choice slightly larger and render it as a simplified
-Poké Ball. Do not create the asset or add the game until explicitly requested.
+Poké Ball. Keep expanding it only through reviewed, validated relationship
+pools; do not add loose one-off questions.
