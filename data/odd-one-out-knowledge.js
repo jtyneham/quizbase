@@ -689,5 +689,61 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     matches: ["Oscar", "BAFTA", "Palme d'Or", "Golden Lion", "Golden Bear"],
     intruders: ["Grammy", "Brit Award", "MTV Video Music Award", "Billboard Music Award", "Juno Award"],
     explanation: (odd) => `${odd} is a music award.\nThe others are film awards.`
+  },
+  {
+    id: "island-and-landlocked-nations",
+    family: "geography",
+    difficulty: 2,
+    matches: ["Japan", "Iceland", "Cuba", "Madagascar", "Sri Lanka", "New Zealand"],
+    intruders: ["Switzerland", "Austria", "Nepal", "Mongolia", "Bolivia"],
+    explanation: (odd) => `${odd} is landlocked.\nThe others are island nations.`
+  },
+  {
+    id: "major-rivers-and-mountain-ranges",
+    family: "geography",
+    difficulty: 2,
+    matches: ["Nile", "Amazon", "Danube", "Yangtze", "Ganges", "Mississippi"],
+    intruders: ["Alps", "Andes", "Himalayas", "Rockies", "Pyrenees"],
+    explanation: (odd) => `${odd} is a mountain range.\nThe others are rivers.`
+  },
+  {
+    id: "waterfalls-and-volcanoes",
+    family: "energy-environment-and-nature",
+    difficulty: 2,
+    matches: ["Niagara Falls", "Victoria Falls", "Iguazu Falls", "Angel Falls", "Yosemite Falls", "Gullfoss"],
+    intruders: ["Mount Fuji", "Vesuvius", "Krakatoa", "Mauna Loa", "Mount Etna"],
+    explanation: (odd) => `${odd} is a volcano.\nThe others are waterfalls.`
+  },
+  {
+    id: "electrical-conductors-and-insulators",
+    family: "science-and-space",
+    difficulty: 2,
+    matches: ["Copper", "Silver", "Aluminium", "Gold", "Graphite", "Iron"],
+    intruders: ["Rubber", "Plastic", "Glass", "Wood", "Ceramic"],
+    explanation: (odd) => `${odd} is an electrical insulator.\nThe others are electrical conductors.`
+  },
+  {
+    id: "kitchen-utensils-and-workshop-tools",
+    family: "everyday-life",
+    difficulty: 2,
+    matches: ["Whisk", "Ladle", "Spatula", "Tongs", "Grater", "Peeler"],
+    intruders: ["Hammer", "Wrench", "Pliers", "Chisel", "Screwdriver"],
+    explanation: (odd) => `${odd} is a workshop tool.\nThe others are kitchen utensils.`
+  },
+  {
+    id: "famous-sculptures-and-paintings",
+    family: "arts-and-culture",
+    difficulty: 3,
+    matches: ["Michelangelo's David", "The Thinker", "Venus de Milo", "Pieta", "Discobolus", "Moai"],
+    intruders: ["Mona Lisa", "The Scream", "Guernica", "Starry Night", "The Last Supper"],
+    explanation: (odd) => `${odd} is a painting.\nThe others are sculptures.`
+  },
+  {
+    id: "famous-bridges-and-towers",
+    family: "geography",
+    difficulty: 3,
+    matches: ["Tower Bridge", "Brooklyn Bridge", "Golden Gate Bridge", "Sydney Harbour Bridge", "Akashi Kaikyo Bridge", "Millau Viaduct"],
+    intruders: ["Burj Khalifa", "CN Tower", "Space Needle", "Tokyo Tower", "Leaning Tower of Pisa"],
+    explanation: (odd) => `${odd} is a tower.\nThe others are bridges.`
   }
 ];
