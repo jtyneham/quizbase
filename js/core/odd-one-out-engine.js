@@ -21,8 +21,6 @@ export function initOddOneOut(root, app) {
 
   const cards = root.querySelector("#oddOneOutCards");
   const feedback = root.querySelector("#oddOneOutFeedback");
-  const prompt = root.querySelector("#oddOneOutPrompt");
-  const roundElement = root.querySelector(".odd-one-out-round");
   const nextButton = root.querySelector("#oddOneOutNextButton");
   const difficultyButtons = [...root.querySelectorAll("[data-difficulty]")];
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -50,10 +48,6 @@ export function initOddOneOut(root, app) {
   function renderRound(round) {
     currentRound = round;
     answered = false;
-    roundElement.classList.remove("awaiting-set");
-    // The pre-game prompt gives the empty screen context. Once cards exist,
-    // hide it entirely so the four shared-screen choices get that space.
-    prompt.hidden = true;
     setFeedback("");
     cards.replaceChildren(...round.choices.map((choice) => {
       const button = document.createElement("button");

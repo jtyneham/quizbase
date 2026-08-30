@@ -87,7 +87,8 @@
   min-height: 0;
   display: grid;
   place-items: center;
-  padding: clamp(0.5rem, 2dvh, 1rem) max(var(--ooo-page-inline), env(safe-area-inset-right)) max(1rem, env(safe-area-inset-bottom)) max(var(--ooo-page-inline), env(safe-area-inset-left));
+  /* Keep the shared-screen action comfortably above the device edge. */
+  padding: clamp(0.5rem, 2dvh, 1rem) max(var(--ooo-page-inline), env(safe-area-inset-right)) max(clamp(1.75rem, 4dvh, 3rem), env(safe-area-inset-bottom)) max(var(--ooo-page-inline), env(safe-area-inset-left));
 }
 
 .odd-one-out-round {
@@ -103,41 +104,7 @@
   align-items: stretch;
 }
 
-/* Before the first set, treat the prompt and Generate Set action as one
-   compact launch panel. The full 3:2 play field starts only with the cards. */
-.odd-one-out-round.awaiting-set {
-  height: auto;
-  max-height: none;
-  grid-template-rows: auto auto;
-  gap: clamp(0.85rem, 2.5dvh, 1.35rem);
-  justify-items: center;
-}
-
-.odd-one-out-round.awaiting-set .odd-one-out-cards,
-.odd-one-out-round.awaiting-set .odd-one-out-feedback {
-  display: none;
-}
-
-.odd-one-out-prompt {
-  grid-row: 1;
-  align-self: center;
-  z-index: 1;
-  margin: 0;
-  text-align: center;
-  color: var(--qb-color-text-strong);
-  font-size: clamp(1.35rem, 5.8vw, 2rem);
-  font-weight: var(--qb-font-weight-heavy);
-  line-height: 1.1;
-  pointer-events: none;
-}
-
-.odd-one-out-round.awaiting-set .odd-one-out-prompt {
-  grid-row: 1;
-}
-
 .odd-one-out-cards {
-  /* The prompt overlays this zone before the first set. It does not take a
-     row of its own, so the 3:2 play-field ratio never changes. */
   grid-row: 1;
   min-height: 0;
   display: grid;
@@ -229,7 +196,6 @@
   cursor: pointer;
   transition: transform var(--qb-motion-fast) var(--qb-ease-standard), background-color var(--qb-motion-fast) var(--qb-ease-standard);
 }
-.odd-one-out-round.awaiting-set .odd-one-out-next { grid-row: 2; }
 .odd-one-out-next:hover { background: var(--qb-color-accent-hover); }
 .odd-one-out-next:active { transform: scale(.98); }
 .odd-one-out-next:disabled { cursor: default; }
