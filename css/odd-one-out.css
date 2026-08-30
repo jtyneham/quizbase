@@ -148,13 +148,28 @@
 @keyframes odd-one-out-correct { 0% { transform: scale(.94); } 65% { transform: scale(1.035); } 100% { transform: scale(1); } }
 
 .odd-one-out-feedback {
-  min-height: 2.6em;
+  width: min(100%, 34rem);
+  min-height: 2.75rem;
   margin: 0;
+  justify-self: center;
+  display: grid;
+  place-items: center;
+  padding: 0.65rem 0.9rem;
+  border-radius: 0.65rem;
+  background: #d9d9d9;
   text-align: center;
   color: var(--qb-color-text-muted);
   font-size: clamp(0.9rem, 3.6vw, 1.05rem);
   font-weight: var(--qb-font-weight-medium);
   line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+/* Keep a reserved feedback row before the first answer without showing an empty panel. */
+.odd-one-out-feedback:empty {
+  min-height: 2.6em;
+  padding: 0;
+  background: transparent;
 }
 .odd-one-out-feedback[data-state="correct"] { color: var(--qb-color-success); }
 .odd-one-out-feedback[data-state="wrong"] { color: var(--qb-color-danger); }
