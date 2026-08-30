@@ -4,10 +4,10 @@ import { bindFullscreenButton } from "./ui.js";
 import { createOddOneOutVisualRenderer } from "./odd-one-out-visual-renderer.js";
 
 const INITIALISED_ROOTS = new WeakSet();
-// The expanded 14-family pool supports a longer cooldown without making a
-// Medium or Hard draw run out of suitable alternatives.
-const RECENT_BLUEPRINT_LIMIT = 8;
-const RECENT_FAMILY_LIMIT = 5;
+// The 18-family pool keeps fast shared-screen sessions fresh: the same
+// relationship stays away for 12 later sets and its wider family for 9.
+const RECENT_BLUEPRINT_LIMIT = 12;
+const RECENT_FAMILY_LIMIT = 9;
 const SUCCESS_HAPTIC = [22, 35, 48];
 const ERROR_HAPTIC = [82, 32, 82];
 
