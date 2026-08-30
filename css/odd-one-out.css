@@ -183,7 +183,8 @@
 .odd-one-out-next {
   grid-row: 3;
   width: min(100%, 22rem);
-  min-height: 3.65rem;
+  /* Match the primary action height used by Missing Word and Random Letter. */
+  min-height: 4.5rem;
   justify-self: center;
   padding: 0.7rem 1.25rem;
   border: 0;
@@ -204,7 +205,7 @@
   .odd-one-out-app { grid-template-rows: calc(3.25rem + env(safe-area-inset-top)) minmax(0, 1fr); }
   .odd-one-out-round { gap: 0.55rem; }
   .odd-one-out-cards { grid-template-rows: repeat(2, minmax(4.7rem, 1fr)); }
-  .odd-one-out-next { min-height: 3rem; }
+  .odd-one-out-next { min-height: 3.6rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
