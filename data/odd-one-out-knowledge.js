@@ -26,7 +26,11 @@ export const ODD_ONE_OUT_FAMILY_TARGETS = {
   "food-and-drink": { medium: 3, hard: 2 },
   "technology-and-inventions": { medium: 3, hard: 2 },
   "entertainment-and-media": { medium: 3, hard: 2 },
-  "history-and-civilization": { medium: 3, hard: 2 }
+  "history-and-civilization": { medium: 3, hard: 2 },
+  "government-and-society": { medium: 3, hard: 2 },
+  "mythology-and-folklore": { medium: 3, hard: 2 },
+  "mathematics-and-logic": { medium: 3, hard: 2 },
+  "plants-and-natural-world": { medium: 3, hard: 2 }
 };
 
 export const ODD_ONE_OUT_BLUEPRINTS = [
@@ -549,5 +553,141 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     matches: ["Elizabeth II", "Victoria", "Henry VIII", "George VI", "William IV"],
     intruders: ["Washington", "Lincoln", "Jefferson", "Roosevelt", "Obama"],
     explanation: (odd) => `${odd} was a US president.\nThe others are British monarchs.`
+  },
+  {
+    id: "elected-offices-and-hereditary-titles",
+    family: "government-and-society",
+    difficulty: 2,
+    matches: ["President", "Senator", "Mayor", "Governor", "Councillor", "Member of Parliament"],
+    intruders: ["King", "Queen", "Prince", "Duke", "Baron"],
+    explanation: (odd) => `${odd} is a hereditary title.\nThe others are political offices.`
+  },
+  {
+    id: "election-and-court-terms",
+    family: "government-and-society",
+    difficulty: 2,
+    matches: ["Ballot", "Candidate", "Constituency", "Referendum", "Manifesto", "Polling Station"],
+    intruders: ["Verdict", "Jury", "Appeal", "Defendant", "Witness"],
+    explanation: (odd) => `${odd} is a courtroom term.\nThe others are election terms.`
+  },
+  {
+    id: "intergovernmental-organizations-and-ngos",
+    family: "government-and-society",
+    difficulty: 3,
+    matches: ["United Nations", "NATO", "World Health Organization", "African Union", "ASEAN"],
+    intruders: ["Greenpeace", "Amnesty International", "Doctors Without Borders", "Human Rights Watch", "Oxfam"],
+    explanation: (odd) => `${odd} is a non-governmental organization.\nThe others are intergovernmental organizations.`
+  },
+  {
+    id: "greek-and-norse-gods",
+    family: "mythology-and-folklore",
+    difficulty: 2,
+    matches: ["Zeus", "Hera", "Athena", "Apollo", "Artemis", "Poseidon"],
+    intruders: ["Odin", "Thor", "Loki", "Freya", "Heimdall"],
+    explanation: (odd) => `${odd} is a Norse god.\nThe others are Greek gods.`
+  },
+  {
+    id: "mythical-creatures-and-fairy-tale-characters",
+    family: "mythology-and-folklore",
+    difficulty: 2,
+    matches: ["Dragon", "Phoenix", "Unicorn", "Griffin", "Kraken", "Cyclops"],
+    intruders: ["Cinderella", "Snow White", "Rapunzel", "Pinocchio", "Rumpelstiltskin"],
+    explanation: (odd) => `${odd} is a fairy-tale character.\nThe others are mythical creatures.`
+  },
+  {
+    id: "roman-and-greek-gods",
+    family: "mythology-and-folklore",
+    difficulty: 3,
+    matches: ["Jupiter", "Juno", "Mars", "Venus", "Mercury"],
+    intruders: ["Zeus", "Hera", "Ares", "Aphrodite", "Hermes"],
+    explanation: (odd) => `${odd} is a Greek god.\nThe others are Roman gods.`
+  },
+  {
+    id: "plane-shapes-and-solids",
+    family: "mathematics-and-logic",
+    difficulty: 2,
+    matches: ["Triangle", "Square", "Pentagon", "Hexagon", "Octagon"],
+    intruders: ["Sphere", "Cone", "Cylinder", "Cube", "Pyramid"],
+    explanation: (odd) => `${odd} is a three-dimensional solid.\nThe others are plane shapes.`
+  },
+  {
+    id: "length-and-mass-units",
+    family: "mathematics-and-logic",
+    difficulty: 2,
+    matches: ["Kilometre", "Metre", "Centimetre", "Millimetre", "Micrometre"],
+    intruders: ["Kilogram", "Gram", "Milligram", "Tonne", "Pound"],
+    explanation: (odd) => `${odd} is a unit of mass.\nThe others are units of length.`
+  },
+  {
+    id: "square-and-cube-numbers",
+    family: "mathematics-and-logic",
+    difficulty: 3,
+    matches: ["4", "9", "16", "25", "36"],
+    intruders: ["8", "27", "64", "125", "216"],
+    explanation: (odd) => `${odd} is a cube number.\nThe others are square numbers.`
+  },
+  {
+    id: "deciduous-and-evergreen-trees",
+    family: "plants-and-natural-world",
+    difficulty: 2,
+    matches: ["Oak", "Maple", "Birch", "Willow", "Beech", "Aspen"],
+    intruders: ["Pine", "Spruce", "Fir", "Cedar", "Yew"],
+    explanation: (odd) => `${odd} is an evergreen tree.\nThe others are deciduous trees.`
+  },
+  {
+    id: "fungi-and-plants",
+    family: "plants-and-natural-world",
+    difficulty: 2,
+    matches: ["Portobello", "Shiitake", "Chanterelle", "Morel", "Oyster Mushroom"],
+    intruders: ["Rose", "Fern", "Moss", "Pine", "Cactus"],
+    explanation: (odd) => `${odd} is a plant.\nThe others are fungi.`
+  },
+  {
+    id: "conifers-and-flowering-trees",
+    family: "plants-and-natural-world",
+    difficulty: 3,
+    matches: ["Pine", "Spruce", "Fir", "Cedar", "Yew"],
+    intruders: ["Oak", "Maple", "Magnolia", "Cherry", "Apple"],
+    explanation: (odd) => `${odd} is a flowering tree.\nThe others are conifers.`
+  },
+  {
+    id: "athletics-and-swimming-events",
+    family: "sport-and-games",
+    difficulty: 2,
+    matches: ["100 Metres", "200 Metres", "400 Metres", "Marathon", "Hurdles", "Long Jump"],
+    intruders: ["Freestyle", "Butterfly", "Backstroke", "Breaststroke", "Diving"],
+    explanation: (odd) => `${odd} is a swimming event.\nThe others are athletics events.`
+  },
+  {
+    id: "golf-and-tennis-terms",
+    family: "sport-and-games",
+    difficulty: 3,
+    matches: ["Birdie", "Eagle", "Bogey", "Par", "Fairway"],
+    intruders: ["Tiebreak", "Deuce", "Love", "Serve", "Volley"],
+    explanation: (odd) => `${odd} is a tennis term.\nThe others are golf terms.`
+  },
+  {
+    id: "kitchen-and-laundry-appliances",
+    family: "everyday-life",
+    difficulty: 3,
+    matches: ["Kettle", "Toaster", "Blender", "Microwave", "Food Processor"],
+    intruders: ["Washing Machine", "Tumble Dryer", "Vacuum Cleaner", "Steam Mop", "Carpet Cleaner"],
+    explanation: (odd) => `${odd} is a laundry or cleaning appliance.\nThe others are kitchen appliances.`
+  },
+  {
+    id: "sportswear-and-luxury-fashion-brands",
+    family: "brands-and-business",
+    difficulty: 2,
+    matches: ["Nike", "Adidas", "Puma", "Under Armour", "ASICS"],
+    intruders: ["Gucci", "Prada", "Chanel", "Burberry", "Dior"],
+    explanation: (odd) => `${odd} is a luxury fashion brand.\nThe others are sportswear brands.`
+  },
+  {
+    id: "film-and-music-awards",
+    family: "entertainment-and-media",
+    difficulty: 3,
+    matches: ["Oscar", "BAFTA", "Palme d'Or", "Golden Lion", "Golden Bear"],
+    intruders: ["Grammy", "Brit Award", "MTV Video Music Award", "Billboard Music Award", "Juno Award"],
+    explanation: (odd) => `${odd} is a music award.\nThe others are film awards.`
   }
 ];

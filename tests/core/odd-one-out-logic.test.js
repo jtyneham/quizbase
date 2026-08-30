@@ -6,7 +6,7 @@ import { chooseDifficulty, chooseRound, createRound } from "../../js/core/odd-on
 const deterministicRandom = () => 0;
 
 test("Odd One Out blueprints have valid reviewed relationship pools", () => {
-  assert.ok(ODD_ONE_OUT_BLUEPRINTS.length >= 65);
+  assert.ok(ODD_ONE_OUT_BLUEPRINTS.length >= 82);
   assert.ok(ODD_ONE_OUT_BLUEPRINTS.every((blueprint) => blueprint.difficulty === 2 || blueprint.difficulty === 3));
   assert.ok(ODD_ONE_OUT_BLUEPRINTS.every((blueprint) => blueprint.family in ODD_ONE_OUT_FAMILY_TARGETS));
   assert.deepEqual(
