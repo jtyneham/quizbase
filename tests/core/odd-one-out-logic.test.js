@@ -51,3 +51,29 @@ test("round selection honors difficulty and avoids recent relationships and fami
   assert.notEqual(medium.family, "animals");
   assert.equal(hard.difficulty, 3);
 });
+
+test("round selection avoids labels shown in the previous visible sets when possible", () => {
+  const blueprints = [
+    {
+      id: "blocked-by-labels",
+      family: "first",
+      difficulty: 2,
+      matches: ["Dolphin", "Whale", "Seal"],
+      intruders: ["Shark"],
+      explanation: () => ""
+    },
+    {
+      id: "label-fresh",
+      family: "second",
+      difficulty: 2,
+      matches: ["Maple", "Birch", "Willow"],
+      intruders: ["Pine"],
+      explanation: () => ""
+    }
+  ];
+  const recentChoiceSets = [["Dolphin", "Whale", "Seal", "Shark"]];
+  const round = chooseRound(blueprints, "medium", [], deterministicRandom, [], recentChoiceSets);
+
+  assert.equal(round.blueprintId, "label-fresh");
+  assert.ok(round.choices.every((choice) => !recentChoiceSets.flat().includes(choice)));
+});

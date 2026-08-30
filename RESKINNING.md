@@ -289,7 +289,7 @@ Odd One Out uses the same presentation boundary as the other games:
 
 - `js/core/odd-one-out-engine.js` owns the round lifecycle, 65/35 Mixed
   difficulty weighting, twelve-recent-blueprint cooldown, nine-recent-family
-  cooldown, correctness, and haptics;
+  cooldown, three-recent-visible-set label cooldown, correctness, and haptics;
 - `js/core/odd-one-out-logic.js` is the pure, testable round generator;
 - `js/core/odd-one-out-visual-renderer.js` is the renderer registry;
 - `js/core/odd-one-out-dom-renderer.js` is the default DOM/CSS card,

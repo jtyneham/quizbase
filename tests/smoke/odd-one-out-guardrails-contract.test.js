@@ -10,4 +10,5 @@ test("Odd One Out keeps its long-session relationship and family cooldowns", asy
 
   assert.match(source, /RECENT_BLUEPRINT_LIMIT = 12/);
   assert.match(source, /RECENT_FAMILY_LIMIT = 9/);
+  assert.match(source, /RECENT_VISIBLE_SET_LIMIT = 3/);
 });

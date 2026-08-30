@@ -8,6 +8,7 @@ const INITIALISED_ROOTS = new WeakSet();
 // relationship stays away for 12 later sets and its wider family for 9.
 const RECENT_BLUEPRINT_LIMIT = 12;
 const RECENT_FAMILY_LIMIT = 9;
+const RECENT_VISIBLE_SET_LIMIT = 3;
 const SUCCESS_HAPTIC = [22, 35, 48];
 const ERROR_HAPTIC = [82, 32, 82];
 
@@ -37,6 +38,7 @@ export function initOddOneOut(root, app, {
   let isChangingSet = false;
   let recentBlueprintIds = [];
   let recentFamilies = [];
+  let recentChoiceSets = [];
 
   function setDifficulty(nextSetting) {
     setting = nextSetting;
@@ -74,9 +76,17 @@ export function initOddOneOut(root, app, {
     if (isChangingSet) return;
     isChangingSet = true;
     renderer.setPrimaryAction({ label: currentRound ? "Next Set" : "Generate Set", disabled: true });
-    const round = chooseRound(ODD_ONE_OUT_BLUEPRINTS, setting, recentBlueprintIds, Math.random, recentFamilies);
+    const round = chooseRound(
+      ODD_ONE_OUT_BLUEPRINTS,
+      setting,
+      recentBlueprintIds,
+      Math.random,
+      recentFamilies,
+      recentChoiceSets
+    );
     recentBlueprintIds = [...recentBlueprintIds, round.blueprintId].slice(-RECENT_BLUEPRINT_LIMIT);
     recentFamilies = [...recentFamilies, round.family].slice(-RECENT_FAMILY_LIMIT);
+    recentChoiceSets = [...recentChoiceSets, round.choices].slice(-RECENT_VISIBLE_SET_LIMIT);
 
     // A renderer decides how a set enters or leaves. The engine retains the
     // lifecycle lock, so a themed animation cannot generate duplicate rounds.

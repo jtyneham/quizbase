@@ -508,7 +508,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
   },
   {
     id: "trees-and-flowers",
-    family: "energy-environment-and-nature",
+    family: "plants-and-natural-world",
     difficulty: 2,
     matches: ["Oak", "Maple", "Pine", "Birch", "Willow"],
     intruders: ["Rose", "Tulip", "Lily", "Daffodil", "Orchid"],
