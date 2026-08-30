@@ -8,8 +8,8 @@ import { buildPokemonOddOneOutRoundBlueprints } from "../core/pokemon-odd-one-ou
 
 // This edition deliberately reuses the shared Odd One Out lifecycle, haptics,
 // feedback, renderer boundary, and cooldowns. Only reviewed Pokémon data and
-// local element selectors differ. Expand the pilot pool before treating this
-// as a complete edition.
+// local element selectors differ. Grow it by adding reviewed relationship
+// contracts and pools; the game never fetches unreviewed Pokémon data at runtime.
 export function initPokemonOddOneOut(root, app) {
   const { blueprints } = buildPokemonOddOneOutRoundBlueprints({
     contracts: POKEMON_ODD_ONE_OUT_BLUEPRINTS,
