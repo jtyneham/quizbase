@@ -4,6 +4,7 @@ import { bindFullscreenButton } from "./ui.js";
 
 const INITIALISED_ROOTS = new WeakSet();
 const RECENT_BLUEPRINT_LIMIT = 6;
+const RECENT_FAMILY_LIMIT = 3;
 const SUCCESS_HAPTIC = [22, 35, 48];
 const ERROR_HAPTIC = [82, 32, 82];
 
@@ -29,6 +30,7 @@ export function initOddOneOut(root, app) {
   let answered = false;
   let isChangingSet = false;
   let recentBlueprintIds = [];
+  let recentFamilies = [];
 
   function setDifficulty(nextSetting) {
     setting = nextSetting;
@@ -87,8 +89,9 @@ export function initOddOneOut(root, app) {
 
   function generateSet() {
     if (isChangingSet) return;
-    const round = chooseRound(ODD_ONE_OUT_BLUEPRINTS, setting, recentBlueprintIds);
+    const round = chooseRound(ODD_ONE_OUT_BLUEPRINTS, setting, recentBlueprintIds, Math.random, recentFamilies);
     recentBlueprintIds = [...recentBlueprintIds, round.blueprintId].slice(-RECENT_BLUEPRINT_LIMIT);
+    recentFamilies = [...recentFamilies, round.family].slice(-RECENT_FAMILY_LIMIT);
 
     const showRound = () => {
       cards.classList.remove("resolved", "set-leaving");

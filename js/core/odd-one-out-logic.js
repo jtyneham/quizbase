@@ -29,6 +29,7 @@ export function createRound(blueprint, random = Math.random) {
 
   return {
     blueprintId: blueprint.id,
+    family: blueprint.family,
     difficulty: blueprint.difficulty,
     choices: shuffle([...matches, oddChoice], random),
     oddChoice,
@@ -36,11 +37,20 @@ export function createRound(blueprint, random = Math.random) {
   };
 }
 
-export function chooseRound(blueprints, setting = "mixed", recentBlueprintIds = [], random = Math.random) {
+export function chooseRound(
+  blueprints,
+  setting = "mixed",
+  recentBlueprintIds = [],
+  random = Math.random,
+  recentFamilies = []
+) {
   const difficulty = chooseDifficulty(setting, random);
   const eligible = blueprints.filter((blueprint) => blueprint.difficulty === difficulty);
   const unseen = eligible.filter((blueprint) => !recentBlueprintIds.includes(blueprint.id));
-  const candidates = unseen.length ? unseen : eligible;
+  const familyFresh = unseen.filter((blueprint) => !recentFamilies.includes(blueprint.family));
+  // Prefer a fresh relationship from a fresh family. If the pool is too small,
+  // relax family avoidance first, then blueprint avoidance, so generation never stalls.
+  const candidates = familyFresh.length ? familyFresh : unseen.length ? unseen : eligible;
   if (!candidates.length) throw new Error(`No Odd One Out rounds are available for difficulty ${difficulty}.`);
   return createRound(shuffle(candidates, random)[0], random);
 }

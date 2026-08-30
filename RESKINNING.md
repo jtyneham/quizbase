@@ -275,12 +275,15 @@ relationship explanation appears below. Correct and wrong answers use distinct
 haptic patterns where the device supports vibration.
 
 `data/odd-one-out-knowledge.js` contains relationship blueprints, not a loose
-word list. Each blueprint supplies a matching pool, a reviewed near-miss pool,
-an explanation template, and either Medium (`2`) or Hard (`3`) difficulty.
-`js/core/odd-one-out-logic.js` selects three matches plus one near-miss,
-shuffles choices, applies the Mixed weighting, and avoids recent
-relationships. A reskin can replace the visuals and feedback animation, but
-must preserve those round, answer, and next-set contracts.
+word list. Each blueprint supplies a family, matching pool, reviewed near-miss
+pool, explanation template, and either Medium (`2`) or Hard (`3`) difficulty.
+`ODD_ONE_OUT_FAMILY_TARGETS` is the content-expansion plan: keep the pool in
+broad General Knowledge families, meet the documented Medium/Hard targets, and
+do not add niche fandom material simply to raise difficulty. `js/core/odd-one-out-logic.js`
+selects three matches plus one near-miss, shuffles choices, applies the Mixed
+weighting, and avoids both recent relationships and recent families whenever
+the eligible pool permits it. A reskin can replace visuals and feedback
+animation, but must preserve those round, answer, and next-set contracts.
 
 ## Topic picker contract
 

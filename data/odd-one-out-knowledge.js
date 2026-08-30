@@ -8,9 +8,23 @@
  * Do not add fandom-specific or specialist material here. Difficulty comes
  * from the distinction between related concepts, not niche knowledge.
  */
+export const ODD_ONE_OUT_FAMILY_TARGETS = {
+  animals: { medium: 5, hard: 3 },
+  "arts-and-culture": { medium: 4, hard: 3 },
+  geography: { medium: 5, hard: 3 },
+  "brands-and-business": { medium: 4, hard: 2 },
+  "science-and-space": { medium: 5, hard: 3 },
+  "human-body-and-health": { medium: 3, hard: 2 },
+  "time-language-and-symbols": { medium: 3, hard: 2 },
+  "energy-environment-and-nature": { medium: 3, hard: 2 },
+  "everyday-life": { medium: 4, hard: 3 },
+  "sport-and-games": { medium: 3, hard: 3 }
+};
+
 export const ODD_ONE_OUT_BLUEPRINTS = [
   {
     id: "mammals-and-fish",
+    family: "animals",
     difficulty: 2,
     matches: ["Dolphin", "Whale", "Seal", "Otter", "Bat", "Elephant", "Horse", "Tiger"],
     intruders: ["Shark", "Salmon", "Tuna", "Cod", "Trout"],
@@ -18,6 +32,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
   },
   {
     id: "string-instruments",
+    family: "arts-and-culture",
     difficulty: 2,
     matches: ["Violin", "Cello", "Harp", "Guitar", "Double Bass", "Banjo", "Mandolin"],
     intruders: ["Trumpet", "Flute", "Clarinet", "Trombone", "Saxophone"],
@@ -25,6 +40,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
   },
   {
     id: "european-capitals",
+    family: "geography",
     difficulty: 2,
     matches: ["Paris", "Rome", "Madrid", "Lisbon", "Vienna", "Berlin", "Athens", "Dublin"],
     intruders: ["Toronto", "Sydney", "New York", "Chicago", "Rio de Janeiro"],
@@ -32,6 +48,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
   },
   {
     id: "classical-composers",
+    family: "arts-and-culture",
     difficulty: 2,
     matches: ["Mozart", "Beethoven", "Bach", "Chopin", "Vivaldi", "Tchaikovsky", "Handel"],
     intruders: ["Monet", "Picasso", "Van Gogh", "Rembrandt", "Kahlo"],
@@ -39,6 +56,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
   },
   {
     id: "us-brands",
+    family: "brands-and-business",
     difficulty: 2,
     matches: ["Apple", "Nike", "Coca-Cola", "Ford", "McDonalds", "Levis"],
     intruders: ["Sony", "Toyota", "IKEA", "Samsung", "Nintendo"],
@@ -46,6 +64,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
   },
   {
     id: "japanese-brands",
+    family: "brands-and-business",
     difficulty: 2,
     matches: ["Toyota", "Honda", "Nintendo", "Sony", "Mitsubishi", "Uniqlo"],
     intruders: ["IKEA", "Samsung", "Adidas", "Lego", "Ferrari"],
@@ -53,6 +72,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
   },
   {
     id: "reptiles-and-amphibians",
+    family: "animals",
     difficulty: 2,
     matches: ["Lizard", "Turtle", "Crocodile", "Snake", "Iguana", "Chameleon"],
     intruders: ["Frog", "Toad", "Newt", "Salamander"],
@@ -60,6 +80,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
   },
   {
     id: "metal-elements",
+    family: "science-and-space",
     difficulty: 2,
     matches: ["Iron", "Copper", "Gold", "Silver", "Nickel", "Aluminium", "Zinc"],
     intruders: ["Oxygen", "Carbon", "Sulfur", "Helium"],
@@ -67,6 +88,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
   },
   {
     id: "world-oceans",
+    family: "geography",
     difficulty: 2,
     matches: ["Atlantic", "Pacific", "Indian", "Arctic", "Southern"],
     intruders: ["Mediterranean", "Caribbean", "Baltic", "Black Sea"],
@@ -74,6 +96,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
   },
   {
     id: "human-organs",
+    family: "human-body-and-health",
     difficulty: 2,
     matches: ["Heart", "Liver", "Lung", "Kidney", "Brain", "Stomach"],
     intruders: ["Femur", "Skull", "Rib", "Spine", "Pelvis"],
@@ -81,6 +104,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
   },
   {
     id: "days-of-week",
+    family: "time-language-and-symbols",
     difficulty: 2,
     matches: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
     intruders: ["January", "March", "June", "October"],
@@ -88,6 +112,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
   },
   {
     id: "chemical-symbols",
+    family: "science-and-space",
     difficulty: 2,
     matches: ["Hydrogen", "Oxygen", "Nitrogen", "Carbon", "Helium", "Neon"],
     intruders: ["Granite", "Quartz", "Marble", "Sandstone"],
@@ -95,6 +120,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
   },
   {
     id: "major-planets",
+    family: "science-and-space",
     difficulty: 3,
     matches: ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"],
     intruders: ["Pluto", "Ceres", "Eris", "Haumea", "Makemake"],
@@ -102,6 +128,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
   },
   {
     id: "mammals-and-birds",
+    family: "animals",
     difficulty: 3,
     matches: ["Dolphin", "Whale", "Bat", "Otter", "Seal", "Kangaroo", "Giraffe"],
     intruders: ["Eagle", "Penguin", "Owl", "Sparrow", "Flamingo"],
@@ -109,6 +136,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
   },
   {
     id: "capital-cities",
+    family: "geography",
     difficulty: 3,
     matches: ["Canberra", "Ottawa", "Brasilia", "Ankara", "Wellington", "Bern", "Abuja"],
     intruders: ["Sydney", "Toronto", "Istanbul", "Auckland", "Zurich"],
@@ -116,6 +144,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
   },
   {
     id: "roman-numerals",
+    family: "time-language-and-symbols",
     difficulty: 3,
     matches: ["I", "V", "X", "L", "C", "D", "M"],
     intruders: ["A", "B", "E", "G", "N"],
@@ -123,6 +152,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
   },
   {
     id: "nordic-countries",
+    family: "geography",
     difficulty: 3,
     matches: ["Denmark", "Finland", "Iceland", "Norway", "Sweden"],
     intruders: ["Estonia", "Germany", "Poland", "Scotland"],
@@ -130,6 +160,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
   },
   {
     id: "renewable-energy",
+    family: "energy-environment-and-nature",
     difficulty: 3,
     matches: ["Solar", "Wind", "Hydro", "Geothermal", "Tidal"],
     intruders: ["Coal", "Diesel", "Petrol", "Natural Gas"],
@@ -137,6 +168,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
   },
   {
     id: "eu-currency",
+    family: "geography",
     difficulty: 3,
     matches: ["France", "Germany", "Italy", "Spain", "Portugal", "Ireland", "Austria"],
     intruders: ["Sweden", "Denmark", "Poland", "Hungary"],
