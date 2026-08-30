@@ -745,5 +745,13 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     matches: ["Tower Bridge", "Brooklyn Bridge", "Golden Gate Bridge", "Sydney Harbour Bridge", "Akashi Kaikyo Bridge", "Millau Viaduct"],
     intruders: ["Burj Khalifa", "CN Tower", "Space Needle", "Tokyo Tower", "Leaning Tower of Pisa"],
     explanation: (odd) => `${odd} is a tower.\nThe others are bridges.`
+  },
+  {
+    id: "video-games-and-game-consoles",
+    family: "entertainment-and-media",
+    difficulty: 2,
+    matches: ["Minecraft", "Tetris", "Fortnite", "Pac-Man", "Mario Kart", "The Sims"],
+    intruders: ["PlayStation", "Xbox", "Nintendo Switch", "Steam Deck", "Game Boy"],
+    explanation: (odd) => `${odd} is a game console.\nThe others are video games.`
   }
 ];
