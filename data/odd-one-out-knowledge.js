@@ -36,7 +36,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Dolphin", "Whale", "Seal", "Otter", "Bat", "Elephant", "Horse", "Tiger"],
     intruders: ["Shark", "Salmon", "Tuna", "Cod", "Trout"],
-    explanation: (odd) => `${odd} is a fish. The other choices are mammals.`
+    explanation: (odd) => `${odd} is a fish.\nThe others are mammals.`
   },
   {
     id: "string-instruments",
@@ -44,7 +44,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Violin", "Cello", "Harp", "Guitar", "Double Bass", "Banjo", "Mandolin"],
     intruders: ["Trumpet", "Flute", "Clarinet", "Trombone", "Saxophone"],
-    explanation: (odd) => `${odd} is a wind instrument. The other choices are string instruments.`
+    explanation: (odd) => `${odd} is a wind instrument.\nThe others are string instruments.`
   },
   {
     id: "european-capitals",
@@ -52,7 +52,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Paris", "Rome", "Madrid", "Lisbon", "Vienna", "Berlin", "Athens", "Dublin"],
     intruders: ["Toronto", "Sydney", "New York", "Chicago", "Rio de Janeiro"],
-    explanation: (odd) => `${odd} is not a European capital. The other choices are European capitals.`
+    explanation: (odd) => `${odd} is not a European capital.\nThe others are European capitals.`
   },
   {
     id: "classical-composers",
@@ -60,7 +60,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Mozart", "Beethoven", "Bach", "Chopin", "Vivaldi", "Tchaikovsky", "Handel"],
     intruders: ["Monet", "Picasso", "Van Gogh", "Rembrandt", "Kahlo"],
-    explanation: (odd) => `${odd} is a painter. The other choices are classical composers.`
+    explanation: (odd) => `${odd} is a painter.\nThe others are classical composers.`
   },
   {
     id: "us-brands",
@@ -68,7 +68,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Apple", "Nike", "Coca-Cola", "Ford", "McDonalds", "Levis"],
     intruders: ["Sony", "Toyota", "IKEA", "Samsung", "Nintendo"],
-    explanation: (odd) => `${odd} was not founded in the United States. The other brands were.`
+    explanation: (odd) => `${odd} was not founded in the United States.\nThe others are American brands.`
   },
   {
     id: "japanese-brands",
@@ -76,7 +76,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Toyota", "Honda", "Nintendo", "Sony", "Mitsubishi", "Uniqlo"],
     intruders: ["IKEA", "Samsung", "Adidas", "Lego", "Ferrari"],
-    explanation: (odd) => `${odd} was not founded in Japan. The other brands were.`
+    explanation: (odd) => `${odd} was not founded in Japan.\nThe others are Japanese brands.`
   },
   {
     id: "reptiles-and-amphibians",
@@ -84,7 +84,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Lizard", "Turtle", "Crocodile", "Snake", "Iguana", "Chameleon"],
     intruders: ["Frog", "Toad", "Newt", "Salamander"],
-    explanation: (odd) => `${odd} is an amphibian. The other choices are reptiles.`
+    explanation: (odd) => `${odd} is an amphibian.\nThe others are reptiles.`
   },
   {
     id: "metal-elements",
@@ -92,7 +92,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Iron", "Copper", "Gold", "Silver", "Nickel", "Aluminium", "Zinc"],
     intruders: ["Oxygen", "Carbon", "Sulfur", "Helium"],
-    explanation: (odd) => `${odd} is not a metal. The other choices are metals.`
+    explanation: (odd) => `${odd} is not a metal.\nThe others are metals.`
   },
   {
     id: "world-oceans",
@@ -100,7 +100,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Atlantic", "Pacific", "Indian", "Arctic", "Southern"],
     intruders: ["Mediterranean", "Caribbean", "Baltic", "Black Sea"],
-    explanation: (odd) => `${odd} is a sea. The other choices are oceans.`
+    explanation: (odd) => `${odd} is a sea.\nThe others are oceans.`
   },
   {
     id: "human-organs",
@@ -108,7 +108,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Heart", "Liver", "Lung", "Kidney", "Brain", "Stomach"],
     intruders: ["Femur", "Skull", "Rib", "Spine", "Pelvis"],
-    explanation: (odd) => `${odd} is a bone. The other choices are organs.`
+    explanation: (odd) => `${odd} is a bone.\nThe others are organs.`
   },
   {
     id: "days-of-week",
@@ -116,7 +116,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
     intruders: ["January", "March", "June", "October"],
-    explanation: (odd) => `${odd} is a month. The other choices are days of the week.`
+    explanation: (odd) => `${odd} is a month.\nThe others are days of the week.`
   },
   {
     id: "chemical-symbols",
@@ -124,7 +124,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Hydrogen", "Oxygen", "Nitrogen", "Carbon", "Helium", "Neon"],
     intruders: ["Granite", "Quartz", "Marble", "Sandstone"],
-    explanation: (odd) => `${odd} is a rock or mineral. The other choices are chemical elements.`
+    explanation: (odd) => `${odd} is a rock or mineral.\nThe others are chemical elements.`
   },
   {
     id: "major-planets",
@@ -132,7 +132,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 3,
     matches: ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"],
     intruders: ["Pluto", "Ceres", "Eris", "Haumea", "Makemake"],
-    explanation: (odd) => `${odd} is a dwarf planet. The other choices are planets.`
+    explanation: (odd) => `${odd} is a dwarf planet.\nThe others are planets.`
   },
   {
     id: "mammals-and-birds",
@@ -140,7 +140,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 3,
     matches: ["Dolphin", "Whale", "Bat", "Otter", "Seal", "Kangaroo", "Giraffe"],
     intruders: ["Eagle", "Penguin", "Owl", "Sparrow", "Flamingo"],
-    explanation: (odd) => `${odd} is a bird. The other choices are mammals.`
+    explanation: (odd) => `${odd} is a bird.\nThe others are mammals.`
   },
   {
     id: "capital-cities",
@@ -148,7 +148,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 3,
     matches: ["Canberra", "Ottawa", "Brasilia", "Ankara", "Wellington", "Bern", "Abuja"],
     intruders: ["Sydney", "Toronto", "Istanbul", "Auckland", "Zurich"],
-    explanation: (odd) => `${odd} is not that country's capital. The other choices are national capitals.`
+    explanation: (odd) => `${odd} is not that country's capital.\nThe others are national capitals.`
   },
   {
     id: "roman-numerals",
@@ -156,7 +156,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 3,
     matches: ["I", "V", "X", "L", "C", "D", "M"],
     intruders: ["A", "B", "E", "G", "N"],
-    explanation: (odd) => `${odd} is not a Roman numeral. The other choices are Roman numerals.`
+    explanation: (odd) => `${odd} is not a Roman numeral.\nThe others are Roman numerals.`
   },
   {
     id: "nordic-countries",
@@ -164,7 +164,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 3,
     matches: ["Denmark", "Finland", "Iceland", "Norway", "Sweden"],
     intruders: ["Estonia", "Germany", "Poland", "Scotland"],
-    explanation: (odd) => `${odd} is not a Nordic country. The other choices are Nordic countries.`
+    explanation: (odd) => `${odd} is not a Nordic country.\nThe others are Nordic countries.`
   },
   {
     id: "renewable-energy",
@@ -172,7 +172,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 3,
     matches: ["Solar", "Wind", "Hydro", "Geothermal", "Tidal"],
     intruders: ["Coal", "Diesel", "Petrol", "Natural Gas"],
-    explanation: (odd) => `${odd} is not a renewable energy source. The other choices are renewable energy sources.`
+    explanation: (odd) => `${odd} is not a renewable energy source.\nThe others are renewable energy sources.`
   },
   {
     id: "eu-currency",
@@ -180,7 +180,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 3,
     matches: ["France", "Germany", "Italy", "Spain", "Portugal", "Ireland", "Austria"],
     intruders: ["Sweden", "Denmark", "Poland", "Hungary"],
-    explanation: (odd) => `${odd} does not use the euro. The other countries do.`
+    explanation: (odd) => `${odd} does not use the euro.\nThe others are euro-using countries.`
   },
   {
     id: "coffee-drinks-and-teas",
@@ -188,7 +188,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Espresso", "Cappuccino", "Latte", "Americano", "Mocha"],
     intruders: ["Earl Grey", "Oolong", "Rooibos", "Chamomile", "Matcha"],
-    explanation: (odd) => `${odd} is tea. The other choices are coffee drinks.`
+    explanation: (odd) => `${odd} is tea.\nThe others are coffee drinks.`
   },
   {
     id: "citrus-fruits",
@@ -196,7 +196,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Orange", "Lemon", "Lime", "Grapefruit", "Mandarin", "Clementine"],
     intruders: ["Strawberry", "Raspberry", "Blueberry", "Blackberry", "Cranberry"],
-    explanation: (odd) => `${odd} is not a citrus fruit. The other choices are citrus fruits.`
+    explanation: (odd) => `${odd} is not a citrus fruit.\nThe others are citrus fruits.`
   },
   {
     id: "common-fabrics",
@@ -204,7 +204,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Cotton", "Linen", "Silk", "Wool", "Denim", "Velvet"],
     intruders: ["Leather", "Rubber", "Plastic", "Glass", "Metal"],
-    explanation: (odd) => `${odd} is not a fabric. The other choices are fabrics.`
+    explanation: (odd) => `${odd} is not a fabric.\nThe others are fabrics.`
   },
   {
     id: "land-transport",
@@ -212,7 +212,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Car", "Bus", "Train", "Bicycle", "Motorcycle", "Tram"],
     intruders: ["Canoe", "Ferry", "Sailboat", "Kayak", "Yacht"],
-    explanation: (odd) => `${odd} is a water vehicle. The other choices are land transport.`
+    explanation: (odd) => `${odd} is a water vehicle.\nThe others are land transport.`
   },
   {
     id: "racket-sports",
@@ -220,7 +220,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Tennis", "Badminton", "Squash", "Pickleball", "Table Tennis"],
     intruders: ["Golf", "Baseball", "Cricket", "Hockey", "Archery"],
-    explanation: (odd) => `${odd} is not a racket sport. The other choices are racket sports.`
+    explanation: (odd) => `${odd} is not a racket sport.\nThe others are racket sports.`
   },
   {
     id: "winter-sports",
@@ -228,7 +228,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Skiing", "Snowboarding", "Curling", "Bobsleigh", "Luge", "Biathlon"],
     intruders: ["Surfing", "Sailing", "Cycling", "Golf", "Tennis"],
-    explanation: (odd) => `${odd} is not a winter sport. The other choices are winter sports.`
+    explanation: (odd) => `${odd} is not a winter sport.\nThe others are winter sports.`
   },
   {
     id: "board-games-and-card-games",
@@ -236,7 +236,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Chess", "Checkers", "Backgammon", "Monopoly", "Scrabble", "Risk", "Clue"],
     intruders: ["Poker", "Bridge", "Blackjack", "Baccarat", "Rummy"],
-    explanation: (odd) => `${odd} is a card game. The other choices are board games.`
+    explanation: (odd) => `${odd} is a card game.\nThe others are board games.`
   },
   {
     id: "vitamins-and-minerals",
@@ -244,7 +244,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Vitamin A", "Vitamin B12", "Vitamin C", "Vitamin D", "Vitamin E", "Vitamin K"],
     intruders: ["Iron", "Calcium", "Zinc", "Potassium", "Magnesium"],
-    explanation: (odd) => `${odd} is a mineral. The other choices are vitamins.`
+    explanation: (odd) => `${odd} is a mineral.\nThe others are vitamins.`
   },
   {
     id: "impressionist-painters",
@@ -252,7 +252,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 3,
     matches: ["Monet", "Renoir", "Degas", "Pissarro", "Sisley", "Morisot"],
     intruders: ["Picasso", "Dalí", "Kahlo", "Warhol", "Pollock"],
-    explanation: (odd) => `${odd} is not associated with Impressionism. The other choices are Impressionist painters.`
+    explanation: (odd) => `${odd} is not associated with Impressionism.\nThe others are Impressionist painters.`
   },
   {
     id: "shakespeare-plays",
@@ -260,7 +260,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 3,
     matches: ["Hamlet", "Macbeth", "Othello", "King Lear", "The Tempest", "Julius Caesar"],
     intruders: ["Oliver Twist", "Jane Eyre", "Great Expectations", "Frankenstein", "Wuthering Heights"],
-    explanation: (odd) => `${odd} is a novel, not a Shakespeare play. The other choices are Shakespeare plays.`
+    explanation: (odd) => `${odd} is a novel, not a Shakespeare play.\nThe others are Shakespeare plays.`
   },
   {
     id: "famous-ballets",
@@ -268,7 +268,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 3,
     matches: ["Swan Lake", "The Nutcracker", "The Sleeping Beauty", "Giselle", "Coppélia", "Don Quixote"],
     intruders: ["Carmen", "La Traviata", "The Magic Flute", "Aida", "Tosca"],
-    explanation: (odd) => `${odd} is an opera. The other choices are ballets.`
+    explanation: (odd) => `${odd} is an opera.\nThe others are ballets.`
   },
   {
     id: "german-car-brands",
@@ -276,7 +276,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 3,
     matches: ["BMW", "Mercedes-Benz", "Audi", "Porsche", "Volkswagen", "Opel"],
     intruders: ["Ferrari", "Fiat", "Lamborghini", "Alfa Romeo", "Maserati"],
-    explanation: (odd) => `${odd} is an Italian car brand. The other choices are German car brands.`
+    explanation: (odd) => `${odd} is an Italian car brand.\nThe others are German car brands.`
   },
   {
     id: "video-and-music-streaming",
@@ -284,7 +284,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 3,
     matches: ["Netflix", "Disney+", "Hulu", "Max", "Prime Video", "Apple TV+"],
     intruders: ["Spotify", "Apple Music", "Deezer", "Tidal", "SoundCloud"],
-    explanation: (odd) => `${odd} is primarily a music-streaming service. The other choices are video-streaming services.`
+    explanation: (odd) => `${odd} is primarily a music-streaming service.\nThe others are video-streaming services.`
   },
   {
     id: "weather-instruments",
@@ -292,7 +292,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Barometer", "Thermometer", "Anemometer", "Rain Gauge", "Hygrometer", "Weather Vane"],
     intruders: ["Compass", "Stopwatch", "Ruler", "Protractor", "Calculator"],
-    explanation: (odd) => `${odd} is not used to measure weather conditions. The other choices are weather instruments.`
+    explanation: (odd) => `${odd} is not used to measure weather conditions.\nThe others are weather instruments.`
   },
   {
     id: "greenhouse-gases",
@@ -300,7 +300,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 3,
     matches: ["Carbon Dioxide", "Methane", "Nitrous Oxide", "Water Vapour", "Ozone"],
     intruders: ["Nitrogen", "Oxygen", "Argon", "Helium", "Neon"],
-    explanation: (odd) => `${odd} is not a greenhouse gas. The other choices are greenhouse gases.`
+    explanation: (odd) => `${odd} is not a greenhouse gas.\nThe others are greenhouse gases.`
   },
   {
     id: "pasta-shapes-and-breads",
@@ -308,7 +308,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Spaghetti", "Penne", "Fusilli", "Farfalle", "Rigatoni", "Tagliatelle"],
     intruders: ["Bagel", "Croissant", "Pretzel", "Brioche", "Sourdough"],
-    explanation: (odd) => `${odd} is bread or pastry. The other choices are pasta shapes.`
+    explanation: (odd) => `${odd} is bread or pastry.\nThe others are pasta shapes.`
   },
   {
     id: "cooking-oils-and-vinegars",
@@ -316,7 +316,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Olive Oil", "Sunflower Oil", "Sesame Oil", "Canola Oil", "Coconut Oil"],
     intruders: ["Balsamic Vinegar", "Apple Cider Vinegar", "Rice Vinegar", "Malt Vinegar", "White Wine Vinegar"],
-    explanation: (odd) => `${odd} is vinegar. The other choices are cooking oils.`
+    explanation: (odd) => `${odd} is vinegar.\nThe others are cooking oils.`
   },
   {
     id: "legumes-and-grains",
@@ -324,7 +324,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 3,
     matches: ["Chickpea", "Lentil", "Black Bean", "Kidney Bean", "Split Pea", "Peanut"],
     intruders: ["Rice", "Oats", "Wheat", "Barley", "Quinoa"],
-    explanation: (odd) => `${odd} is a grain. The other choices are legumes.`
+    explanation: (odd) => `${odd} is a grain.\nThe others are legumes.`
   },
   {
     id: "computer-input-devices",
@@ -332,7 +332,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Keyboard", "Mouse", "Scanner", "Microphone", "Webcam", "Trackpad"],
     intruders: ["Monitor", "Printer", "Speaker", "Projector", "Headphones"],
-    explanation: (odd) => `${odd} is an output device. The other choices are input devices.`
+    explanation: (odd) => `${odd} is an output device.\nThe others are input devices.`
   },
   {
     id: "web-browsers-and-search-engines",
@@ -340,7 +340,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Chrome", "Firefox", "Safari", "Edge", "Opera", "Brave"],
     intruders: ["Google", "Bing", "Yahoo", "DuckDuckGo", "Baidu"],
-    explanation: (odd) => `${odd} is a search engine. The other choices are web browsers.`
+    explanation: (odd) => `${odd} is a search engine.\nThe others are web browsers.`
   },
   {
     id: "image-and-audio-file-formats",
@@ -348,7 +348,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 3,
     matches: ["JPEG", "PNG", "GIF", "SVG", "WebP"],
     intruders: ["MP3", "WAV", "AAC", "FLAC", "OGG"],
-    explanation: (odd) => `${odd} is an audio format. The other choices are image formats.`
+    explanation: (odd) => `${odd} is an audio format.\nThe others are image formats.`
   },
   {
     id: "film-directors-and-actors",
@@ -356,7 +356,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Spielberg", "Nolan", "Scorsese", "Tarantino", "Bigelow", "Gerwig"],
     intruders: ["Streep", "DiCaprio", "Washington", "Johansson", "Pitt"],
-    explanation: (odd) => `${odd} is an actor. The other choices are film directors.`
+    explanation: (odd) => `${odd} is an actor.\nThe others are film directors.`
   },
   {
     id: "bands-and-solo-artists",
@@ -364,7 +364,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["The Beatles", "Queen", "ABBA", "U2", "Coldplay", "Nirvana"],
     intruders: ["Beyoncé", "Adele", "Madonna", "Prince", "Rihanna"],
-    explanation: (odd) => `${odd} is a solo artist. The other choices are bands.`
+    explanation: (odd) => `${odd} is a solo artist.\nThe others are bands.`
   },
   {
     id: "fictional-detectives-and-authors",
@@ -372,7 +372,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 3,
     matches: ["Sherlock Holmes", "Hercule Poirot", "Miss Marple", "Columbo", "Nancy Drew"],
     intruders: ["Agatha Christie", "Arthur Conan Doyle", "Raymond Chandler", "P. D. James", "Dashiell Hammett"],
-    explanation: (odd) => `${odd} is an author. The other choices are fictional detectives.`
+    explanation: (odd) => `${odd} is an author.\nThe others are fictional detectives.`
   },
   {
     id: "ancient-wonders-and-modern-landmarks",
@@ -380,7 +380,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Great Pyramid", "Hanging Gardens", "Temple of Artemis", "Statue of Zeus", "Colossus of Rhodes", "Lighthouse of Alexandria"],
     intruders: ["Eiffel Tower", "Big Ben", "Statue of Liberty", "Sydney Opera House", "Golden Gate Bridge"],
-    explanation: (odd) => `${odd} is a modern landmark. The other choices are ancient wonders.`
+    explanation: (odd) => `${odd} is a modern landmark.\nThe others are ancient wonders.`
   },
   {
     id: "historical-eras-and-empires",
@@ -388,7 +388,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 2,
     matches: ["Renaissance", "Enlightenment", "Middle Ages", "Victorian Era", "Industrial Revolution"],
     intruders: ["Roman Empire", "Ottoman Empire", "Persian Empire", "Mongol Empire", "Aztec Empire"],
-    explanation: (odd) => `${odd} is an empire. The other choices are historical eras.`
+    explanation: (odd) => `${odd} is an empire.\nThe others are historical eras.`
   },
   {
     id: "roman-emperors-and-greek-philosophers",
@@ -396,7 +396,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 3,
     matches: ["Augustus", "Nero", "Hadrian", "Claudius", "Marcus Aurelius"],
     intruders: ["Socrates", "Plato", "Aristotle", "Epicurus", "Pythagoras"],
-    explanation: (odd) => `${odd} was a Greek philosopher. The other choices were Roman emperors.`
+    explanation: (odd) => `${odd} was a Greek philosopher.\nThe others are Roman emperors.`
   },
   {
     id: "tableware-and-cookware",
@@ -404,7 +404,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 3,
     matches: ["Plate", "Bowl", "Mug", "Glass", "Saucer", "Serving Dish"],
     intruders: ["Saucepan", "Frying Pan", "Wok", "Stockpot", "Casserole Dish"],
-    explanation: (odd) => `${odd} is cookware. The other choices are tableware.`
+    explanation: (odd) => `${odd} is cookware.\nThe others are tableware.`
   },
   {
     id: "tennis-grand-slams-and-other-tournaments",
@@ -412,7 +412,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 3,
     matches: ["Australian Open", "French Open", "Wimbledon", "US Open"],
     intruders: ["Indian Wells", "Miami Open", "Davis Cup", "ATP Finals", "Laver Cup"],
-    explanation: (odd) => `${odd} is not a tennis Grand Slam. The other choices are.`
+    explanation: (odd) => `${odd} is not a tennis Grand Slam.\nThe others are tennis Grand Slam tournaments.`
   },
   {
     id: "upper-and-lower-limb-bones",
@@ -420,6 +420,6 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 3,
     matches: ["Humerus", "Radius", "Ulna", "Scapula", "Clavicle"],
     intruders: ["Femur", "Tibia", "Fibula", "Patella", "Talus"],
-    explanation: (odd) => `${odd} is a lower-limb bone. The other choices are upper-limb bones.`
+    explanation: (odd) => `${odd} is a lower-limb bone.\nThe others are upper-limb bones.`
   }
 ];

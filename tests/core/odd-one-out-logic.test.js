@@ -19,6 +19,9 @@ test("Odd One Out blueprints have valid reviewed relationship pools", () => {
     const matches = new Set(blueprint.matches.map((word) => word.toLowerCase()));
     return blueprint.intruders.every((word) => !matches.has(word.toLowerCase()));
   }));
+  assert.ok(ODD_ONE_OUT_BLUEPRINTS.every((blueprint) =>
+    blueprint.intruders.every((odd) => /\nThe others are .+\.$/.test(blueprint.explanation(odd)))
+  ));
 });
 
 test("a generated round contains three matches, one intruder, and an explanation", () => {
