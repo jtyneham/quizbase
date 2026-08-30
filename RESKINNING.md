@@ -285,6 +285,11 @@ weighting, and avoids both recent relationships and recent families whenever
 the eligible pool permits it. A reskin can replace visuals and feedback
 animation, but must preserve those round, answer, and next-set contracts.
 
+`tests/core/odd-one-out-long-session.test.js` generates 800 real rounds in
+each difficulty setting. It is the permanent regression gate for the current
+relationship, family, and visible-label cooldowns: do not weaken it merely to
+make an undersized future content pool pass.
+
 Odd One Out uses the same presentation boundary as the other games:
 
 - `js/core/odd-one-out-engine.js` owns the round lifecycle, 65/35 Mixed
