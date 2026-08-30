@@ -10,11 +10,14 @@ test("Odd One Out generates a reviewed set and resolves correct and wrong picks"
   await next.click();
   await expect(cards).toHaveCount(4);
   await expect(next).toHaveText("Next Set");
+  await expect(screen.locator("#oddOneOutPrompt")).toHaveText("Odd One Out");
 
   const values = await cards.allTextContents();
   await cards.first().click();
   await expect(cards.filter({ hasText: values[0] })).toHaveClass(/correct|wrong/);
-  await expect(screen.locator("#oddOneOutFeedback")).not.toBeEmpty();
+  const feedback = screen.locator("#oddOneOutFeedback");
+  await expect(feedback).not.toBeEmpty();
+  await expect(feedback).not.toContainText(/Correct\.|Not quite\./);
   await expect(cards).toHaveCount(4);
 
   await next.click();

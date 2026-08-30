@@ -116,6 +116,19 @@
         transform 120ms ease;
     }
 
+    /* Keep the centre option square; only the two outer options carry the control's rounded ends. */
+    .difficulty-control button:first-child {
+      border-radius: var(--radius-pill, 999rem) 0 0 var(--radius-pill, 999rem);
+    }
+
+    .difficulty-control button:nth-child(2) {
+      border-radius: 0;
+    }
+
+    .difficulty-control button:last-child {
+      border-radius: 0 var(--radius-pill, 999rem) var(--radius-pill, 999rem) 0;
+    }
+
     .difficulty-control button:active {
       transform: scale(0.96);
     }

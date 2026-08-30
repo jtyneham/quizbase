@@ -46,7 +46,7 @@ export function initOddOneOut(root, app) {
   function renderRound(round) {
     currentRound = round;
     answered = false;
-    prompt.textContent = "Which one does not belong?";
+    prompt.textContent = "Odd One Out";
     setFeedback("");
     cards.replaceChildren(...round.choices.map((choice) => {
       const button = document.createElement("button");
@@ -75,10 +75,10 @@ export function initOddOneOut(root, app) {
 
     if (correct) {
       app.haptic?.(SUCCESS_HAPTIC);
-      setFeedback(`Correct. ${currentRound.explanation}`, "correct");
+      setFeedback(currentRound.explanation, "correct");
     } else {
       app.haptic?.(ERROR_HAPTIC);
-      setFeedback(`Not quite. ${currentRound.explanation}`, "wrong");
+      setFeedback(currentRound.explanation, "wrong");
     }
 
     if (!reducedMotion) cards.classList.add("resolved");

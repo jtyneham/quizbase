@@ -46,11 +46,14 @@
 
 .odd-one-out-difficulty {
   display: inline-flex;
+  align-items: center;
   min-height: var(--ooo-control-height);
-  overflow: hidden;
   border-radius: var(--qb-radius-control);
-  background: var(--qb-color-surface-muted);
-  color: var(--qb-color-accent);
+  gap: 0.12rem;
+  padding: 0.18rem;
+  background: var(--qb-picker-control-bg);
+  box-shadow: inset 0 0 0 0.05rem rgba(0, 0, 0, 0.08);
+  color: var(--qb-picker-control-text);
 }
 
 .odd-one-out-difficulty button {
@@ -64,7 +67,20 @@
   cursor: pointer;
 }
 
-.odd-one-out-difficulty button.active { background: var(--qb-color-accent-soft); }
+.odd-one-out-difficulty button:first-child {
+  border-radius: var(--qb-radius-control) 0 0 var(--qb-radius-control);
+}
+
+.odd-one-out-difficulty button:nth-child(2) { border-radius: 0; }
+
+.odd-one-out-difficulty button:last-child {
+  border-radius: 0 var(--qb-radius-control) var(--qb-radius-control) 0;
+}
+
+.odd-one-out-difficulty button.active {
+  background: var(--qb-color-accent);
+  color: var(--qb-color-control-active-text);
+}
 
 .odd-one-out-main {
   min-height: 0;
