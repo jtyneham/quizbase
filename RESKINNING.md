@@ -53,7 +53,7 @@ subset, and integration/rehome logic together in one named data module.
 
 ## Recommended workflow
 
-1. Inspect the current product and understand all five game flows before styling.
+1. Inspect the current product and understand all six game flows before styling.
 2. Accumulate the complete reference set before implementation.
 3. Reverse-engineer the reference system: core rules, recurring patterns, contextual treatments, decorative motifs, redundant evidence, and unsuitable transplants.
 4. Override semantic tokens first.
@@ -65,7 +65,8 @@ subset, and integration/rehome logic together in one named data module.
 
 For visual work, also run `npm run test:e2e`. The browser gate covers direct
 links, topic overlays, Missing Word generation/reveal, Hangman solve mode, the
-keyboard, Random Letter Ideas, fullscreen controls, and viewport overflow.
+keyboard, Random Letter Ideas, Odd One Out answer feedback, fullscreen
+controls, and viewport overflow.
 
 ## Theme tokens and Shadow DOM
 
@@ -157,7 +158,7 @@ A reskin may use cards, lists, terminals, diegetic panels, abstract navigation, 
 Unless the product explicitly changes, preserve:
 
 ### App
-- all five routes and Home navigation, including direct hash links and browser Back/Forward;
+- all six routes and Home navigation, including direct hash links and browser Back/Forward;
 - fullscreen enter/exit and icon state;
 - haptics where supported;
 - no accidental page scrolling.
@@ -214,6 +215,7 @@ canonical hashes when changing the launcher or app shell:
 - `#missingwordpokemon`
 - `#hangman`
 - `#hangmanpokemon`
+- `#odd-one-out`
 
 Older human-readable hashes remain accepted as aliases.  A visual reskin may
 replace launcher markup, but launch controls must call the app navigation API
@@ -262,6 +264,24 @@ letter or control button state. The Ideas ticker has `start`, `stop`, and
 - Ideas toggle and ticker behavior;
 - generation interruption/acceleration behavior where present.
 
+### Odd One Out
+
+Odd One Out is a shared-screen General Knowledge game. It intentionally has
+no topic picker, timer, score, player setup, or automated turn system. A
+session begins with **Generate Set**; after an answer, **Next Set** generates
+another reviewed four-choice round. Tapping a choice resolves immediately:
+the true intruder turns green, a wrong tap turns red, and the short
+relationship explanation appears below. Correct and wrong answers use distinct
+haptic patterns where the device supports vibration.
+
+`data/odd-one-out-knowledge.js` contains relationship blueprints, not a loose
+word list. Each blueprint supplies a matching pool, a reviewed near-miss pool,
+an explanation template, and either Medium (`2`) or Hard (`3`) difficulty.
+`js/core/odd-one-out-logic.js` selects three matches plus one near-miss,
+shuffles choices, applies the Mixed weighting, and avoids recent
+relationships. A reskin can replace the visuals and feedback animation, but
+must preserve those round, answer, and next-set contracts.
+
 ## Topic picker contract
 
 Topic pickers must support their existing apply/cancel/clear/all behavior and dismiss naturally by outside click/tap where implemented. The opener control must be excluded from outside-dismiss handling so opening a picker does not immediately close it.
@@ -298,7 +318,7 @@ The objective is maximum authenticity with good design judgment, not maximum ref
 After meaningful reskin work:
 
 - run `npm test`;
-- launch all five routes;
+- launch all six routes;
 - Home out of every game;
 - enter and exit fullscreen;
 - open/apply/cancel/outside-dismiss topic pickers;
@@ -306,6 +326,7 @@ After meaningful reskin work:
 - exercise Hangman guesses, misses, win, loss, Solve Word, Cancel, New Word and keyboard reset;
 - test short, long, multiword and punctuation Hangman answers;
 - exercise Random Letter generation and Ideas/ticker behavior;
+- generate and resolve correct/wrong Odd One Out rounds, then request a next set;
 - inspect phone portrait, phone landscape, tablet portrait and desktop;
 - check that no old visual-language fragments remain accidentally after the reskin.
 
@@ -324,7 +345,7 @@ npm test
 npm run test:e2e
 ```
 
-`npm run test:e2e` uses Playwright to exercise the actual app at desktop, phone-portrait, and tablet-portrait sizes. It protects the behaviors most likely to be broken by aggressive visual reconstruction: launcher routing, Home, fullscreen controls, topic pickers, Missing Word generation/difficulty, Hangman keyboard/Solve/New Word, Random Letter generation, and page-level no-scroll behavior.
+`npm run test:e2e` uses Playwright to exercise the actual app at desktop, phone-portrait, and tablet-portrait sizes. It protects the behaviors most likely to be broken by aggressive visual reconstruction: launcher routing, Home, fullscreen controls, topic pickers, Missing Word generation/difficulty, Hangman keyboard/Solve/New Word, Random Letter generation, Odd One Out generation/answer feedback, and page-level no-scroll behavior.
 
 Semantic `data-ui` hooks are deliberately used by the browser suite where possible. Preserve those hooks even when a reskin completely changes layout or appearance. Do not make tests depend on decorative class names merely to satisfy a theme.
 

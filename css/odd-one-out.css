@@ -1,0 +1,173 @@
+#oddOneOutScreen {
+  --ooo-page-inline: clamp(0.75rem, 3.8vw, 2rem);
+  --ooo-control-height: 2.75rem;
+}
+
+#oddOneOutScreen *, #oddOneOutScreen *::before, #oddOneOutScreen *::after { box-sizing: border-box; }
+
+.odd-one-out-app {
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: calc(3.9rem + env(safe-area-inset-top)) minmax(0, 1fr);
+  overflow: hidden;
+  background: var(--qb-color-page);
+  color: var(--qb-color-text);
+}
+
+.odd-one-out-topbar {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: env(safe-area-inset-top) max(var(--ooo-page-inline), env(safe-area-inset-right)) 0.5rem max(var(--ooo-page-inline), env(safe-area-inset-left));
+}
+
+.odd-one-out-topbar .utility-actions { display: inline-flex; gap: 0.5rem; }
+
+.odd-one-out-utility {
+  width: var(--ooo-control-height);
+  height: var(--ooo-control-height);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: var(--qb-radius-control);
+  background: var(--qb-color-surface-muted);
+  box-shadow: var(--qb-shadow-control);
+  cursor: pointer;
+  transition: transform var(--qb-motion-fast) var(--qb-ease-standard), box-shadow var(--qb-motion-fast) var(--qb-ease-standard);
+}
+
+.odd-one-out-utility img { width: 1.35rem; height: 1.35rem; display: block; }
+.odd-one-out-utility:active { transform: scale(.96); box-shadow: var(--qb-shadow-control-pressed); }
+.odd-one-out-utility:focus-visible, .odd-one-out-card:focus-visible, .odd-one-out-next:focus-visible, .odd-one-out-difficulty button:focus-visible { outline: 0.18rem solid var(--qb-color-focus); outline-offset: 0.2rem; }
+
+.odd-one-out-difficulty {
+  display: inline-flex;
+  min-height: var(--ooo-control-height);
+  overflow: hidden;
+  border-radius: var(--qb-radius-control);
+  background: var(--qb-color-surface-muted);
+  color: var(--qb-color-accent);
+}
+
+.odd-one-out-difficulty button {
+  min-width: clamp(3.5rem, 15vw, 4.5rem);
+  padding: 0.35rem 0.55rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: clamp(0.8rem, 3.4vw, 0.95rem);
+  font-weight: var(--qb-font-weight-strong);
+  cursor: pointer;
+}
+
+.odd-one-out-difficulty button.active { background: var(--qb-color-accent-soft); }
+
+.odd-one-out-main {
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  padding: clamp(0.5rem, 2dvh, 1rem) max(var(--ooo-page-inline), env(safe-area-inset-right)) max(1rem, env(safe-area-inset-bottom)) max(var(--ooo-page-inline), env(safe-area-inset-left));
+}
+
+.odd-one-out-round {
+  width: min(100%, 39rem);
+  height: 100%;
+  max-height: 100%;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  gap: clamp(0.75rem, 2dvh, 1.25rem);
+  align-items: stretch;
+}
+
+.odd-one-out-prompt {
+  margin: 0;
+  text-align: center;
+  color: var(--qb-color-text-strong);
+  font-size: clamp(1.35rem, 5.8vw, 2rem);
+  font-weight: var(--qb-font-weight-heavy);
+  line-height: 1.1;
+}
+
+.odd-one-out-cards {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(6.5rem, 1fr));
+  gap: clamp(0.65rem, 2.6vw, 1rem);
+}
+
+.odd-one-out-card {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  padding: 0.8rem;
+  overflow-wrap: anywhere;
+  border: 0.12rem solid var(--qb-color-line);
+  border-radius: var(--qb-radius-card);
+  background: var(--qb-color-surface);
+  color: var(--qb-color-text-on-surface);
+  box-shadow: var(--qb-shadow-card);
+  font-size: clamp(1.1rem, 5.5vw, 1.9rem);
+  font-weight: var(--qb-font-weight-heavy);
+  line-height: 1.08;
+  cursor: pointer;
+  transition: transform var(--qb-motion-fast) var(--qb-ease-standard), background-color var(--qb-motion-normal) var(--qb-ease-standard), border-color var(--qb-motion-normal) var(--qb-ease-standard), color var(--qb-motion-normal) var(--qb-ease-standard);
+}
+
+.odd-one-out-card:not(:disabled):hover { background: var(--qb-color-surface-hover); transform: translateY(-0.1rem); }
+.odd-one-out-card:not(:disabled):active { transform: scale(.98); }
+.odd-one-out-card:disabled { cursor: default; }
+.odd-one-out-card.correct { border-color: var(--qb-color-success); background: #eaf7ed; color: var(--qb-color-success); }
+.odd-one-out-card.wrong { border-color: var(--qb-color-danger); background: var(--qb-color-danger-soft); color: var(--qb-color-danger); }
+.odd-one-out-card.correct::after, .odd-one-out-card.wrong::after { position: absolute; right: 0.55rem; top: 0.35rem; font-size: 1.35rem; font-weight: 800; }
+.odd-one-out-card.correct::after { content: "✓"; }
+.odd-one-out-card.wrong::after { content: "×"; }
+.odd-one-out-cards.resolved .odd-one-out-card.correct { animation: odd-one-out-correct 320ms var(--qb-ease-emphasis); }
+
+@keyframes odd-one-out-correct { 0% { transform: scale(.94); } 65% { transform: scale(1.035); } 100% { transform: scale(1); } }
+
+.odd-one-out-feedback {
+  min-height: 2.6em;
+  margin: 0;
+  text-align: center;
+  color: var(--qb-color-text-muted);
+  font-size: clamp(0.9rem, 3.6vw, 1.05rem);
+  font-weight: var(--qb-font-weight-medium);
+  line-height: 1.35;
+}
+.odd-one-out-feedback[data-state="correct"] { color: var(--qb-color-success); }
+.odd-one-out-feedback[data-state="wrong"] { color: var(--qb-color-danger); }
+
+.odd-one-out-next {
+  width: min(100%, 22rem);
+  min-height: 3.65rem;
+  justify-self: center;
+  padding: 0.7rem 1.25rem;
+  border: 0;
+  border-radius: var(--qb-radius-control-large);
+  background: var(--qb-color-accent);
+  color: var(--qb-color-control-active-text);
+  box-shadow: var(--qb-shadow-game);
+  font-size: clamp(1rem, 4.2vw, 1.2rem);
+  font-weight: var(--qb-font-weight-strong);
+  cursor: pointer;
+  transition: transform var(--qb-motion-fast) var(--qb-ease-standard), background-color var(--qb-motion-fast) var(--qb-ease-standard);
+}
+.odd-one-out-next:hover { background: var(--qb-color-accent-hover); }
+.odd-one-out-next:active { transform: scale(.98); }
+
+@media (max-height: 42rem) {
+  .odd-one-out-app { grid-template-rows: calc(3.25rem + env(safe-area-inset-top)) minmax(0, 1fr); }
+  .odd-one-out-round { gap: 0.55rem; }
+  .odd-one-out-cards { grid-template-rows: repeat(2, minmax(4.7rem, 1fr)); }
+  .odd-one-out-next { min-height: 3rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .odd-one-out-card, .odd-one-out-next, .odd-one-out-utility { transition: none; }
+  .odd-one-out-cards.resolved .odd-one-out-card.correct { animation: none; }
+}

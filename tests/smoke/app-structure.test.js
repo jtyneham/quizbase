@@ -9,15 +9,16 @@ const routes = [
   ["missing-word", "missingWordScreen"],
   ["missing-word-pokemon", "missingWordPokemonScreen"],
   ["hangman", "hangmanScreen"],
-  ["hangman-pokemon", "hangmanPokemonScreen"]
+  ["hangman-pokemon", "hangmanPokemonScreen"],
+  ["odd-one-out", "oddOneOutScreen"]
 ];
 
-test("all five game screens are present in the app shell", async () => {
+test("all six game screens are present in the app shell", async () => {
   const html = await read("index.html");
   for (const [, screenId] of routes) assert.match(html, new RegExp(`id=["']${screenId}["']`));
 });
 
-test("all five route hashes are represented by app screen names", async () => {
+test("all six route hashes are represented by app screen names", async () => {
   const app = await read("js/app.js");
   for (const [route] of routes) {
     assert.match(app, new RegExp(`"#${route}"`));
@@ -42,6 +43,9 @@ test("every game exposes Home navigation directly or through its shared engine",
     const source = await read(path);
     assert.match(source, /defineHangmanElement/, `${path} should register through the shared engine`);
   }
+
+  const oddOneOut = await read("js/core/odd-one-out-engine.js");
+  assert.match(oddOneOut, /showHome\(\)/, "Odd One Out should call the shared Home API");
 });
 
 test("shared utility assets exist", async () => {

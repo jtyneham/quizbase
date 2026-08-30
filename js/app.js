@@ -7,7 +7,8 @@ const screens = {
   missingword: document.getElementById("missingWordScreen"),
   missingwordpokemon: document.getElementById("missingWordPokemonScreen"),
   hangman: document.getElementById("hangmanScreen"),
-  hangmanpokemon: document.getElementById("hangmanPokemonScreen")
+  hangmanpokemon: document.getElementById("hangmanPokemonScreen"),
+  oddoneout: document.getElementById("oddOneOutScreen")
 };
 
 const fullscreenService = createFullscreenService();
@@ -38,6 +39,11 @@ const routes = {
     hash: "#hangmanpokemon",
     aliases: ["#hangman-pokemon"],
     load: async () => (await import("./games/hangman-pokemon.js")).registerHangmanPokemon(api)
+  },
+  oddoneout: {
+    hash: "#odd-one-out",
+    aliases: ["#oddoneout"],
+    load: async () => (await import("./games/odd-one-out.js")).initOddOneOut(screens.oddoneout, api)
   }
 };
 
@@ -46,7 +52,8 @@ const fileRoutes = {
   "missingword.html": "missingword",
   "missingwordpokemon.html": "missingwordpokemon",
   "hangman1.html": "hangman",
-  "hangmanpokemon.html": "hangmanpokemon"
+  "hangmanpokemon.html": "hangmanpokemon",
+  "oddoneout.html": "oddoneout"
 };
 
 const api = {
