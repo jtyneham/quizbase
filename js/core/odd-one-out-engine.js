@@ -49,7 +49,9 @@ export function initOddOneOut(root, app) {
   function renderRound(round) {
     currentRound = round;
     answered = false;
-    prompt.textContent = "Odd One Out";
+    // The pre-game prompt gives the empty screen context. Once cards exist,
+    // hide it entirely so the four shared-screen choices get that space.
+    prompt.hidden = true;
     setFeedback("");
     cards.replaceChildren(...round.choices.map((choice) => {
       const button = document.createElement("button");
