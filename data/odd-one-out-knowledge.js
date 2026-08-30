@@ -260,7 +260,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     difficulty: 3,
     matches: ["Hamlet", "Macbeth", "Othello", "King Lear", "The Tempest", "Julius Caesar"],
     intruders: ["Oliver Twist", "Jane Eyre", "Great Expectations", "Frankenstein", "Wuthering Heights"],
-    explanation: (odd) => `${odd} is a novel, not a Shakespeare play.`
+    explanation: (odd) => `${odd} is a novel, not a Shakespeare play. The other choices are Shakespeare plays.`
   },
   {
     id: "famous-ballets",
