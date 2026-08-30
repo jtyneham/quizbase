@@ -285,6 +285,28 @@ weighting, and avoids both recent relationships and recent families whenever
 the eligible pool permits it. A reskin can replace visuals and feedback
 animation, but must preserve those round, answer, and next-set contracts.
 
+Odd One Out uses the same presentation boundary as the other games:
+
+- `js/core/odd-one-out-engine.js` owns the round lifecycle, 65/35 Mixed
+  difficulty weighting, eight-recent-blueprint cooldown, five-recent-family
+  cooldown, correctness, and haptics;
+- `js/core/odd-one-out-logic.js` is the pure, testable round generator;
+- `js/core/odd-one-out-visual-renderer.js` is the renderer registry;
+- `js/core/odd-one-out-dom-renderer.js` is the default DOM/CSS card,
+  explanation, and set-transition renderer;
+- `css/odd-one-out.css` is only the default visual language and responsive
+  play-field composition.
+
+The default renderer receives a reviewed round and an answer callback, then
+draws choices and feedback. It does not select words, decide correctness,
+manage cooldowns, or trigger haptics. A reskin can register a themed renderer
+with `registerOddOneOutVisualRenderer(name, factory)` and select it through
+`initOddOneOut(root, app, { visualRenderer: name })`. Its renderer implements
+`bindPrimaryAction`, `setPrimaryAction`, `renderRound`, `resolveRound`,
+`playRoundExit`, `playRoundEnter`, and `destroy`. This is the intended route
+for a fully canvas, PixiJS, SVG, Rive, or otherwise non-card-based treatment;
+do not fork the gameplay engine simply to change the visual medium.
+
 ## Topic picker contract
 
 Topic pickers must support their existing apply/cancel/clear/all behavior and dismiss naturally by outside click/tap where implemented. The opener control must be excluded from outside-dismiss handling so opening a picker does not immediately close it.
