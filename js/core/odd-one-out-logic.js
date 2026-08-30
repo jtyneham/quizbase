@@ -30,6 +30,30 @@ function canCreateRound(blueprint, excludedChoices) {
   return matches.length >= 3 && intruders.length >= 1;
 }
 
+function groupByRelationship(blueprints) {
+  const groups = new Map();
+  for (const blueprint of blueprints) {
+    const id = relationshipId(blueprint);
+    if (!groups.has(id)) groups.set(id, []);
+    groups.get(id).push(blueprint);
+  }
+  return [...groups.values()];
+}
+
+function chooseBlueprintFromRelationships(blueprints, random, excludedChoices = null) {
+  const groups = groupByRelationship(blueprints)
+    .map((variants) => excludedChoices
+      ? variants.filter((blueprint) => canCreateRound(blueprint, excludedChoices))
+      : variants)
+    .filter((variants) => variants.length);
+
+  if (!groups.length) return null;
+  // A relationship gets one draw regardless of how many valid quartets its
+  // bank can produce. Only after that do we choose a concrete combination.
+  const variants = shuffle(groups, random)[0];
+  return shuffle(variants, random)[0];
+}
+
 export function createRound(blueprint, random = Math.random, excludedChoices = []) {
   if (!blueprint || blueprint.matches.length < 3 || blueprint.intruders.length < 1) {
     throw new Error("Odd One Out blueprint needs at least three matches and one intruder.");
@@ -80,13 +104,15 @@ export function chooseRound(
   const excludedChoices = normalizeChoices(recentChoiceSets.flat());
 
   // Prefer a fresh relationship from a fresh family and three-set-visible-label
-  // cooldown. If the pool is too small, relax family avoidance first, then
-  // blueprint avoidance, and only finally visible-label avoidance.
+  // cooldown. Relationship groups—not individual combinations—are sampled
+  // uniformly, so a large curated bank never crowds out smaller relationships.
+  // If the pool is too small, relax family avoidance first, then blueprint
+  // avoidance, and only finally visible-label avoidance.
   for (const candidates of [familyFresh, unseen, eligible]) {
-    const labelFresh = candidates.filter((blueprint) => canCreateRound(blueprint, excludedChoices));
-    if (labelFresh.length) return createRound(shuffle(labelFresh, random)[0], random, excludedChoices);
+    const blueprint = chooseBlueprintFromRelationships(candidates, random, excludedChoices);
+    if (blueprint) return createRound(blueprint, random, excludedChoices);
   }
 
   if (!eligible.length) throw new Error(`No Odd One Out rounds are available for difficulty ${difficulty}.`);
-  return createRound(shuffle(eligible, random)[0], random);
+  return createRound(chooseBlueprintFromRelationships(eligible, random), random);
 }

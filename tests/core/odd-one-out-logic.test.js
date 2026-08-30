@@ -88,6 +88,43 @@ test("round selection cools down a whole relationship when it has several candid
   assert.equal(round.blueprintId, "fresh-relationship");
 });
 
+test("round selection gives each relationship equal weight despite uneven combination banks", () => {
+  const blueprints = [
+    ...Array.from({ length: 40 }, (_, index) => ({
+      id: `dense-${index}`,
+      cooldownId: "dense-relationship",
+      family: "first",
+      difficulty: 2,
+      matches: [`Oak ${index}`, `Birch ${index}`, `Maple ${index}`],
+      intruders: [`Salmon ${index}`],
+      explanation: () => ""
+    })),
+    {
+      id: "small",
+      cooldownId: "small-relationship",
+      family: "second",
+      difficulty: 2,
+      matches: ["Mercury", "Venus", "Mars"],
+      intruders: ["Tulip"],
+      explanation: () => ""
+    }
+  ];
+  let state = 123456789;
+  const random = () => {
+    state = (state * 48271) % 2147483647;
+    return state / 2147483647;
+  };
+  let smallRelationshipCount = 0;
+
+  for (let index = 0; index < 500; index += 1) {
+    if (chooseRound(blueprints, "medium", [], random).blueprintId === "small-relationship") {
+      smallRelationshipCount += 1;
+    }
+  }
+
+  assert.ok(smallRelationshipCount > 190 && smallRelationshipCount < 310, smallRelationshipCount);
+});
+
 test("round selection avoids labels shown in the previous visible sets when possible", () => {
   const blueprints = [
     {
