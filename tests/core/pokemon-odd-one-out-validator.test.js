@@ -10,6 +10,7 @@ import {
   POKEMON_ODD_ONE_OUT_FINAL_RELATIONSHIP_POOLS,
 } from "../../data/odd-one-out-pokemon-knowledge.js";
 import { buildPokemonOddOneOutRoundBlueprints } from "../../js/core/pokemon-odd-one-out-round-builder.js";
+import { chooseRound } from "../../js/core/odd-one-out-logic.js";
 import {
   findSurfaceGiveaway,
   validatePokemonOddOneOutCandidate,
@@ -172,4 +173,50 @@ test("the pool builder generates every valid reviewed 3-versus-1 combination", (
 
   assert.equal(blueprints.length, 8);
   assert.ok(blueprints.every((blueprint) => blueprint.cooldownId === contract.id));
+});
+
+test("Pokémon long sessions keep relationships and visible labels fresh", () => {
+  const { blueprints } = buildPokemonOddOneOutRoundBlueprints({
+    contracts: POKEMON_ODD_ONE_OUT_BLUEPRINTS,
+    terms: POKEMON_ODD_ONE_OUT_ACTIVE_TERMS,
+    pools: POKEMON_ODD_ONE_OUT_ACTIVE_POOLS
+  });
+
+  for (const [setting, seed] of [["mixed", 801], ["medium", 802], ["hard", 803]]) {
+    let state = seed;
+    const random = () => {
+      state = (state * 48271) % 2147483647;
+      return state / 2147483647;
+    };
+    let recentRelationships = [];
+    let recentFamilies = [];
+    let recentChoiceSets = [];
+    const previousRelationshipRound = new Map();
+    const previousLabelRound = new Map();
+
+    for (let index = 0; index < 800; index += 1) {
+      const round = chooseRound(
+        blueprints,
+        setting,
+        recentRelationships,
+        random,
+        recentFamilies,
+        recentChoiceSets
+      );
+
+      if (previousRelationshipRound.has(round.blueprintId)) {
+        assert.ok(index - previousRelationshipRound.get(round.blueprintId) >= 2, `${setting}: ${round.blueprintId} repeated immediately`);
+      }
+      for (const label of round.choices) {
+        if (previousLabelRound.has(label)) {
+          assert.ok(index - previousLabelRound.get(label) >= 4, `${setting}: ${label} repeated too soon`);
+        }
+        previousLabelRound.set(label, index);
+      }
+      previousRelationshipRound.set(round.blueprintId, index);
+      recentRelationships = [...recentRelationships, round.blueprintId].slice(-8);
+      recentFamilies = [...recentFamilies, round.family].slice(-4);
+      recentChoiceSets = [...recentChoiceSets, round.choices].slice(-3);
+    }
+  }
 });

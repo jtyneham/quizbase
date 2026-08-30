@@ -102,16 +102,25 @@ export function chooseRound(
   const unseen = eligible.filter((blueprint) => !recentBlueprintIds.includes(relationshipId(blueprint)));
   const familyFresh = unseen.filter((blueprint) => !recentFamilies.includes(blueprint.family));
   const excludedChoices = normalizeChoices(recentChoiceSets.flat());
+  const latestRelationship = recentBlueprintIds.at(-1);
+  const notLatestRelationship = eligible.filter((blueprint) => relationshipId(blueprint) !== latestRelationship);
 
   // Prefer a fresh relationship from a fresh family and three-set-visible-label
   // cooldown. Relationship groups—not individual combinations—are sampled
   // uniformly, so a large curated bank never crowds out smaller relationships.
   // If the pool is too small, relax family avoidance first, then blueprint
   // avoidance, and only finally visible-label avoidance.
-  for (const candidates of [familyFresh, unseen, eligible]) {
+  for (const candidates of [familyFresh, unseen, notLatestRelationship]) {
     const blueprint = chooseBlueprintFromRelationships(candidates, random, excludedChoices);
     if (blueprint) return createRound(blueprint, random, excludedChoices);
   }
+
+  // If every other relationship is blocked by recent card labels, prefer a
+  // different relationship with a recycled label over immediately repeating
+  // the same underlying idea. The normal three-set label guard still applies
+  // whenever any alternate relationship can satisfy it.
+  const relationshipFreshFallback = chooseBlueprintFromRelationships(notLatestRelationship, random);
+  if (relationshipFreshFallback) return createRound(relationshipFreshFallback, random);
 
   if (!eligible.length) throw new Error(`No Odd One Out rounds are available for difficulty ${difficulty}.`);
   return createRound(chooseBlueprintFromRelationships(eligible, random), random);

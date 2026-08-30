@@ -23,6 +23,10 @@ export function initOddOneOut(root, app, {
   visualRenderer = "dom",
   visualRendererConfig = {},
   blueprints = ODD_ONE_OUT_BLUEPRINTS,
+  // An edition may have fewer relationships than the general pool. Let it
+  // shorten its history safely instead of exhausting every eligible idea and
+  // falling back to an immediate repeat. These are round counts, never time.
+  cooldownLimits = {},
   controls = {
     fullscreenButton: "#oddOneOutFullscreenButton",
     fullscreenIcon: "#oddOneOutFullscreenIcon",
@@ -34,6 +38,12 @@ export function initOddOneOut(root, app, {
   INITIALISED_ROOTS.add(root);
 
   const difficultyButtons = [...root.querySelectorAll("[data-difficulty]")];
+  const cooldowns = {
+    relationships: RECENT_BLUEPRINT_LIMIT,
+    families: RECENT_FAMILY_LIMIT,
+    visibleSets: RECENT_VISIBLE_SET_LIMIT,
+    ...cooldownLimits
+  };
   const renderer = createOddOneOutVisualRenderer({
     ...visualRendererConfig,
     type: visualRenderer,
@@ -91,9 +101,9 @@ export function initOddOneOut(root, app, {
       recentFamilies,
       recentChoiceSets
     );
-    recentBlueprintIds = [...recentBlueprintIds, round.blueprintId].slice(-RECENT_BLUEPRINT_LIMIT);
-    recentFamilies = [...recentFamilies, round.family].slice(-RECENT_FAMILY_LIMIT);
-    recentChoiceSets = [...recentChoiceSets, round.choices].slice(-RECENT_VISIBLE_SET_LIMIT);
+    recentBlueprintIds = [...recentBlueprintIds, round.blueprintId].slice(-cooldowns.relationships);
+    recentFamilies = [...recentFamilies, round.family].slice(-cooldowns.families);
+    recentChoiceSets = [...recentChoiceSets, round.choices].slice(-cooldowns.visibleSets);
 
     // A renderer decides how a set enters or leaves. The engine retains the
     // lifecycle lock, so a themed animation cannot generate duplicate rounds.

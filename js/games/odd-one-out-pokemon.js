@@ -19,6 +19,10 @@ export function initPokemonOddOneOut(root, app) {
 
   initOddOneOut(root, app, {
     blueprints,
+    // Medium has nine and Hard ten reviewed relationships. Keeping the last
+    // eight ensures either mode always has a fresh relationship to choose;
+    // label protection remains the same three generated sets as General OOO.
+    cooldownLimits: { relationships: 8, families: 4, visibleSets: 3 },
     controls: {
       fullscreenButton: "#oddOneOutPokemonFullscreenButton",
       fullscreenIcon: "#oddOneOutPokemonFullscreenIcon",
