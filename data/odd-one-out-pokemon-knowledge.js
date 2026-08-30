@@ -245,3 +245,307 @@ export const POKEMON_ODD_ONE_OUT_BLUEPRINTS = [
     ]
   }
 ];
+
+/**
+ * Small, deliberately hand-reviewed pilot. It proves that the contract can
+ * describe terms from several families without yet exposing a Pokémon edition
+ * to players. Add future terms only after the same source and fairness review.
+ */
+export const POKEMON_ODD_ONE_OUT_PILOT_TERMS = [
+  {
+    id: "move-thunderbolt",
+    label: "Thunderbolt",
+    kind: "move",
+    mainSeries: true,
+    modernRule: "current-main-series",
+    familiarity: "general",
+    displayReviewed: true,
+    reviewStatus: "approved",
+    sources: {
+      primary: "https://pokeapi.co/api/v2/move/thunderbolt/",
+      crossChecks: ["https://pokemondb.net/move/thunderbolt"],
+      verifiedAt: "2026-08-30"
+    },
+    facts: { type: "electric", damageClass: "special" }
+  },
+  {
+    id: "move-earthquake",
+    label: "Earthquake",
+    kind: "move",
+    mainSeries: true,
+    modernRule: "current-main-series",
+    familiarity: "general",
+    displayReviewed: true,
+    reviewStatus: "approved",
+    sources: {
+      primary: "https://pokeapi.co/api/v2/move/earthquake/",
+      crossChecks: ["https://pokemondb.net/move/earthquake"],
+      verifiedAt: "2026-08-30"
+    },
+    facts: { type: "ground", damageClass: "physical" }
+  },
+  {
+    id: "move-calm-mind",
+    label: "Calm Mind",
+    kind: "move",
+    mainSeries: true,
+    modernRule: "current-main-series",
+    familiarity: "general",
+    displayReviewed: true,
+    reviewStatus: "approved",
+    sources: {
+      primary: "https://pokeapi.co/api/v2/move/calm-mind/",
+      crossChecks: ["https://pokemondb.net/move/calm-mind"],
+      verifiedAt: "2026-08-30"
+    },
+    facts: { type: "psychic", damageClass: "status" }
+  },
+  {
+    id: "ability-competitive",
+    label: "Competitive",
+    kind: "ability",
+    mainSeries: true,
+    modernRule: "current-main-series",
+    familiarity: "deep",
+    displayReviewed: true,
+    reviewStatus: "approved",
+    sources: {
+      primary: "https://pokeapi.co/api/v2/ability/competitive/",
+      crossChecks: ["https://pokemondb.net/ability/competitive"],
+      verifiedAt: "2026-08-30"
+    },
+    facts: { introductionGeneration: 6 }
+  },
+  {
+    id: "species-blastoise",
+    label: "Blastoise",
+    kind: "species",
+    mainSeries: true,
+    modernRule: "current-main-series",
+    familiarity: "general",
+    displayReviewed: true,
+    reviewStatus: "approved",
+    sources: {
+      primary: "https://pokeapi.co/api/v2/pokemon/blastoise/",
+      crossChecks: ["https://pokemondb.net/pokedex/blastoise"],
+      verifiedAt: "2026-08-30"
+    },
+    facts: { typeCount: 1, primaryType: "water", evolutionFamily: "squirtle", introductionGeneration: 1 }
+  },
+  {
+    id: "species-vaporeon",
+    label: "Vaporeon",
+    kind: "species",
+    mainSeries: true,
+    modernRule: "current-main-series",
+    familiarity: "general",
+    displayReviewed: true,
+    reviewStatus: "approved",
+    sources: {
+      primary: "https://pokeapi.co/api/v2/pokemon/vaporeon/",
+      crossChecks: ["https://pokemondb.net/pokedex/vaporeon"],
+      verifiedAt: "2026-08-30"
+    },
+    facts: { typeCount: 1, primaryType: "water", evolutionFamily: "eevee", introductionGeneration: 1 }
+  },
+  {
+    id: "species-milotic",
+    label: "Milotic",
+    kind: "species",
+    mainSeries: true,
+    modernRule: "current-main-series",
+    familiarity: "general",
+    displayReviewed: true,
+    reviewStatus: "approved",
+    sources: {
+      primary: "https://pokeapi.co/api/v2/pokemon/milotic/",
+      crossChecks: ["https://pokemondb.net/pokedex/milotic"],
+      verifiedAt: "2026-08-30"
+    },
+    facts: { typeCount: 1, primaryType: "water", evolutionFamily: "feebas", introductionGeneration: 3 }
+  },
+  {
+    id: "species-swampert",
+    label: "Swampert",
+    kind: "species",
+    mainSeries: true,
+    modernRule: "current-main-series",
+    familiarity: "general",
+    displayReviewed: true,
+    reviewStatus: "approved",
+    sources: {
+      primary: "https://pokeapi.co/api/v2/pokemon/swampert/",
+      crossChecks: ["https://pokemondb.net/pokedex/swampert"],
+      verifiedAt: "2026-08-30"
+    },
+    facts: { typeCount: 2, primaryType: "water", evolutionFamily: "mudkip", introductionGeneration: 3 }
+  },
+  {
+    id: "condition-burn",
+    label: "Burn",
+    kind: "battle-condition",
+    mainSeries: true,
+    modernRule: "current-main-series",
+    familiarity: "general",
+    displayReviewed: true,
+    reviewStatus: "approved",
+    sources: {
+      primary: "https://pokeapi.co/api/v2/move-ailment/burn/",
+      crossChecks: ["https://bulbapedia.bulbagarden.net/wiki/Status_condition"],
+      verifiedAt: "2026-08-30"
+    },
+    facts: { conditionClass: "major", conditionEffect: "damage-and-attack-reduction" }
+  },
+  {
+    id: "condition-poison",
+    label: "Poison",
+    kind: "battle-condition",
+    mainSeries: true,
+    modernRule: "current-main-series",
+    familiarity: "general",
+    displayReviewed: true,
+    reviewStatus: "approved",
+    sources: {
+      primary: "https://pokeapi.co/api/v2/move-ailment/poison/",
+      crossChecks: ["https://bulbapedia.bulbagarden.net/wiki/Status_condition"],
+      verifiedAt: "2026-08-30"
+    },
+    facts: { conditionClass: "major", conditionEffect: "residual-damage" }
+  },
+  {
+    id: "condition-paralysis",
+    label: "Paralysis",
+    kind: "battle-condition",
+    mainSeries: true,
+    modernRule: "current-main-series",
+    familiarity: "general",
+    displayReviewed: true,
+    reviewStatus: "approved",
+    sources: {
+      primary: "https://pokeapi.co/api/v2/move-ailment/paralysis/",
+      crossChecks: ["https://bulbapedia.bulbagarden.net/wiki/Status_condition"],
+      verifiedAt: "2026-08-30"
+    },
+    facts: { conditionClass: "major", conditionEffect: "speed-reduction-and-action-failure" }
+  },
+  {
+    id: "condition-confusion",
+    label: "Confusion",
+    kind: "battle-condition",
+    mainSeries: true,
+    modernRule: "current-main-series",
+    familiarity: "general",
+    displayReviewed: true,
+    reviewStatus: "approved",
+    sources: {
+      primary: "https://pokeapi.co/api/v2/move-ailment/confusion/",
+      crossChecks: ["https://bulbapedia.bulbagarden.net/wiki/Status_condition"],
+      verifiedAt: "2026-08-30"
+    },
+    facts: { conditionClass: "volatile", conditionEffect: "self-damage-risk" }
+  },
+  {
+    id: "item-pecha-berry",
+    label: "Pecha Berry",
+    kind: "item",
+    mainSeries: true,
+    modernRule: "current-main-series",
+    familiarity: "general",
+    displayReviewed: true,
+    reviewStatus: "approved",
+    sources: {
+      primary: "https://pokeapi.co/api/v2/item/pecha-berry/",
+      crossChecks: ["https://pokemondb.net/item/pecha-berry"],
+      verifiedAt: "2026-08-30"
+    },
+    facts: { itemEffectGroup: "status-cure", curedCondition: "poison" }
+  },
+  {
+    id: "item-cheri-berry",
+    label: "Cheri Berry",
+    kind: "item",
+    mainSeries: true,
+    modernRule: "current-main-series",
+    familiarity: "general",
+    displayReviewed: true,
+    reviewStatus: "approved",
+    sources: {
+      primary: "https://pokeapi.co/api/v2/item/cheri-berry/",
+      crossChecks: ["https://pokemondb.net/item/cheri-berry"],
+      verifiedAt: "2026-08-30"
+    },
+    facts: { itemEffectGroup: "status-cure", curedCondition: "paralysis" }
+  },
+  {
+    id: "item-rawst-berry",
+    label: "Rawst Berry",
+    kind: "item",
+    mainSeries: true,
+    modernRule: "current-main-series",
+    familiarity: "general",
+    displayReviewed: true,
+    reviewStatus: "approved",
+    sources: {
+      primary: "https://pokeapi.co/api/v2/item/rawst-berry/",
+      crossChecks: ["https://pokemondb.net/item/rawst-berry"],
+      verifiedAt: "2026-08-30"
+    },
+    facts: { itemEffectGroup: "status-cure", curedCondition: "burn" }
+  },
+  {
+    id: "item-oran-berry",
+    label: "Oran Berry",
+    kind: "item",
+    mainSeries: true,
+    modernRule: "current-main-series",
+    familiarity: "general",
+    displayReviewed: true,
+    reviewStatus: "approved",
+    sources: {
+      primary: "https://pokeapi.co/api/v2/item/oran-berry/",
+      crossChecks: ["https://pokemondb.net/item/oran-berry"],
+      verifiedAt: "2026-08-30"
+    },
+    facts: { itemEffectGroup: "hp-recovery" }
+  }
+];
+
+/**
+ * Reviewed pilot rounds. They are data-review fixtures, not a player pool.
+ * A future integration can only promote a candidate after the validator and
+ * expanded playtesting accept it.
+ */
+export const POKEMON_ODD_ONE_OUT_PILOT_ROUNDS = [
+  {
+    id: "pilot-moves-and-abilities-01",
+    blueprintId: "moves-and-abilities",
+    termIds: ["move-thunderbolt", "move-earthquake", "move-calm-mind", "ability-competitive"],
+    oddTermId: "ability-competitive",
+    relationValue: "move",
+    explanation: "Competitive is an Ability.\nThe others are Moves."
+  },
+  {
+    id: "pilot-pure-and-dual-type-species-01",
+    blueprintId: "pure-and-dual-type-species",
+    termIds: ["species-blastoise", "species-vaporeon", "species-milotic", "species-swampert"],
+    oddTermId: "species-swampert",
+    relationValue: 1,
+    explanation: "Swampert is dual-typed.\nThe others are pure Water-type Pokémon."
+  },
+  {
+    id: "pilot-major-and-volatile-conditions-01",
+    blueprintId: "major-and-volatile-conditions",
+    termIds: ["condition-burn", "condition-poison", "condition-paralysis", "condition-confusion"],
+    oddTermId: "condition-confusion",
+    relationValue: "major",
+    explanation: "Confusion is a volatile condition.\nThe others are major status conditions."
+  },
+  {
+    id: "pilot-status-curing-berries-01",
+    blueprintId: "status-curing-berries",
+    termIds: ["item-pecha-berry", "item-cheri-berry", "item-rawst-berry", "item-oran-berry"],
+    oddTermId: "item-oran-berry",
+    relationValue: "status-cure",
+    explanation: "Oran Berry is an HP-restoring Berry.\nThe others are status-curing Berries."
+  }
+];

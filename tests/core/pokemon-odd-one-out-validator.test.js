@@ -2,7 +2,9 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   POKEMON_ODD_ONE_OUT_BLUEPRINTS,
-  POKEMON_ODD_ONE_OUT_FAMILY_TARGETS
+  POKEMON_ODD_ONE_OUT_FAMILY_TARGETS,
+  POKEMON_ODD_ONE_OUT_PILOT_ROUNDS,
+  POKEMON_ODD_ONE_OUT_PILOT_TERMS
 } from "../../data/odd-one-out-pokemon-knowledge.js";
 import {
   findSurfaceGiveaway,
@@ -107,4 +109,23 @@ test("candidate validation enforces the approved two-line explanation format", (
   });
 
   assert.ok(errors.includes("explanation must use the approved two-line format"));
+});
+
+test("every reviewed Pokémon pilot round passes the content validation matrix", () => {
+  const termsById = new Map(POKEMON_ODD_ONE_OUT_PILOT_TERMS.map((term) => [term.id, term]));
+  const blueprintsById = new Map(POKEMON_ODD_ONE_OUT_BLUEPRINTS.map((blueprint) => [blueprint.id, blueprint]));
+
+  assert.equal(POKEMON_ODD_ONE_OUT_PILOT_ROUNDS.length, 4);
+
+  for (const round of POKEMON_ODD_ONE_OUT_PILOT_ROUNDS) {
+    const terms = round.termIds.map((id) => termsById.get(id));
+    assert.ok(terms.every(Boolean), `${round.id} references a missing reviewed term`);
+    assert.deepEqual(validatePokemonOddOneOutCandidate({
+      blueprint: blueprintsById.get(round.blueprintId),
+      terms,
+      oddTermId: round.oddTermId,
+      relationValue: round.relationValue,
+      explanation: round.explanation
+    }), [], round.id);
+  }
 });
