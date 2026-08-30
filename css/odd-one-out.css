@@ -103,6 +103,21 @@
   align-items: stretch;
 }
 
+/* Before the first set, treat the prompt and Generate Set action as one
+   compact launch panel. The full 3:2 play field starts only with the cards. */
+.odd-one-out-round.awaiting-set {
+  height: auto;
+  max-height: none;
+  grid-template-rows: auto auto;
+  gap: clamp(0.85rem, 2.5dvh, 1.35rem);
+  justify-items: center;
+}
+
+.odd-one-out-round.awaiting-set .odd-one-out-cards,
+.odd-one-out-round.awaiting-set .odd-one-out-feedback {
+  display: none;
+}
+
 .odd-one-out-prompt {
   grid-row: 1;
   align-self: center;
@@ -114,6 +129,10 @@
   font-weight: var(--qb-font-weight-heavy);
   line-height: 1.1;
   pointer-events: none;
+}
+
+.odd-one-out-round.awaiting-set .odd-one-out-prompt {
+  grid-row: 1;
 }
 
 .odd-one-out-cards {
@@ -210,6 +229,7 @@
   cursor: pointer;
   transition: transform var(--qb-motion-fast) var(--qb-ease-standard), background-color var(--qb-motion-fast) var(--qb-ease-standard);
 }
+.odd-one-out-round.awaiting-set .odd-one-out-next { grid-row: 2; }
 .odd-one-out-next:hover { background: var(--qb-color-accent-hover); }
 .odd-one-out-next:active { transform: scale(.98); }
 .odd-one-out-next:disabled { cursor: default; }

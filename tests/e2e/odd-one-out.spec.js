@@ -7,6 +7,7 @@ test("Odd One Out generates a reviewed set and resolves correct and wrong picks"
   const cards = screen.locator(".odd-one-out-card");
 
   await expect(next).toHaveText("Generate Set");
+  await expect(screen.locator("#oddOneOutPrompt")).toBeVisible();
   await next.click();
   await expect(cards).toHaveCount(4);
   await expect(next).toHaveText("Next Set");
