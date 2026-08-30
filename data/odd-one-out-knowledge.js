@@ -191,7 +191,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     family: "everyday-life",
     difficulty: 2,
     matches: ["Espresso", "Cappuccino", "Latte", "Americano", "Mocha"],
-    intruders: ["Earl Grey", "Oolong", "Rooibos", "Chamomile", "Matcha"],
+    intruders: ["Earl Grey", "Oolong", "Darjeeling", "Sencha", "Matcha"],
     explanation: (odd) => `${odd} is tea.\nThe others are coffee drinks.`
   },
   {
@@ -655,7 +655,7 @@ export const ODD_ONE_OUT_BLUEPRINTS = [
     family: "sport-and-games",
     difficulty: 2,
     matches: ["100 Metres", "200 Metres", "400 Metres", "Marathon", "Hurdles", "Long Jump"],
-    intruders: ["Freestyle", "Butterfly", "Backstroke", "Breaststroke", "Diving"],
+    intruders: ["Freestyle", "Butterfly", "Backstroke", "Breaststroke", "Medley"],
     explanation: (odd) => `${odd} is a swimming event.\nThe others are athletics events.`
   },
   {
