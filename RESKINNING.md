@@ -324,7 +324,9 @@ not create a second route or duplicate the shared Home/fullscreen/picker code.
 
 The first mode, Target Pair, separates its procedural round rules from its
 presentation. `js/core/target-pair-logic.js` creates and validates one unique
-four-number pair for the shown target and avoids recent visible quartets.
+four-number pair for the shown target across addition, subtraction,
+multiplication, and exact division. It avoids recent visible quartets and
+recent operators, so a fast session does not feel mechanically repetitive.
 `js/games/number-play.js` owns selection, answer feedback, haptics, and the
 mode shell, while `css/number-play.css` contains the default mobile/tablet
 visual language. A reskin may replace the target card, number tiles, picker,

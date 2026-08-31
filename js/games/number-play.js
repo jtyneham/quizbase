@@ -50,6 +50,7 @@ export function initNumberPlay(root, app) {
   let selectedValues = [];
   let answered = false;
   let recentRoundKeys = [];
+  let recentOperationIds = [];
 
   function setMenuOpen(open) {
     modeMenu.hidden = !open;
@@ -145,8 +146,11 @@ export function initNumberPlay(root, app) {
   }
 
   function generateTargetPair() {
-    const round = createTargetPairRound(Math.random, recentRoundKeys);
-    recentRoundKeys = [...recentRoundKeys, targetPairRoundKey(round)].slice(-3);
+    const round = createTargetPairRound(Math.random, { recentKeys: recentRoundKeys, recentOperationIds });
+    // At a five-to-ten-second shared-screen pace, these histories prevent the
+    // next few sets from feeling like the same arithmetic question again.
+    recentRoundKeys = [...recentRoundKeys, targetPairRoundKey(round)].slice(-8);
+    recentOperationIds = [...recentOperationIds, round.operation.id].slice(-2);
     renderTargetPairRound(round);
     action.textContent = "Next Set";
   }

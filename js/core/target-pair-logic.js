@@ -1,18 +1,18 @@
-/** Pure procedural logic for Number Play's Target Pair mode. */
+/**
+ * Pure procedural logic for Number Play's Target Pair mode.
+ *
+ * Target Pair intentionally uses familiar, integer-only arithmetic. Its four
+ * operations give a broad stream of fast rounds without turning the game into
+ * a calculation exercise or relying on a hand-authored data pool.
+ */
 
-const ADDITION = {
-  id: "addition",
-  symbol: "+",
-  describe: "addition"
-};
+const ADDITION = { id: "addition", symbol: "+" };
+const SUBTRACTION = { id: "subtraction", symbol: "−" };
+const MULTIPLICATION = { id: "multiplication", symbol: "×" };
+const DIVISION = { id: "division", symbol: "÷" };
 
-const MULTIPLICATION = {
-  id: "multiplication",
-  symbol: "×",
-  describe: "multiplication"
-};
-
-export const TARGET_PAIR_OPERATIONS = [ADDITION, MULTIPLICATION];
+export const TARGET_PAIR_OPERATIONS = [ADDITION, SUBTRACTION, MULTIPLICATION, DIVISION];
+const MAX_ATTEMPTS = 160;
 
 function randomInteger(minimum, maximum, random) {
   return minimum + Math.floor(random() * (maximum - minimum + 1));
@@ -27,15 +27,25 @@ export function shuffleTargetPairValues(values, random = Math.random) {
   return shuffled;
 }
 
-function evaluate(left, right, operation) {
-  return operation.id === ADDITION.id ? left + right : left * right;
+/**
+ * Treats a visible pair as unordered. For subtraction and division, the
+ * larger number is always read first, which is both natural for players and
+ * avoids a card's shuffled screen position changing the arithmetic result.
+ */
+function evaluatePair(first, second, operation) {
+  const lower = Math.min(first, second);
+  const higher = Math.max(first, second);
+  if (operation.id === ADDITION.id) return first + second;
+  if (operation.id === MULTIPLICATION.id) return first * second;
+  if (operation.id === SUBTRACTION.id) return higher - lower;
+  return higher % lower === 0 ? higher / lower : null;
 }
 
 export function findTargetPairSolutions(values, target, operation) {
   const solutions = [];
   for (let left = 0; left < values.length; left += 1) {
     for (let right = left + 1; right < values.length; right += 1) {
-      if (evaluate(values[left], values[right], operation) === target) {
+      if (evaluatePair(values[left], values[right], operation) === target) {
         solutions.push([values[left], values[right]]);
       }
     }
@@ -54,24 +64,58 @@ function addSafeDecoys(values, target, operation, candidates, random) {
   return result;
 }
 
-function createOperationRound(operation, random) {
-  const minimum = operation.id === ADDITION.id ? 3 : 2;
-  const maximum = operation.id === ADDITION.id ? 18 : 12;
-  let first = randomInteger(minimum, maximum, random);
-  let second = randomInteger(minimum, maximum, random);
-  while (second === first) second = randomInteger(minimum, maximum, random);
+function createAdditionOperands(random) {
+  const first = randomInteger(6, 45, random);
+  let second = randomInteger(4, 38, random);
+  while (second === first) second = randomInteger(4, 38, random);
+  return [first, second];
+}
 
-  const target = evaluate(first, second, operation);
-  const candidateMaximum = operation.id === ADDITION.id ? 30 : 18;
-  const candidates = Array.from({ length: candidateMaximum - 1 }, (_, index) => index + 2);
-  const values = addSafeDecoys([first, second], target, operation, candidates, random);
+function createSubtractionOperands(random) {
+  const lower = randomInteger(3, 34, random);
+  const higher = randomInteger(lower + 3, 65, random);
+  return [higher, lower];
+}
+
+function createMultiplicationOperands(random) {
+  const first = randomInteger(2, 14, random);
+  let second = randomInteger(3, 15, random);
+  while (second === first) second = randomInteger(3, 15, random);
+  return [first, second];
+}
+
+function createDivisionOperands(random) {
+  const divisor = randomInteger(2, 12, random);
+  const quotient = randomInteger(2, 14, random);
+  return [divisor * quotient, divisor];
+}
+
+function operandsFor(operation, random) {
+  if (operation.id === ADDITION.id) return createAdditionOperands(random);
+  if (operation.id === SUBTRACTION.id) return createSubtractionOperands(random);
+  if (operation.id === MULTIPLICATION.id) return createMultiplicationOperands(random);
+  return createDivisionOperands(random);
+}
+
+function candidateRangeFor(operation) {
+  if (operation.id === MULTIPLICATION.id) return [2, 18];
+  if (operation.id === DIVISION.id) return [2, 72];
+  return [3, 68];
+}
+
+function createOperationRound(operation, random) {
+  const solution = operandsFor(operation, random);
+  const target = evaluatePair(solution[0], solution[1], operation);
+  const [minimum, maximum] = candidateRangeFor(operation);
+  const candidates = Array.from({ length: maximum - minimum + 1 }, (_, index) => index + minimum);
+  const values = addSafeDecoys(solution, target, operation, candidates, random);
 
   if (values.length !== 4) throw new Error("Target Pair could not create four non-ambiguous choices.");
   return {
     operation,
     target,
     values: shuffleTargetPairValues(values, random),
-    solution: [first, second]
+    solution
   };
 }
 
@@ -79,14 +123,31 @@ export function targetPairRoundKey(round) {
   return [round.operation.id, round.target, ...[...round.values].sort((left, right) => left - right)].join(":");
 }
 
+function normaliseHistory(history) {
+  // Accept the original array form so small integrations can keep using it.
+  if (Array.isArray(history)) return { recentKeys: history, recentOperationIds: [] };
+  return {
+    recentKeys: history?.recentKeys ?? [],
+    recentOperationIds: history?.recentOperationIds ?? []
+  };
+}
+
+function chooseOperation(random, recentOperationIds) {
+  const recent = new Set(recentOperationIds);
+  const freshOperations = TARGET_PAIR_OPERATIONS.filter((operation) => !recent.has(operation.id));
+  const candidates = freshOperations.length ? freshOperations : TARGET_PAIR_OPERATIONS;
+  return candidates[Math.floor(random() * candidates.length)];
+}
+
 /**
  * Produces a round with exactly one unordered pair that reaches the target.
- * Recent keys are optional and prevent a short session from seeing the same
- * visible quartet again immediately.
+ * A session can supply recent exact visual keys and operation IDs. The game
+ * layer keeps those short histories; this pure generator only enforces them.
  */
-export function createTargetPairRound(random = Math.random, recentKeys = []) {
-  for (let attempt = 0; attempt < 100; attempt += 1) {
-    const operation = random() < 0.65 ? ADDITION : MULTIPLICATION;
+export function createTargetPairRound(random = Math.random, history = []) {
+  const { recentKeys, recentOperationIds } = normaliseHistory(history);
+  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt += 1) {
+    const operation = chooseOperation(random, recentOperationIds);
     const round = createOperationRound(operation, random);
     if (recentKeys.includes(targetPairRoundKey(round))) continue;
     const errors = validateTargetPairRound(round);
@@ -98,9 +159,10 @@ export function createTargetPairRound(random = Math.random, recentKeys = []) {
 export function validateTargetPairRound(round = {}) {
   const errors = [];
   if (!TARGET_PAIR_OPERATIONS.includes(round.operation)) errors.push("unknown operation");
-  if (!Number.isInteger(round.target)) errors.push("target must be an integer");
+  if (!Number.isInteger(round.target) || round.target < 1) errors.push("target must be a positive integer");
   if (!Array.isArray(round.values) || round.values.length !== 4) errors.push("round needs four values");
-  if (new Set(round.values).size !== round.values.length) errors.push("round has duplicate visible values");
+  if (Array.isArray(round.values) && round.values.some((value) => !Number.isInteger(value) || value < 1)) errors.push("round values must be positive integers");
+  if (new Set(round.values ?? []).size !== (round.values ?? []).length) errors.push("round has duplicate visible values");
   if (!Array.isArray(round.solution) || round.solution.length !== 2) errors.push("round needs a two-number solution");
 
   if (!errors.length) {
@@ -114,6 +176,8 @@ export function validateTargetPairRound(round = {}) {
 }
 
 export function targetPairExplanation(round) {
-  const [left, right] = [...round.solution].sort((first, second) => first - second);
-  return `${left} ${round.operation.symbol} ${right} = ${round.target}.`;
+  const [first, second] = round.operation.id === ADDITION.id || round.operation.id === MULTIPLICATION.id
+    ? [...round.solution].sort((left, right) => left - right)
+    : [...round.solution].sort((left, right) => right - left);
+  return `${first} ${round.operation.symbol} ${second} = ${round.target}.`;
 }
