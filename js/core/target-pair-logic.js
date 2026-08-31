@@ -12,6 +12,8 @@ const MULTIPLICATION = { id: "multiplication", symbol: "×" };
 const DIVISION = { id: "division", symbol: "÷" };
 
 export const TARGET_PAIR_OPERATIONS = [ADDITION, SUBTRACTION, MULTIPLICATION, DIVISION];
+export const TARGET_PAIR_DIFFICULTIES = { medium: 2, hard: 3 };
+export const TARGET_PAIR_MIXED_MEDIUM_WEIGHT = 0.65;
 const MAX_ATTEMPTS = 160;
 
 function randomInteger(minimum, maximum, random) {
@@ -64,55 +66,64 @@ function addSafeDecoys(values, target, operation, candidates, random) {
   return result;
 }
 
-function createAdditionOperands(random) {
-  const first = randomInteger(6, 45, random);
-  let second = randomInteger(4, 38, random);
-  while (second === first) second = randomInteger(4, 38, random);
+export function chooseTargetPairDifficulty(setting, random = Math.random) {
+  if (setting === "hard") return TARGET_PAIR_DIFFICULTIES.hard;
+  if (setting === "medium") return TARGET_PAIR_DIFFICULTIES.medium;
+  return random() < TARGET_PAIR_MIXED_MEDIUM_WEIGHT
+    ? TARGET_PAIR_DIFFICULTIES.medium
+    : TARGET_PAIR_DIFFICULTIES.hard;
+}
+
+function createAdditionOperands(difficulty, random) {
+  const first = randomInteger(5, difficulty === 2 ? 24 : 45, random);
+  let second = randomInteger(3, difficulty === 2 ? 20 : 38, random);
+  while (second === first) second = randomInteger(3, difficulty === 2 ? 20 : 38, random);
   return [first, second];
 }
 
-function createSubtractionOperands(random) {
-  const lower = randomInteger(3, 34, random);
-  const higher = randomInteger(lower + 3, 65, random);
+function createSubtractionOperands(difficulty, random) {
+  const lower = randomInteger(2, difficulty === 2 ? 16 : 34, random);
+  const higher = randomInteger(lower + 3, difficulty === 2 ? 42 : 65, random);
   return [higher, lower];
 }
 
-function createMultiplicationOperands(random) {
-  const first = randomInteger(2, 14, random);
-  let second = randomInteger(3, 15, random);
-  while (second === first) second = randomInteger(3, 15, random);
+function createMultiplicationOperands(difficulty, random) {
+  const first = randomInteger(2, difficulty === 2 ? 9 : 14, random);
+  let second = randomInteger(3, difficulty === 2 ? 10 : 15, random);
+  while (second === first) second = randomInteger(3, difficulty === 2 ? 10 : 15, random);
   return [first, second];
 }
 
-function createDivisionOperands(random) {
-  const divisor = randomInteger(2, 12, random);
-  const quotient = randomInteger(2, 14, random);
+function createDivisionOperands(difficulty, random) {
+  const divisor = randomInteger(2, difficulty === 2 ? 8 : 12, random);
+  const quotient = randomInteger(2, difficulty === 2 ? 10 : 14, random);
   return [divisor * quotient, divisor];
 }
 
-function operandsFor(operation, random) {
-  if (operation.id === ADDITION.id) return createAdditionOperands(random);
-  if (operation.id === SUBTRACTION.id) return createSubtractionOperands(random);
-  if (operation.id === MULTIPLICATION.id) return createMultiplicationOperands(random);
-  return createDivisionOperands(random);
+function operandsFor(operation, difficulty, random) {
+  if (operation.id === ADDITION.id) return createAdditionOperands(difficulty, random);
+  if (operation.id === SUBTRACTION.id) return createSubtractionOperands(difficulty, random);
+  if (operation.id === MULTIPLICATION.id) return createMultiplicationOperands(difficulty, random);
+  return createDivisionOperands(difficulty, random);
 }
 
-function candidateRangeFor(operation) {
-  if (operation.id === MULTIPLICATION.id) return [2, 18];
-  if (operation.id === DIVISION.id) return [2, 72];
-  return [3, 68];
+function candidateRangeFor(operation, difficulty) {
+  if (operation.id === MULTIPLICATION.id) return [2, difficulty === 2 ? 12 : 18];
+  if (operation.id === DIVISION.id) return [2, difficulty === 2 ? 45 : 72];
+  return [2, difficulty === 2 ? 42 : 68];
 }
 
-function createOperationRound(operation, random) {
-  const solution = operandsFor(operation, random);
+function createOperationRound(operation, difficulty, random) {
+  const solution = operandsFor(operation, difficulty, random);
   const target = evaluatePair(solution[0], solution[1], operation);
-  const [minimum, maximum] = candidateRangeFor(operation);
+  const [minimum, maximum] = candidateRangeFor(operation, difficulty);
   const candidates = Array.from({ length: maximum - minimum + 1 }, (_, index) => index + minimum);
   const values = addSafeDecoys(solution, target, operation, candidates, random);
 
   if (values.length !== 4) throw new Error("Target Pair could not create four non-ambiguous choices.");
   return {
     operation,
+    difficulty,
     target,
     values: shuffleTargetPairValues(values, random),
     solution
@@ -144,11 +155,12 @@ function chooseOperation(random, recentOperationIds) {
  * A session can supply recent exact visual keys and operation IDs. The game
  * layer keeps those short histories; this pure generator only enforces them.
  */
-export function createTargetPairRound(random = Math.random, history = []) {
+export function createTargetPairRound(random = Math.random, history = [], setting = "mixed") {
   const { recentKeys, recentOperationIds } = normaliseHistory(history);
+  const difficulty = chooseTargetPairDifficulty(setting, random);
   for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt += 1) {
     const operation = chooseOperation(random, recentOperationIds);
-    const round = createOperationRound(operation, random);
+    const round = createOperationRound(operation, difficulty, random);
     if (recentKeys.includes(targetPairRoundKey(round))) continue;
     const errors = validateTargetPairRound(round);
     if (!errors.length) return round;
@@ -159,6 +171,7 @@ export function createTargetPairRound(random = Math.random, history = []) {
 export function validateTargetPairRound(round = {}) {
   const errors = [];
   if (!TARGET_PAIR_OPERATIONS.includes(round.operation)) errors.push("unknown operation");
+  if (![TARGET_PAIR_DIFFICULTIES.medium, TARGET_PAIR_DIFFICULTIES.hard].includes(round.difficulty)) errors.push("unknown difficulty");
   if (!Number.isInteger(round.target) || round.target < 1) errors.push("target must be a positive integer");
   if (!Array.isArray(round.values) || round.values.length !== 4) errors.push("round needs four values");
   if (Array.isArray(round.values) && round.values.some((value) => !Number.isInteger(value) || value < 1)) errors.push("round values must be positive integers");

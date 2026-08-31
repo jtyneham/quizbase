@@ -8,6 +8,10 @@ test("Number Play launches as a chooser and Target Pair runs inside its persiste
 
   await expect(picker).toContainText("Choose a game");
   await expect(launchOptions).toHaveCount(4);
+  const hardDifficulty = screen.getByRole("button", { name: "Hard", exact: true });
+  await expect(hardDifficulty).toHaveAttribute("aria-pressed", "false");
+  await hardDifficulty.click();
+  await expect(hardDifficulty).toHaveAttribute("aria-pressed", "true");
   await expect(screen.getByRole("button", { name: /Target Pair/ })).toBeEnabled();
   await expect(screen.getByRole("button", { name: /Number Machine/ })).toBeDisabled();
 

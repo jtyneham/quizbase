@@ -327,6 +327,10 @@ presentation. `js/core/target-pair-logic.js` creates and validates one unique
 four-number pair for the shown target across addition, subtraction,
 multiplication, and exact division. It avoids recent visible quartets and
 recent operators, so a fast session does not feel mechanically repetitive.
+Target Pair also follows the shared Mixed / Medium / Hard convention: Mixed is
+65% Medium and 35% Hard. Keep its top-right three-way control and its active
+state semantics when reskinning; changing the control must affect the next
+generated round, not merely recolour the UI.
 `js/games/number-play.js` owns selection, answer feedback, haptics, and the
 mode shell, while `css/number-play.css` contains the default mobile/tablet
 visual language. A reskin may replace the target card, number tiles, picker,

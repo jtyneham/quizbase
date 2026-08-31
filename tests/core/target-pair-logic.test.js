@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {
+  chooseTargetPairDifficulty,
   createTargetPairRound,
   findTargetPairSolutions,
   TARGET_PAIR_OPERATIONS,
@@ -28,6 +29,19 @@ test("Target Pair creates four distinct values with exactly one valid answer", (
     seenOperations.add(round.operation.id);
   }
   assert.deepEqual(seenOperations, new Set(TARGET_PAIR_OPERATIONS.map((operation) => operation.id)));
+});
+
+test("Target Pair difficulty selects Medium, Hard, or the documented Mixed weighting", () => {
+  const mediumRandom = seededRandom(123);
+  const hardRandom = seededRandom(456);
+  for (let turn = 0; turn < 300; turn += 1) {
+    assert.equal(chooseTargetPairDifficulty("medium", mediumRandom), 2);
+    assert.equal(chooseTargetPairDifficulty("hard", hardRandom), 3);
+    assert.equal(createTargetPairRound(mediumRandom, [], "medium").difficulty, 2);
+    assert.equal(createTargetPairRound(hardRandom, [], "hard").difficulty, 3);
+  }
+  assert.equal(chooseTargetPairDifficulty("mixed", () => 0.64), 2);
+  assert.equal(chooseTargetPairDifficulty("mixed", () => 0.65), 3);
 });
 
 test("Target Pair avoids recent visible quartets and operators during a short session", () => {

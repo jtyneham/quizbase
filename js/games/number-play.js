@@ -45,12 +45,23 @@ export function initNumberPlay(root, app) {
   const choices = required(root, "#targetPairChoices");
   const feedback = required(root, "#targetPairFeedback");
   const action = required(root, "#numberPlayAction");
+  const difficultyButtons = [...root.querySelectorAll("[data-number-play-difficulty]")];
   let activeModeId = null;
   let currentRound = null;
   let selectedValues = [];
   let answered = false;
   let recentRoundKeys = [];
   let recentOperationIds = [];
+  let difficultySetting = "mixed";
+
+  function setDifficulty(nextSetting) {
+    difficultySetting = nextSetting;
+    difficultyButtons.forEach((button) => {
+      const active = button.dataset.numberPlayDifficulty === difficultySetting;
+      button.setAttribute("aria-pressed", String(active));
+      button.classList.toggle("active", active);
+    });
+  }
 
   function setMenuOpen(open) {
     modeMenu.hidden = !open;
@@ -146,7 +157,7 @@ export function initNumberPlay(root, app) {
   }
 
   function generateTargetPair() {
-    const round = createTargetPairRound(Math.random, { recentKeys: recentRoundKeys, recentOperationIds });
+    const round = createTargetPairRound(Math.random, { recentKeys: recentRoundKeys, recentOperationIds }, difficultySetting);
     // At a five-to-ten-second shared-screen pace, these histories prevent the
     // next few sets from feeling like the same arithmetic question again.
     recentRoundKeys = [...recentRoundKeys, targetPairRoundKey(round)].slice(-8);
@@ -178,6 +189,9 @@ export function initNumberPlay(root, app) {
 
   modeButton.addEventListener("click", () => setMenuOpen(modeMenu.hidden));
   action.addEventListener("click", generateTargetPair);
+  difficultyButtons.forEach((button) => {
+    button.addEventListener("click", () => setDifficulty(button.dataset.numberPlayDifficulty));
+  });
   required(root, "#numberPlayHomeButton").addEventListener("click", () => {
     app.haptic?.(12);
     app.showHome();
@@ -189,5 +203,6 @@ export function initNumberPlay(root, app) {
     app
   });
   bindOutsideDismiss(root, modeMenu, () => setMenuOpen(false), [modeButton]);
+  setDifficulty(difficultySetting);
   showLaunch();
 }
