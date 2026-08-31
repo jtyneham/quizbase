@@ -9,6 +9,7 @@ import {
   POKEMON_ODD_ONE_OUT_HARD_BATCH_POOLS,
   POKEMON_ODD_ONE_OUT_FINAL_RELATIONSHIP_POOLS,
   POKEMON_ODD_ONE_OUT_THIRD_EXPANSION_POOLS,
+  POKEMON_ODD_ONE_OUT_FOURTH_EXPANSION_POOLS,
 } from "../../data/odd-one-out-pokemon-knowledge.js";
 import { buildPokemonOddOneOutRoundBlueprints } from "../../js/core/pokemon-odd-one-out-round-builder.js";
 import { chooseRound } from "../../js/core/odd-one-out-logic.js";
@@ -34,7 +35,7 @@ function reviewedTerm(id, label, facts = {}) {
 }
 
 test("Pokémon Odd One Out blueprint contract stays internally complete", () => {
-  assert.equal(POKEMON_ODD_ONE_OUT_BLUEPRINTS.length, 24);
+  assert.equal(POKEMON_ODD_ONE_OUT_BLUEPRINTS.length, 28);
   assert.equal(new Set(POKEMON_ODD_ONE_OUT_BLUEPRINTS.map((blueprint) => blueprint.id)).size, POKEMON_ODD_ONE_OUT_BLUEPRINTS.length);
   assert.ok(POKEMON_ODD_ONE_OUT_BLUEPRINTS.every((blueprint) => blueprint.family in POKEMON_ODD_ONE_OUT_FAMILY_TARGETS));
   assert.ok(POKEMON_ODD_ONE_OUT_BLUEPRINTS.every((blueprint) => ["medium", "hard"].includes(blueprint.difficulty)));
@@ -129,6 +130,7 @@ test("the reviewed Pokémon content banks build many validated shared-engine com
   assert.equal(POKEMON_ODD_ONE_OUT_HARD_BATCH_POOLS.length, 5);
   assert.equal(POKEMON_ODD_ONE_OUT_FINAL_RELATIONSHIP_POOLS.length, 4);
   assert.equal(POKEMON_ODD_ONE_OUT_THIRD_EXPANSION_POOLS.length, 5);
+  assert.equal(POKEMON_ODD_ONE_OUT_FOURTH_EXPANSION_POOLS.length, 4);
   assert.deepEqual(
     new Set(POKEMON_ODD_ONE_OUT_ACTIVE_POOLS.map((pool) => pool.blueprintId)),
     new Set(POKEMON_ODD_ONE_OUT_BLUEPRINTS.map((blueprint) => blueprint.id))

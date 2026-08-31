@@ -10,14 +10,14 @@
  * reviewed result; the game must never call an external Pokémon API at runtime.
  */
 
-export const POKEMON_ODD_ONE_OUT_DATA_VERSION = 1;
+export const POKEMON_ODD_ONE_OUT_DATA_VERSION = 2;
 
 export const POKEMON_ODD_ONE_OUT_FAMILY_TARGETS = {
-  "battle-moves": { medium: 5, hard: 5 },
-  "ability-mechanics": { medium: 1, hard: 4 },
+  "battle-moves": { medium: 6, hard: 6 },
+  "ability-mechanics": { medium: 1, hard: 5 },
   "species-typing": { medium: 2, hard: 1 },
   "species-classification": { medium: 1, hard: 2 },
-  "evolution-mechanics": { medium: 3, hard: 2 },
+  "evolution-mechanics": { medium: 4, hard: 2 },
   "type-matchups": { medium: 3, hard: 1 },
   "status-and-battle-conditions": { medium: 2, hard: 1 },
   "berries-and-items": { medium: 1, hard: 3 }
@@ -117,6 +117,16 @@ export const POKEMON_ODD_ONE_OUT_BLUEPRINTS = [
     ]
   },
   {
+    id: "recoil-moves",
+    family: "battle-moves",
+    difficulty: "hard",
+    relation: { field: "effectGroup", operator: "equals" },
+    protectedAttributes: [
+      { field: "type", minimumDistinctMatches: 3 },
+      { field: "fixedBasePower", minimumDistinctMatches: 2 }
+    ]
+  },
+  {
     id: "accuracy-lowering-moves",
     family: "battle-moves",
     difficulty: "medium",
@@ -134,6 +144,16 @@ export const POKEMON_ODD_ONE_OUT_BLUEPRINTS = [
     protectedAttributes: [
       { field: "type", minimumDistinctMatches: 3 },
       { field: "weatherCondition", minimumDistinctMatches: 3 }
+    ]
+  },
+  {
+    id: "never-miss-moves",
+    family: "battle-moves",
+    difficulty: "medium",
+    relation: { field: "accuracyClass", operator: "equals" },
+    protectedAttributes: [
+      { field: "type", minimumDistinctMatches: 3 },
+      { field: "damageClass", minimumDistinctMatches: 2 }
     ]
   },
   {
@@ -168,6 +188,16 @@ export const POKEMON_ODD_ONE_OUT_BLUEPRINTS = [
   },
   {
     id: "weather-speed-abilities",
+    family: "ability-mechanics",
+    difficulty: "hard",
+    relation: { field: "effectGroup", operator: "equals" },
+    protectedAttributes: [
+      { field: "weatherCondition", minimumDistinctMatches: 3 },
+      { field: "introductionGeneration", minimumDistinctMatches: 2 }
+    ]
+  },
+  {
+    id: "weather-setting-abilities",
     family: "ability-mechanics",
     difficulty: "hard",
     relation: { field: "effectGroup", operator: "equals" },
@@ -219,6 +249,16 @@ export const POKEMON_ODD_ONE_OUT_BLUEPRINTS = [
   },
   {
     id: "trade-evolutions",
+    family: "evolution-mechanics",
+    difficulty: "medium",
+    relation: { field: "evolutionMethod", operator: "equals" },
+    protectedAttributes: [
+      { field: "primaryType", minimumDistinctMatches: 3 },
+      { field: "evolutionFamily", minimumDistinctMatches: 3 }
+    ]
+  },
+  {
+    id: "friendship-evolutions",
     family: "evolution-mechanics",
     difficulty: "medium",
     relation: { field: "evolutionMethod", operator: "equals" },
@@ -295,9 +335,9 @@ export const POKEMON_ODD_ONE_OUT_BLUEPRINTS = [
 ];
 
 /**
- * Small, deliberately hand-reviewed pilot. It proves that the contract can
- * describe terms from several families without yet exposing a Pokémon edition
- * to players. Add future terms only after the same source and fairness review.
+ * Foundational, deliberately hand-reviewed terms retained from the first
+ * Pokémon content pass. Add future terms only after the same source and
+ * fairness review.
  */
 export const POKEMON_ODD_ONE_OUT_PILOT_TERMS = [
   {
@@ -676,7 +716,7 @@ export const POKEMON_ODD_ONE_OUT_FIRST_BATCH_TERMS = [
   }),
   approvedFirstBatchTerm({
     id: "species-riolu", label: "Riolu", kind: "species",
-    facts: { speciesClass: "baby", evolutionFamily: "lucario", introductionGeneration: 4 },
+    facts: { primaryType: "fighting", speciesClass: "baby", evolutionFamily: "lucario", evolutionMethod: "friendship", introductionGeneration: 4 },
     primary: "https://pokeapi.co/api/v2/pokemon/riolu/", crossCheck: "https://pokemondb.net/pokedex/riolu"
   }),
   approvedFirstBatchTerm({
@@ -939,7 +979,7 @@ export const POKEMON_ODD_ONE_OUT_SECOND_COMBINATORIAL_TERMS = [
   approvedFirstBatchTerm({ id: "species-elekid", label: "Elekid", kind: "species", facts: { speciesClass: "baby", evolutionFamily: "electabuzz", introductionGeneration: 2 }, primary: "https://pokeapi.co/api/v2/pokemon/elekid/", crossCheck: "https://pokemondb.net/pokedex/elekid" }),
   approvedFirstBatchTerm({ id: "species-magby", label: "Magby", kind: "species", facts: { speciesClass: "baby", evolutionFamily: "magmar", introductionGeneration: 2 }, primary: "https://pokeapi.co/api/v2/pokemon/magby/", crossCheck: "https://pokemondb.net/pokedex/magby" }),
   approvedFirstBatchTerm({ id: "species-azurill", label: "Azurill", kind: "species", facts: { speciesClass: "baby", evolutionFamily: "marill", introductionGeneration: 3 }, primary: "https://pokeapi.co/api/v2/pokemon/azurill/", crossCheck: "https://pokemondb.net/pokedex/azurill" }),
-  approvedFirstBatchTerm({ id: "species-eevee", label: "Eevee", kind: "species", facts: { primaryType: "normal", speciesClass: "regular", evolutionFamily: "eevee", evolutionLineShape: "branched", introductionGeneration: 1 }, primary: "https://pokeapi.co/api/v2/pokemon/eevee/", crossCheck: "https://pokemondb.net/pokedex/eevee" }),
+  approvedFirstBatchTerm({ id: "species-eevee", label: "Eevee", kind: "species", facts: { primaryType: "normal", speciesClass: "regular", evolutionFamily: "eevee", evolutionMethod: "friendship", evolutionLineShape: "branched", introductionGeneration: 1 }, primary: "https://pokeapi.co/api/v2/pokemon/eevee/", crossCheck: "https://pokemondb.net/pokedex/eevee" }),
   approvedFirstBatchTerm({ id: "species-lucario", label: "Lucario", kind: "species", facts: { speciesClass: "regular", evolutionFamily: "lucario", introductionGeneration: 4 }, primary: "https://pokeapi.co/api/v2/pokemon/lucario/", crossCheck: "https://pokemondb.net/pokedex/lucario" }),
   approvedFirstBatchTerm({ id: "species-nidoking", label: "Nidoking", kind: "species", facts: { primaryType: "poison", evolutionFamily: "nidoran", evolutionMethod: "stone", introductionGeneration: 1 }, primary: "https://pokeapi.co/api/v2/pokemon/nidoking/", crossCheck: "https://pokemondb.net/pokedex/nidoking" }),
   approvedFirstBatchTerm({ id: "species-clefable", label: "Clefable", kind: "species", facts: { primaryType: "fairy", evolutionFamily: "clefairy", evolutionMethod: "stone", introductionGeneration: 1 }, primary: "https://pokeapi.co/api/v2/pokemon/clefable/", crossCheck: "https://pokemondb.net/pokedex/clefable" }),
@@ -998,6 +1038,30 @@ export const POKEMON_ODD_ONE_OUT_THIRD_EXPANSION_TERMS = [
   approvedHardBatchTerm({ id: "item-apicot-berry", label: "Apicot Berry", kind: "item", facts: { itemEffectGroup: "pinch-stat", boostedStat: "special-defense" }, primary: "https://pokeapi.co/api/v2/item/apicot-berry/", crossCheck: "https://pokemondb.net/item/apicot-berry" })
 ];
 
+/**
+ * Fourth expansion: distinct, player-readable mechanics that increase both
+ * relationship variety and the depth of core battle and evolution areas.
+ * PokeAPI supplies the structured fields; each display label and rule was
+ * cross-checked before it entered this static, runtime-independent data.
+ */
+export const POKEMON_ODD_ONE_OUT_FOURTH_EXPANSION_TERMS = [
+  approvedFirstBatchTerm({ id: "move-aerial-ace", label: "Aerial Ace", kind: "move", facts: { type: "flying", damageClass: "physical", fixedBasePower: 60, accuracyClass: "never-miss" }, primary: "https://pokeapi.co/api/v2/move/aerial-ace/", crossCheck: "https://pokemondb.net/move/aerial-ace" }),
+  approvedFirstBatchTerm({ id: "move-swift", label: "Swift", kind: "move", facts: { type: "normal", damageClass: "special", fixedBasePower: 60, accuracyClass: "never-miss" }, primary: "https://pokeapi.co/api/v2/move/swift/", crossCheck: "https://pokemondb.net/move/swift" }),
+  approvedFirstBatchTerm({ id: "move-magical-leaf", label: "Magical Leaf", kind: "move", facts: { type: "grass", damageClass: "special", fixedBasePower: 60, accuracyClass: "never-miss" }, primary: "https://pokeapi.co/api/v2/move/magical-leaf/", crossCheck: "https://pokemondb.net/move/magical-leaf" }),
+  approvedFirstBatchTerm({ id: "move-aura-sphere", label: "Aura Sphere", kind: "move", facts: { type: "fighting", damageClass: "special", fixedBasePower: 80, accuracyClass: "never-miss" }, primary: "https://pokeapi.co/api/v2/move/aura-sphere/", crossCheck: "https://pokemondb.net/move/aura-sphere" }),
+  approvedFirstBatchTerm({ id: "move-shock-wave", label: "Shock Wave", kind: "move", facts: { type: "electric", damageClass: "special", fixedBasePower: 60, accuracyClass: "never-miss" }, primary: "https://pokeapi.co/api/v2/move/shock-wave/", crossCheck: "https://pokemondb.net/move/shock-wave" }),
+  approvedHardBatchTerm({ id: "move-double-edge", label: "Double-Edge", kind: "move", facts: { type: "normal", damageClass: "physical", fixedBasePower: 120, effectGroup: "recoil" }, primary: "https://pokeapi.co/api/v2/move/double-edge/", crossCheck: "https://pokemondb.net/move/double-edge" }),
+  approvedHardBatchTerm({ id: "move-flare-blitz", label: "Flare Blitz", kind: "move", facts: { type: "fire", damageClass: "physical", fixedBasePower: 120, effectGroup: "recoil" }, primary: "https://pokeapi.co/api/v2/move/flare-blitz/", crossCheck: "https://pokemondb.net/move/flare-blitz" }),
+  approvedHardBatchTerm({ id: "move-brave-bird", label: "Brave Bird", kind: "move", facts: { type: "flying", damageClass: "physical", fixedBasePower: 120, effectGroup: "recoil" }, primary: "https://pokeapi.co/api/v2/move/brave-bird/", crossCheck: "https://pokemondb.net/move/brave-bird" }),
+  approvedHardBatchTerm({ id: "move-head-smash", label: "Head Smash", kind: "move", facts: { type: "rock", damageClass: "physical", fixedBasePower: 150, effectGroup: "recoil" }, primary: "https://pokeapi.co/api/v2/move/head-smash/", crossCheck: "https://pokemondb.net/move/head-smash" }),
+  approvedHardBatchTerm({ id: "ability-drizzle", label: "Drizzle", kind: "ability", facts: { effectGroup: "weather-setting", weatherCondition: "rain", introductionGeneration: 3 }, primary: "https://pokeapi.co/api/v2/ability/drizzle/", crossCheck: "https://pokemondb.net/ability/drizzle" }),
+  approvedHardBatchTerm({ id: "ability-drought", label: "Drought", kind: "ability", facts: { effectGroup: "weather-setting", weatherCondition: "sun", introductionGeneration: 3 }, primary: "https://pokeapi.co/api/v2/ability/drought/", crossCheck: "https://pokemondb.net/ability/drought" }),
+  approvedHardBatchTerm({ id: "ability-sand-stream", label: "Sand Stream", kind: "ability", facts: { effectGroup: "weather-setting", weatherCondition: "sand", introductionGeneration: 3 }, primary: "https://pokeapi.co/api/v2/ability/sand-stream/", crossCheck: "https://pokemondb.net/ability/sand-stream" }),
+  approvedHardBatchTerm({ id: "ability-snow-warning", label: "Snow Warning", kind: "ability", facts: { effectGroup: "weather-setting", weatherCondition: "snow", introductionGeneration: 4 }, primary: "https://pokeapi.co/api/v2/ability/snow-warning/", crossCheck: "https://pokemondb.net/ability/snow-warning" }),
+  approvedFirstBatchTerm({ id: "species-golbat", label: "Golbat", kind: "species", facts: { primaryType: "poison", evolutionFamily: "zubat", evolutionMethod: "friendship", introductionGeneration: 1 }, primary: "https://pokeapi.co/api/v2/pokemon/golbat/", crossCheck: "https://pokemondb.net/pokedex/golbat" }),
+  approvedFirstBatchTerm({ id: "species-woobat", label: "Woobat", kind: "species", facts: { primaryType: "psychic", evolutionFamily: "woobat", evolutionMethod: "friendship", introductionGeneration: 5 }, primary: "https://pokeapi.co/api/v2/pokemon/woobat/", crossCheck: "https://pokemondb.net/pokedex/woobat" })
+];
+
 export const POKEMON_ODD_ONE_OUT_ACTIVE_TERMS = [
   ...POKEMON_ODD_ONE_OUT_PILOT_TERMS,
   ...POKEMON_ODD_ONE_OUT_FIRST_BATCH_TERMS,
@@ -1005,7 +1069,8 @@ export const POKEMON_ODD_ONE_OUT_ACTIVE_TERMS = [
   ...POKEMON_ODD_ONE_OUT_COMBINATORIAL_TERMS,
   ...POKEMON_ODD_ONE_OUT_SECOND_COMBINATORIAL_TERMS,
   ...POKEMON_ODD_ONE_OUT_FINAL_RELATIONSHIP_TERMS,
-  ...POKEMON_ODD_ONE_OUT_THIRD_EXPANSION_TERMS
+  ...POKEMON_ODD_ONE_OUT_THIRD_EXPANSION_TERMS,
+  ...POKEMON_ODD_ONE_OUT_FOURTH_EXPANSION_TERMS
 ];
 
 /**
@@ -1248,11 +1313,52 @@ export const POKEMON_ODD_ONE_OUT_THIRD_EXPANSION_POOLS = [
   }
 ];
 
-/** The live pilot draws only from this reviewed, validation-gated batch. */
+/** Four further mechanic relationships, kept separate for focused review. */
+export const POKEMON_ODD_ONE_OUT_FOURTH_EXPANSION_POOLS = [
+  {
+    id: "never-miss-moves-and-standard-accuracy-moves",
+    blueprintId: "never-miss-moves",
+    matchingTermIds: ["move-aerial-ace", "move-swift", "move-magical-leaf", "move-aura-sphere", "move-shock-wave"],
+    intruderTermIds: ["move-surf", "move-flamethrower", "move-thunderbolt"],
+    relationValue: "never-miss",
+    oddDescription: "a Move with standard accuracy",
+    matchDescription: "Moves that never miss"
+  },
+  {
+    id: "recoil-moves-and-non-recoil-moves",
+    blueprintId: "recoil-moves",
+    matchingTermIds: ["move-double-edge", "move-flare-blitz", "move-brave-bird", "move-head-smash", "move-wild-charge"],
+    intruderTermIds: ["move-surf", "move-flamethrower", "move-close-combat"],
+    relationValue: "recoil",
+    oddDescription: "a Move without recoil damage",
+    matchDescription: "Moves that cause recoil damage"
+  },
+  {
+    id: "weather-setting-abilities-and-non-weather-ability",
+    blueprintId: "weather-setting-abilities",
+    matchingTermIds: ["ability-drizzle", "ability-drought", "ability-sand-stream", "ability-snow-warning"],
+    intruderTermIds: ["ability-intimidate", "ability-levitate"],
+    relationValue: "weather-setting",
+    oddDescription: "an Ability that does not set weather",
+    matchDescription: "Abilities that set weather"
+  },
+  {
+    id: "friendship-evolutions-and-level-evolutions",
+    blueprintId: "friendship-evolutions",
+    matchingTermIds: ["species-eevee", "species-riolu", "species-golbat", "species-woobat"],
+    intruderTermIds: ["species-charmeleon", "species-dragonair"],
+    relationValue: "friendship",
+    oddDescription: "a Pokémon that evolves by level",
+    matchDescription: "Pokémon that evolve through friendship"
+  }
+];
+
+/** The live Pokémon edition draws only from this reviewed, validation-gated data. */
 export const POKEMON_ODD_ONE_OUT_ACTIVE_POOLS = [
   ...POKEMON_ODD_ONE_OUT_PILOT_POOLS,
   ...POKEMON_ODD_ONE_OUT_FIRST_BATCH_POOLS,
   ...POKEMON_ODD_ONE_OUT_HARD_BATCH_POOLS,
   ...POKEMON_ODD_ONE_OUT_FINAL_RELATIONSHIP_POOLS,
-  ...POKEMON_ODD_ONE_OUT_THIRD_EXPANSION_POOLS
+  ...POKEMON_ODD_ONE_OUT_THIRD_EXPANSION_POOLS,
+  ...POKEMON_ODD_ONE_OUT_FOURTH_EXPANSION_POOLS
 ];
