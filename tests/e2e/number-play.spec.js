@@ -14,12 +14,14 @@ test("Number Play launches as a chooser and Target Pair runs inside its persiste
   await screen.getByRole("button", { name: /Target Pair/ }).click();
   await expect(picker).toContainText("Target Pair");
   await expect(screen.locator("#numberPlayLaunch")).toBeHidden();
+  await expect(screen.locator("#targetPairOperator")).toBeEmpty();
   const action = screen.locator("#numberPlayAction");
   await expect(action).toHaveText("Generate Set");
   await action.click();
   const cards = screen.locator(".number-play-number-card");
   await expect(cards).toHaveCount(4);
   await expect(screen.locator(".target-pair-instruction")).toContainText("Operator:");
+  await expect(screen.locator("#targetPairOperator")).not.toBeEmpty();
   await expect(action).toHaveText("Next Set");
 
   await cards.nth(0).click();

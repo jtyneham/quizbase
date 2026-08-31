@@ -74,6 +74,8 @@ export function initNumberPlay(root, app) {
     selectedValues = [];
     answered = false;
     modeLabel.textContent = "Choose a game";
+    targetValue.textContent = "—";
+    targetOperator.textContent = "";
     launch.hidden = false;
     targetPair.hidden = true;
     action.hidden = true;
@@ -165,6 +167,8 @@ export function initNumberPlay(root, app) {
     feedback.textContent = "";
     feedback.dataset.state = "";
     choices.replaceChildren();
+    targetValue.textContent = "—";
+    targetOperator.textContent = "";
     action.textContent = "Generate Set";
   }
 
