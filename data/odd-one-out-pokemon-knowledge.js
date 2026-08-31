@@ -1,9 +1,9 @@
 /**
- * Design-time data contract for the future Pokémon Odd One Out edition.
+ * Reviewed static data contract for the Pokémon Odd One Out edition.
  *
- * This is deliberately not connected to a route or the player-facing Odd One
- * Out pool yet. It describes the approved curation structure so Pokémon data
- * can be reviewed and tested before any themed game is introduced.
+ * The player-facing game consumes this data through the shared Odd One Out
+ * engine. Keep its curation structure explicit so every new term can be
+ * reviewed and tested before it reaches a player.
  *
  * Source policy: use PokeAPI for structured candidate data, then cross-check
  * nuanced facts against a reputable Pokémon reference. Ship only the static,
@@ -13,14 +13,14 @@
 export const POKEMON_ODD_ONE_OUT_DATA_VERSION = 1;
 
 export const POKEMON_ODD_ONE_OUT_FAMILY_TARGETS = {
-  "battle-moves": { medium: 4, hard: 5 },
-  "ability-mechanics": { medium: 1, hard: 3 },
+  "battle-moves": { medium: 5, hard: 5 },
+  "ability-mechanics": { medium: 1, hard: 4 },
   "species-typing": { medium: 2, hard: 1 },
   "species-classification": { medium: 1, hard: 2 },
-  "evolution-mechanics": { medium: 2, hard: 2 },
-  "type-matchups": { medium: 2, hard: 1 },
+  "evolution-mechanics": { medium: 3, hard: 2 },
+  "type-matchups": { medium: 3, hard: 1 },
   "status-and-battle-conditions": { medium: 2, hard: 1 },
-  "berries-and-items": { medium: 1, hard: 2 }
+  "berries-and-items": { medium: 1, hard: 3 }
 };
 
 /**
@@ -127,6 +127,16 @@ export const POKEMON_ODD_ONE_OUT_BLUEPRINTS = [
     ]
   },
   {
+    id: "weather-setting-moves",
+    family: "battle-moves",
+    difficulty: "medium",
+    relation: { field: "effectGroup", operator: "equals" },
+    protectedAttributes: [
+      { field: "type", minimumDistinctMatches: 3 },
+      { field: "weatherCondition", minimumDistinctMatches: 3 }
+    ]
+  },
+  {
     id: "type-immunity-abilities",
     family: "ability-mechanics",
     difficulty: "hard",
@@ -153,6 +163,16 @@ export const POKEMON_ODD_ONE_OUT_BLUEPRINTS = [
     relation: { field: "effectGroup", operator: "equals" },
     protectedAttributes: [
       { field: "contactEffect", minimumDistinctMatches: 3 },
+      { field: "introductionGeneration", minimumDistinctMatches: 2 }
+    ]
+  },
+  {
+    id: "weather-speed-abilities",
+    family: "ability-mechanics",
+    difficulty: "hard",
+    relation: { field: "effectGroup", operator: "equals" },
+    protectedAttributes: [
+      { field: "weatherCondition", minimumDistinctMatches: 3 },
       { field: "introductionGeneration", minimumDistinctMatches: 2 }
     ]
   },
@@ -198,6 +218,16 @@ export const POKEMON_ODD_ONE_OUT_BLUEPRINTS = [
     ]
   },
   {
+    id: "trade-evolutions",
+    family: "evolution-mechanics",
+    difficulty: "medium",
+    relation: { field: "evolutionMethod", operator: "equals" },
+    protectedAttributes: [
+      { field: "primaryType", minimumDistinctMatches: 3 },
+      { field: "evolutionFamily", minimumDistinctMatches: 3 }
+    ]
+  },
+  {
     id: "branched-evolution-lines",
     family: "evolution-mechanics",
     difficulty: "hard",
@@ -212,6 +242,15 @@ export const POKEMON_ODD_ONE_OUT_BLUEPRINTS = [
     family: "type-matchups",
     difficulty: "medium",
     relation: { field: "weakToType", operator: "includes" },
+    protectedAttributes: [
+      { field: "typeCategory", minimumDistinctMatches: 3 }
+    ]
+  },
+  {
+    id: "type-resistances",
+    family: "type-matchups",
+    difficulty: "medium",
+    relation: { field: "resistsType", operator: "includes" },
     protectedAttributes: [
       { field: "typeCategory", minimumDistinctMatches: 3 }
     ]
@@ -242,6 +281,15 @@ export const POKEMON_ODD_ONE_OUT_BLUEPRINTS = [
     relation: { field: "itemEffectGroup", operator: "equals" },
     protectedAttributes: [
       { field: "curedCondition", minimumDistinctMatches: 3 }
+    ]
+  },
+  {
+    id: "pinch-stat-berries",
+    family: "berries-and-items",
+    difficulty: "hard",
+    relation: { field: "itemEffectGroup", operator: "equals" },
+    protectedAttributes: [
+      { field: "boostedStat", minimumDistinctMatches: 3 }
     ]
   }
 ];
@@ -653,7 +701,7 @@ export const POKEMON_ODD_ONE_OUT_FIRST_BATCH_TERMS = [
   }),
   approvedFirstBatchTerm({
     id: "type-fire", label: "Fire", kind: "type",
-    facts: { weakToType: ["water", "ground", "rock"], typeCategory: "fire" },
+    facts: { weakToType: ["water", "ground", "rock"], resistsType: ["fire", "grass", "ice", "bug", "steel", "fairy"], typeCategory: "fire" },
     primary: "https://pokeapi.co/api/v2/type/fire/", crossCheck: "https://pokemondb.net/type/fire"
   }),
   approvedFirstBatchTerm({
@@ -863,7 +911,7 @@ export const POKEMON_ODD_ONE_OUT_COMBINATORIAL_TERMS = [
   }),
   approvedFirstBatchTerm({
     id: "type-rock", label: "Rock", kind: "type",
-    facts: { weakToType: ["water", "grass", "fighting", "ground", "steel"], typeCategory: "rock" },
+    facts: { weakToType: ["water", "grass", "fighting", "ground", "steel"], resistsType: ["fire", "normal", "poison", "flying"], typeCategory: "rock" },
     primary: "https://pokeapi.co/api/v2/type/rock/", crossCheck: "https://pokemondb.net/type/rock"
   }),
   approvedFirstBatchTerm({
@@ -925,13 +973,39 @@ export const POKEMON_ODD_ONE_OUT_FINAL_RELATIONSHIP_TERMS = [
   approvedHardBatchTerm({ id: "item-leftovers", label: "Leftovers", kind: "item", facts: { evolutionItem: "battle-item", itemEffectGroup: "hp-recovery", evolutionMethod: "none" }, primary: "https://pokeapi.co/api/v2/item/leftovers/", crossCheck: "https://pokemondb.net/item/leftovers" })
 ];
 
+/**
+ * Third expansion: five new game-logic patterns rather than extra variants
+ * of existing relationships. All members stay within main-series mechanics.
+ */
+export const POKEMON_ODD_ONE_OUT_THIRD_EXPANSION_TERMS = [
+  approvedFirstBatchTerm({ id: "move-rain-dance", label: "Rain Dance", kind: "move", facts: { type: "water", damageClass: "status", effectGroup: "weather-setting", weatherCondition: "rain" }, primary: "https://pokeapi.co/api/v2/move/rain-dance/", crossCheck: "https://pokemondb.net/move/rain-dance" }),
+  approvedFirstBatchTerm({ id: "move-sunny-day", label: "Sunny Day", kind: "move", facts: { type: "fire", damageClass: "status", effectGroup: "weather-setting", weatherCondition: "sun" }, primary: "https://pokeapi.co/api/v2/move/sunny-day/", crossCheck: "https://pokemondb.net/move/sunny-day" }),
+  approvedFirstBatchTerm({ id: "move-sandstorm", label: "Sandstorm", kind: "move", facts: { type: "rock", damageClass: "status", effectGroup: "weather-setting", weatherCondition: "sand" }, primary: "https://pokeapi.co/api/v2/move/sandstorm/", crossCheck: "https://pokemondb.net/move/sandstorm" }),
+  approvedHardBatchTerm({ id: "ability-swift-swim", label: "Swift Swim", kind: "ability", facts: { effectGroup: "weather-speed", weatherCondition: "rain", introductionGeneration: 3 }, primary: "https://pokeapi.co/api/v2/ability/swift-swim/", crossCheck: "https://pokemondb.net/ability/swift-swim" }),
+  approvedHardBatchTerm({ id: "ability-chlorophyll", label: "Chlorophyll", kind: "ability", facts: { effectGroup: "weather-speed", weatherCondition: "sun", introductionGeneration: 3 }, primary: "https://pokeapi.co/api/v2/ability/chlorophyll/", crossCheck: "https://pokemondb.net/ability/chlorophyll" }),
+  approvedHardBatchTerm({ id: "ability-sand-rush", label: "Sand Rush", kind: "ability", facts: { effectGroup: "weather-speed", weatherCondition: "sand", introductionGeneration: 5 }, primary: "https://pokeapi.co/api/v2/ability/sand-rush/", crossCheck: "https://pokemondb.net/ability/sand-rush" }),
+  approvedHardBatchTerm({ id: "ability-slush-rush", label: "Slush Rush", kind: "ability", facts: { effectGroup: "weather-speed", weatherCondition: "snow", introductionGeneration: 7 }, primary: "https://pokeapi.co/api/v2/ability/slush-rush/", crossCheck: "https://pokemondb.net/ability/slush-rush" }),
+  approvedFirstBatchTerm({ id: "species-haunter", label: "Haunter", kind: "species", facts: { primaryType: "ghost", evolutionFamily: "gastly", evolutionMethod: "trade", introductionGeneration: 1 }, primary: "https://pokeapi.co/api/v2/pokemon/haunter/", crossCheck: "https://pokemondb.net/pokedex/haunter" }),
+  approvedFirstBatchTerm({ id: "species-machoke", label: "Machoke", kind: "species", facts: { primaryType: "fighting", evolutionFamily: "machop", evolutionMethod: "trade", introductionGeneration: 1 }, primary: "https://pokeapi.co/api/v2/pokemon/machoke/", crossCheck: "https://pokemondb.net/pokedex/machoke" }),
+  approvedFirstBatchTerm({ id: "species-boldore", label: "Boldore", kind: "species", facts: { primaryType: "rock", evolutionFamily: "roggenrola", evolutionMethod: "trade", introductionGeneration: 5 }, primary: "https://pokeapi.co/api/v2/pokemon/boldore/", crossCheck: "https://pokemondb.net/pokedex/boldore" }),
+  approvedFirstBatchTerm({ id: "species-kadabra", label: "Kadabra", kind: "species", facts: { primaryType: "psychic", evolutionFamily: "abra", evolutionMethod: "trade", introductionGeneration: 1 }, primary: "https://pokeapi.co/api/v2/pokemon/kadabra/", crossCheck: "https://pokemondb.net/pokedex/kadabra" }),
+  approvedFirstBatchTerm({ id: "type-water", label: "Water", kind: "type", facts: { weakToType: ["electric", "grass"], resistsType: ["fire", "water", "ice", "steel"], typeCategory: "water" }, primary: "https://pokeapi.co/api/v2/type/water/", crossCheck: "https://pokemondb.net/type/water" }),
+  approvedFirstBatchTerm({ id: "type-dragon", label: "Dragon", kind: "type", facts: { weakToType: ["ice", "dragon", "fairy"], resistsType: ["fire", "water", "electric", "grass"], typeCategory: "dragon" }, primary: "https://pokeapi.co/api/v2/type/dragon/", crossCheck: "https://pokemondb.net/type/dragon" }),
+  approvedHardBatchTerm({ id: "item-liechi-berry", label: "Liechi Berry", kind: "item", facts: { itemEffectGroup: "pinch-stat", boostedStat: "attack" }, primary: "https://pokeapi.co/api/v2/item/liechi-berry/", crossCheck: "https://pokemondb.net/item/liechi-berry" }),
+  approvedHardBatchTerm({ id: "item-ganlon-berry", label: "Ganlon Berry", kind: "item", facts: { itemEffectGroup: "pinch-stat", boostedStat: "defense" }, primary: "https://pokeapi.co/api/v2/item/ganlon-berry/", crossCheck: "https://pokemondb.net/item/ganlon-berry" }),
+  approvedHardBatchTerm({ id: "item-salac-berry", label: "Salac Berry", kind: "item", facts: { itemEffectGroup: "pinch-stat", boostedStat: "speed" }, primary: "https://pokeapi.co/api/v2/item/salac-berry/", crossCheck: "https://pokemondb.net/item/salac-berry" }),
+  approvedHardBatchTerm({ id: "item-petaya-berry", label: "Petaya Berry", kind: "item", facts: { itemEffectGroup: "pinch-stat", boostedStat: "special-attack" }, primary: "https://pokeapi.co/api/v2/item/petaya-berry/", crossCheck: "https://pokemondb.net/item/petaya-berry" }),
+  approvedHardBatchTerm({ id: "item-apicot-berry", label: "Apicot Berry", kind: "item", facts: { itemEffectGroup: "pinch-stat", boostedStat: "special-defense" }, primary: "https://pokeapi.co/api/v2/item/apicot-berry/", crossCheck: "https://pokemondb.net/item/apicot-berry" })
+];
+
 export const POKEMON_ODD_ONE_OUT_ACTIVE_TERMS = [
   ...POKEMON_ODD_ONE_OUT_PILOT_TERMS,
   ...POKEMON_ODD_ONE_OUT_FIRST_BATCH_TERMS,
   ...POKEMON_ODD_ONE_OUT_HARD_BATCH_TERMS,
   ...POKEMON_ODD_ONE_OUT_COMBINATORIAL_TERMS,
   ...POKEMON_ODD_ONE_OUT_SECOND_COMBINATORIAL_TERMS,
-  ...POKEMON_ODD_ONE_OUT_FINAL_RELATIONSHIP_TERMS
+  ...POKEMON_ODD_ONE_OUT_FINAL_RELATIONSHIP_TERMS,
+  ...POKEMON_ODD_ONE_OUT_THIRD_EXPANSION_TERMS
 ];
 
 /**
@@ -1125,10 +1199,60 @@ export const POKEMON_ODD_ONE_OUT_FINAL_RELATIONSHIP_POOLS = [
   }
 ];
 
+/** Five distinct game-logic relationships introduced by the third expansion. */
+export const POKEMON_ODD_ONE_OUT_THIRD_EXPANSION_POOLS = [
+  {
+    id: "weather-setting-moves-and-damaging-moves",
+    blueprintId: "weather-setting-moves",
+    matchingTermIds: ["move-rain-dance", "move-sunny-day", "move-sandstorm"],
+    intruderTermIds: ["move-thunderbolt", "move-flamethrower"],
+    relationValue: "weather-setting",
+    oddDescription: "a damaging Move",
+    matchDescription: "Moves that set weather"
+  },
+  {
+    id: "weather-speed-abilities-and-stat-lowering-ability",
+    blueprintId: "weather-speed-abilities",
+    matchingTermIds: ["ability-swift-swim", "ability-chlorophyll", "ability-sand-rush", "ability-slush-rush"],
+    intruderTermIds: ["ability-intimidate"],
+    relationValue: "weather-speed",
+    oddDescription: "a stat-lowering Ability",
+    matchDescription: "Abilities that boost Speed in weather"
+  },
+  {
+    id: "trade-evolutions-and-level-evolutions",
+    blueprintId: "trade-evolutions",
+    matchingTermIds: ["species-haunter", "species-machoke", "species-boldore", "species-kadabra"],
+    intruderTermIds: ["species-charmeleon", "species-dragonair"],
+    relationValue: "trade",
+    oddDescription: "a Pokémon that evolves by level",
+    matchDescription: "Pokémon that evolve by trading"
+  },
+  {
+    id: "fire-resisting-types-and-fire-weak-types",
+    blueprintId: "type-resistances",
+    matchingTermIds: ["type-water", "type-fire", "type-rock", "type-dragon"],
+    intruderTermIds: ["type-grass", "type-bug"],
+    relationValue: "fire",
+    oddDescription: "weak to Fire",
+    matchDescription: "types that resist Fire"
+  },
+  {
+    id: "pinch-stat-berries-and-status-curing-berries",
+    blueprintId: "pinch-stat-berries",
+    matchingTermIds: ["item-liechi-berry", "item-ganlon-berry", "item-salac-berry", "item-petaya-berry", "item-apicot-berry"],
+    intruderTermIds: ["item-lum-berry", "item-chesto-berry", "item-aspear-berry"],
+    relationValue: "pinch-stat",
+    oddDescription: "a status-curing Berry",
+    matchDescription: "Berries that raise a stat at low HP"
+  }
+];
+
 /** The live pilot draws only from this reviewed, validation-gated batch. */
 export const POKEMON_ODD_ONE_OUT_ACTIVE_POOLS = [
   ...POKEMON_ODD_ONE_OUT_PILOT_POOLS,
   ...POKEMON_ODD_ONE_OUT_FIRST_BATCH_POOLS,
   ...POKEMON_ODD_ONE_OUT_HARD_BATCH_POOLS,
-  ...POKEMON_ODD_ONE_OUT_FINAL_RELATIONSHIP_POOLS
+  ...POKEMON_ODD_ONE_OUT_FINAL_RELATIONSHIP_POOLS,
+  ...POKEMON_ODD_ONE_OUT_THIRD_EXPANSION_POOLS
 ];
