@@ -84,12 +84,8 @@
           <button class="game-launcher-item" data-ui="game-launch" type="button" data-file="numberplay.html" data-name="Number Play">
             <div class="game-launcher-icon" data-ui="game-launch-surface">
               <svg class="icon number-play-icon" viewBox="0 0 120 120" aria-hidden="true">
-                <rect x="18" y="18" width="34" height="34" rx="5"></rect>
-                <rect x="68" y="18" width="34" height="34" rx="5"></rect>
-                <rect x="18" y="68" width="34" height="34" rx="5"></rect>
-                <rect x="68" y="68" width="34" height="34" rx="5"></rect>
-                <path d="M60 31v16M52 39h16"></path>
-                <path d="M76 85h18M85 76v18"></path>
+                <text x="13" y="77" font-size="68">123</text>
+                <path d="M18 93h84"></path>
               </svg>
             </div>
             <span class="game-launcher-label" data-ui="game-launch-label">Number Play</span>
@@ -284,7 +280,7 @@
           <div class="number-play-mode-control">
             <button id="numberPlayModeButton" class="number-play-mode-trigger" data-ui="number-play-mode-picker" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="numberPlayModeMenu">
               <span id="numberPlayModeLabel">Choose a game</span>
-              <span class="number-play-mode-arrow" aria-hidden="true">⌄</span>
+              <span class="number-play-mode-arrow" aria-hidden="true">▼</span>
             </button>
             <div id="numberPlayModeMenu" class="number-play-mode-menu" role="menu" aria-label="Number Play games" hidden></div>
           </div>
@@ -301,7 +297,7 @@
               <span>MAKE</span>
               <strong id="targetPairTarget">—</strong>
             </div>
-            <p class="target-pair-instruction">Tap two numbers using <strong id="targetPairOperator">+</strong>.</p>
+            <p class="target-pair-instruction"><span>Operator:</span> <strong id="targetPairOperator">+</strong></p>
             <div id="targetPairChoices" class="target-pair-choices" data-ui="game-primary-surface" aria-live="polite"></div>
             <p id="targetPairFeedback" class="target-pair-feedback" aria-live="polite"></p>
             <button id="numberPlayAction" class="number-play-action" data-ui="primary-action" type="button" hidden>Generate Set</button>

@@ -19,6 +19,7 @@ test("Number Play launches as a chooser and Target Pair runs inside its persiste
   await action.click();
   const cards = screen.locator(".number-play-number-card");
   await expect(cards).toHaveCount(4);
+  await expect(screen.locator(".target-pair-instruction")).toContainText("Operator:");
   await expect(action).toHaveText("Next Set");
 
   await cards.nth(0).click();
