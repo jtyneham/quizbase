@@ -312,6 +312,27 @@ with `registerOddOneOutVisualRenderer(name, factory)` and select it through
 for a fully canvas, PixiJS, SVG, Rive, or otherwise non-card-based treatment;
 do not fork the gameplay engine simply to change the visual medium.
 
+### Number Play
+
+Number Play is a small multi-game shell rather than a single game. It starts
+without a selected mode: the central launcher and the persistent top-bar mode
+picker both render from `data/number-play-modes.js`. Keep that registry as the
+single source of truth for the visible mode name, short rule description, and
+availability state. A future mode should be added there, then implemented as a
+small pure logic module plus an isolated view in `js/games/number-play.js`; do
+not create a second route or duplicate the shared Home/fullscreen/picker code.
+
+The first mode, Target Pair, separates its procedural round rules from its
+presentation. `js/core/target-pair-logic.js` creates and validates one unique
+four-number pair for the shown target and avoids recent visible quartets.
+`js/games/number-play.js` owns selection, answer feedback, haptics, and the
+mode shell, while `css/number-play.css` contains the default mobile/tablet
+visual language. A reskin may replace the target card, number tiles, picker,
+launcher, and feedback treatment freely, but must retain the launch state,
+mode-switch contract, two-number answer selection, and Generate/Next action.
+If a future Number Play mode needs a canvas/Pixi treatment, extract only that
+mode's view into a renderer adapter; keep the mode rules and round state pure.
+
 ## Topic picker contract
 
 Topic pickers must support their existing apply/cancel/clear/all behavior and dismiss naturally by outside click/tap where implemented. The opener control must be excluded from outside-dismiss handling so opening a picker does not immediately close it.

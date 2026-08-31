@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="css/app.css" />
   <link rel="stylesheet" href="css/rngl.css" />
   <link rel="stylesheet" href="css/odd-one-out.css" />
+  <link rel="stylesheet" href="css/number-play.css" />
   <script type="importmap">
     { "imports": { "pixi.js": "./vendor/pixi.min.js" } }
   </script>
@@ -78,6 +79,20 @@
               </svg>
             </div>
             <span class="game-launcher-label" data-ui="game-launch-label">Random Letter</span>
+          </button>
+
+          <button class="game-launcher-item" data-ui="game-launch" type="button" data-file="numberplay.html" data-name="Number Play">
+            <div class="game-launcher-icon" data-ui="game-launch-surface">
+              <svg class="icon number-play-icon" viewBox="0 0 120 120" aria-hidden="true">
+                <rect x="18" y="18" width="34" height="34" rx="5"></rect>
+                <rect x="68" y="18" width="34" height="34" rx="5"></rect>
+                <rect x="18" y="68" width="34" height="34" rx="5"></rect>
+                <rect x="68" y="68" width="34" height="34" rx="5"></rect>
+                <path d="M60 31v16M52 39h16"></path>
+                <path d="M76 85h18M85 76v18"></path>
+              </svg>
+            </div>
+            <span class="game-launcher-label" data-ui="game-launch-label">Number Play</span>
           </button>
 
           <button class="game-launcher-item" data-ui="game-launch" type="button" data-file="oddoneout.html" data-name="Odd One Out">
@@ -251,6 +266,48 @@
 
     <section id="hangmanPokemonScreen" class="screen screen-hangman-pokemon" aria-label="Hangman - Pokemon">
       <quiz-hangman-pokemon></quiz-hangman-pokemon>
+    </section>
+
+    <section id="numberPlayScreen" class="screen screen-number-play" aria-label="Number Play">
+      <div class="number-play-app" data-ui="game-root">
+        <header class="number-play-topbar" data-ui="game-toolbar">
+          <div class="number-play-utilities" data-ui="utility-actions">
+            <button id="numberPlayHomeButton" class="number-play-utility" data-ui="home-action" type="button" aria-label="Back to Home" title="Home">
+              <img src="assets/home.svg" alt="" aria-hidden="true">
+            </button>
+            <button id="numberPlayFullscreenButton" class="number-play-utility" data-ui="fullscreen-action" type="button" aria-label="Enter fullscreen" title="Fullscreen">
+              <img id="numberPlayFullscreenIcon" src="assets/fullscreen.svg" alt="" aria-hidden="true">
+              <span class="visually-hidden" id="numberPlayFullscreenLabel">Fullscreen</span>
+            </button>
+          </div>
+
+          <div class="number-play-mode-control">
+            <button id="numberPlayModeButton" class="number-play-mode-trigger" data-ui="number-play-mode-picker" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="numberPlayModeMenu">
+              <span id="numberPlayModeLabel">Choose a game</span>
+              <span class="number-play-mode-arrow" aria-hidden="true">⌄</span>
+            </button>
+            <div id="numberPlayModeMenu" class="number-play-mode-menu" role="menu" aria-label="Number Play games" hidden></div>
+          </div>
+          <div class="number-play-topbar-spacer" aria-hidden="true"></div>
+        </header>
+
+        <main class="number-play-main">
+          <section id="numberPlayLaunch" class="number-play-launch" aria-label="Choose a Number Play game">
+            <div id="numberPlayLaunchOptions" class="number-play-launch-options"></div>
+          </section>
+
+          <section id="numberPlayTargetPair" class="number-play-target-pair" aria-label="Target Pair" hidden>
+            <div class="target-pair-prompt" aria-live="polite">
+              <span>MAKE</span>
+              <strong id="targetPairTarget">—</strong>
+            </div>
+            <p class="target-pair-instruction">Tap two numbers using <strong id="targetPairOperator">+</strong>.</p>
+            <div id="targetPairChoices" class="target-pair-choices" data-ui="game-primary-surface" aria-live="polite"></div>
+            <p id="targetPairFeedback" class="target-pair-feedback" aria-live="polite"></p>
+            <button id="numberPlayAction" class="number-play-action" data-ui="primary-action" type="button" hidden>Generate Set</button>
+          </section>
+        </main>
+      </div>
     </section>
 
     <section id="oddOneOutScreen" class="screen screen-odd-one-out" aria-label="Odd One Out">

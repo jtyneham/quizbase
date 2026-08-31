@@ -1,6 +1,6 @@
 # Quizbase
 
-Quizbase is the reusable functional base for five browser quiz games: Missing Word, Missing Word Pokémon, Hangman, Hangman Pokémon, and Random Letter. It is a static GitHub Pages app with modular game code/data, shared gameplay engines, a semantic reskin layer, and automated regression coverage.
+Quizbase is a reusable base for browser quiz games: Missing Word, Missing Word Pokémon, Hangman, Hangman Pokémon, Random Letter, Odd One Out, Odd One Out Pokémon, and Number Play. It is a static GitHub Pages app with modular game code/data, shared gameplay engines, a semantic reskin layer, and automated regression coverage.
 
 ## Development
 
@@ -52,6 +52,8 @@ coverage.
 - `js/core/missing-word-engine.js` powers both Missing Word variants; its template, topic picker, and reel renderer live in dedicated core modules, while data/configuration remain separate.
 - `js/core/hangman-engine.js` powers both Hangman variants; its shared topic picker is isolated in `js/core/hangman-topic-picker.js`, while data/configuration remain separate.
 - `js/core/random-letter-ticker.js` owns the Random Letter Ideas ticker; generation animations remain in its game module.
+- `js/core/odd-one-out-engine.js` powers both Odd One Out editions from separate reviewed data pools and visual renderers.
+- `js/core/target-pair-logic.js` holds Number Play's first procedural mode; its small mode registry is in `data/number-play-modes.js`, so future modes can share one shell without copying routes or navigation.
 - `js/core/*-logic.js` modules hold pure, testable gameplay logic.
 - `js/games/` contains thin game-specific wrappers.
 - `data/` contains game datasets.
@@ -67,6 +69,6 @@ Do not fork shared gameplay engines for visual variants. Prefer semantic tokens,
 
 ## Regression coverage
 
-The browser suite exercises all five launcher routes, direct hash routes, Home navigation, fullscreen controls, Missing Word generation/difficulty/topic-picker flows, Hangman keyboard/Solve/New Word/topic-picker flows, Random Letter generation/Ideas behavior, and representative viewport overflow checks.
+The browser suite exercises launcher and direct hash routes, Home navigation, fullscreen controls, Missing Word generation/difficulty/topic-picker flows, Hangman keyboard/Solve/New Word/topic-picker flows, Random Letter generation/Ideas behavior, Odd One Out answer feedback, Number Play mode selection/Target Pair, and representative viewport overflow checks.
 
 Failed Playwright runs write ignored traces/screenshots under `test-results/` for diagnosis.

@@ -8,6 +8,7 @@ const screens = {
   missingwordpokemon: document.getElementById("missingWordPokemonScreen"),
   hangman: document.getElementById("hangmanScreen"),
   hangmanpokemon: document.getElementById("hangmanPokemonScreen"),
+  numberplay: document.getElementById("numberPlayScreen"),
   oddoneout: document.getElementById("oddOneOutScreen"),
   oddoneoutpokemon: document.getElementById("oddOneOutPokemonScreen")
 };
@@ -41,6 +42,11 @@ const routes = {
     aliases: ["#hangman-pokemon"],
     load: async () => (await import("./games/hangman-pokemon.js")).registerHangmanPokemon(api)
   },
+  numberplay: {
+    hash: "#number-play",
+    aliases: ["#numberplay"],
+    load: async () => (await import("./games/number-play.js")).initNumberPlay(screens.numberplay, api)
+  },
   oddoneout: {
     hash: "#odd-one-out",
     aliases: ["#oddoneout"],
@@ -59,6 +65,7 @@ const fileRoutes = {
   "missingwordpokemon.html": "missingwordpokemon",
   "hangman1.html": "hangman",
   "hangmanpokemon.html": "hangmanpokemon",
+  "numberplay.html": "numberplay",
   "oddoneout.html": "oddoneout",
   "oddoneoutpokemon.html": "oddoneoutpokemon"
 };

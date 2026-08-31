@@ -6,6 +6,7 @@ export const games = [
   { name: "Hangman", screen: "hangmanScreen", hash: "#hangman" },
   { name: "Hangman - Pokemon", screen: "hangmanPokemonScreen", hash: "#hangmanpokemon" },
   { name: "Random Letter", screen: "rnglScreen", hash: "#rngl" },
+  { name: "Number Play", screen: "numberPlayScreen", hash: "#number-play" },
   { name: "Odd One Out", screen: "oddOneOutScreen", hash: "#odd-one-out" },
   { name: "Odd One Out - Pokemon", screen: "oddOneOutPokemonScreen", hash: "#odd-one-out-pokemon" },
 ];
