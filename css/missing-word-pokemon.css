@@ -384,7 +384,9 @@
     }
 
     .slot.structural.space {
-      width: 0.38em !important;
+      /* A phrase needs a deliberate visual word break, not letter-like spacing. */
+      width: 0.9em !important;
+      min-width: 0.9em;
     }
 
     .slot.structural.hyphen {

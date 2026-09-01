@@ -33,3 +33,10 @@ test("Missing Word keeps a swappable visual-renderer contract", () => {
   assert.match(engine, /renderer\.playGeneration/);
   assert.match(engine, /renderer\.settleGeneration/);
 });
+
+test("Missing Word keeps multi-word answers visually separated", () => {
+  for (const stylesheet of ["missing-word.css", "missing-word-pokemon.css"]) {
+    const css = fs.readFileSync(path.join(root, "css", stylesheet), "utf8");
+    assert.match(css, /\.slot\.structural\.space\s*\{[\s\S]*?width:\s*0\.9em\s*!important;[\s\S]*?min-width:\s*0\.9em;/);
+  }
+});

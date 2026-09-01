@@ -242,6 +242,11 @@ Changing the template for a creative layout is supported. Preserve the element
 IDs/data hooks consumed by the engine, or update the engine and its regression
 tests in the same change.
 
+For multi-word answers, the default DOM renderer emits a structural `.space`
+slot between the letter slots. The default styles intentionally make that gap
+substantially wider than ordinary letter spacing. A reskin may change its
+treatment, but it must preserve an immediately recognisable word break.
+
 The default DOM renderer is selected with `visualRenderer: "dom"`. A reskin
 that needs canvas effects can register a separate renderer (for example a Pixi
 module) with `registerMissingWordVisualRenderer(name, factory)`, then pass its
