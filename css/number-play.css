@@ -91,12 +91,16 @@
 .target-pair-prompt span { color: var(--qb-color-text-muted); font-size: clamp(.85rem, 3.4vw, 1rem); letter-spacing: .08em; }
 .target-pair-prompt strong { color: var(--qb-color-text-strong); font-size: clamp(2.25rem, 11vw, 4rem); line-height: 1; font-weight: var(--qb-font-weight-heavy); }
 .target-pair-instruction {
-  justify-self: center; margin: 0; min-height: 3.55rem; padding: 0.4rem 0.9rem;
-  display: inline-flex; align-items: center; justify-content: center; gap: 0.38rem;
-  border-radius: 0.65rem; background: #d9d9d9; box-shadow: inset 0 0 0 0.05rem rgba(0,0,0,.08);
-  color: var(--qb-color-text-strong); font-size: clamp(1.35rem, 6.2vw, 2.25rem); font-weight: var(--qb-font-weight-strong);
+  justify-self: center; margin: 0; display: grid; justify-items: center; gap: 0.2rem;
 }
-.target-pair-instruction strong { color: var(--qb-color-accent); font-size: 1.08em; line-height: 1; font-weight: var(--qb-font-weight-heavy); }
+.target-pair-instruction span {
+  color: var(--qb-color-text-muted); font-size: clamp(.75rem, 3vw, .9rem); letter-spacing: .04em;
+}
+.target-pair-instruction strong {
+  min-width: clamp(3.15rem, 13vw, 4.4rem); min-height: clamp(3rem, 12.5vw, 4.2rem); padding: .2rem .55rem;
+  display: grid; place-items: center; border-radius: .65rem; background: #e8e8e8; box-shadow: inset 0 0 0 .05rem rgba(0,0,0,.08);
+  color: var(--qb-color-accent); font-size: clamp(2rem, 8.5vw, 3rem); line-height: 1; font-weight: var(--qb-font-weight-heavy);
+}
 .target-pair-choices { min-height: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(5.5rem, 1fr)); gap: clamp(0.65rem, 2.6vw, 1rem); }
 .number-play-number-card {
   position: relative; border: 0.12rem solid var(--qb-color-line); border-radius: var(--qb-radius-card); background: var(--qb-color-surface);
