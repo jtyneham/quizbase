@@ -1,4 +1,4 @@
-/* Default Quizbase skin for the reusable Missing Word edition selector. */
+/* Default Quizbase skin for the reusable edition selector. */
 .edition-picker {
   position: relative;
   z-index: 40;
@@ -28,7 +28,7 @@
 }
 
 .edition-picker-button:focus-visible {
-  outline: 0.14rem solid var(--accent);
+  outline: 0.14rem solid var(--qb-color-accent);
   outline-offset: 0.16rem;
 }
 
@@ -50,9 +50,7 @@
   transition: transform 160ms ease;
 }
 
-.edition-picker.open .edition-chevron {
-  transform: rotate(180deg);
-}
+.edition-picker.open .edition-chevron { transform: rotate(180deg); }
 
 .edition-panel {
   position: absolute;
@@ -101,16 +99,14 @@
   object-fit: contain;
 }
 
-.edition-option:hover {
-  background: var(--qb-picker-row-hover);
-}
+.edition-option:hover { background: var(--qb-picker-row-hover); }
 
 .edition-option.active {
-  background: var(--accent);
+  background: var(--qb-color-accent);
   color: var(--qb-color-control-active-text);
 }
 
 .edition-option:focus-visible {
-  outline: 0.14rem solid var(--accent);
+  outline: 0.14rem solid var(--qb-color-accent);
   outline-offset: -0.08rem;
 }

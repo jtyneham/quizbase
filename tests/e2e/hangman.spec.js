@@ -6,6 +6,23 @@ const variants = [
   { name: "Hangman - Pokemon", screen: "hangmanPokemonScreen" },
 ];
 
+test("Hangman switches editions from its compact header picker", async ({ page }) => {
+  const generalScreen = await openGame(page, { name: "Hangman" });
+  const trigger = generalScreen.locator('[data-ui="edition-picker-trigger"]');
+
+  await expect(trigger).toHaveAttribute("aria-label", "Edition: Hangman");
+  await trigger.click();
+  await expect(generalScreen.locator('[data-ui="edition-picker-panel"]')).toBeVisible();
+  const pokemonOption = generalScreen.getByRole("menuitem", { name: "Hangman Pokemon" });
+  await expect(pokemonOption).toBeVisible();
+  await pokemonOption.click();
+
+  const pokemonScreen = page.locator("#hangmanPokemonScreen");
+  await expect(pokemonScreen).toHaveClass(/active/);
+  await expect(pokemonScreen.locator('[data-ui="edition-picker-trigger"]'))
+    .toHaveAttribute("aria-label", "Edition: Hangman Pokemon");
+});
+
 for (const variant of variants) {
   test.describe(variant.name, () => {
     test("keyboard guess, Solve/Cancel, and New Word remain functional", async ({ page }) => {

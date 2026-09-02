@@ -1,5 +1,5 @@
 
-    @import url("./missing-word-edition-picker.css");
+    @import url("./edition-picker.css");
 
     :host {
       --page-bg: var(--qb-color-page);

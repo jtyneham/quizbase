@@ -2,11 +2,15 @@
  * Small reusable edition selector. It owns only the default interaction and
  * markup state; the parent game decides how an edition change is loaded.
  */
-export function createEditionPicker({ root, editions, activeEditionId, onChoose }) {
-  const picker = root.getElementById("editionPicker");
-  const trigger = root.getElementById("editionPickerButton");
-  const icon = root.getElementById("editionPickerIcon");
-  const panel = root.getElementById("editionPanel");
+export function createEditionPicker({ root, editions, activeEditionId, onChoose, idPrefix = "" }) {
+  const getControl = (name) => {
+    const id = idPrefix ? `${idPrefix}${name[0].toUpperCase()}${name.slice(1)}` : name;
+    return root.getElementById?.(id) ?? root.querySelector(`#${id}`);
+  };
+  const picker = getControl("editionPicker");
+  const trigger = getControl("editionPickerButton");
+  const icon = getControl("editionPickerIcon");
+  const panel = getControl("editionPanel");
   const activeEdition = editions.find((edition) => edition.id === activeEditionId);
 
   if (!picker || !trigger || !icon || !panel || !activeEdition) {

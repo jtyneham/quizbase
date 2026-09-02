@@ -2,6 +2,11 @@ import { POKEMON_WORDS } from "../../data/missing-word-pokemon-words.js";
 import { POKEMON_TOPICS } from "../core/pokemon-topics.js";
 import { defineHangmanElement } from "../core/hangman-engine.js";
 
+const EDITIONS = [
+  { id: "general", name: "Hangman", icon: "assets/hangman.svg", screenId: "hangman" },
+  { id: "pokemon", name: "Hangman Pokemon", icon: "assets/hangman-pokemon.svg", screenId: "hangmanpokemon" }
+];
+
 export function registerHangmanPokemon(app) {
   defineHangmanElement({
     tagName: "quiz-hangman-pokemon",
@@ -15,6 +20,8 @@ export function registerHangmanPokemon(app) {
       getPool: ({ selectedTopics }) => POKEMON_WORDS.filter(entry =>
         entry.topics.some(topic => selectedTopics.has(topic))
       ),
+      editions: EDITIONS,
+      editionId: "pokemon"
     },
   });
 }

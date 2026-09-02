@@ -45,19 +45,6 @@
             <span class="game-launcher-label" data-ui="game-launch-label">Hangman</span>
           </button>
 
-          <button class="game-launcher-item" data-ui="game-launch" type="button" data-file="hangmanpokemon.html" data-name="Hangman - Pokemon">
-            <div class="game-launcher-icon" data-ui="game-launch-surface">
-              <svg class="icon hangman-pokemon-icon" viewBox="0 0 120 120" aria-hidden="true">
-                <path d="M17 106h58M30 106V12H84V28"></path>
-                <path d="M84 28v15"></path>
-                <circle cx="84" cy="62" r="17"></circle>
-                <path d="M67 62h34"></path>
-                <circle cx="84" cy="62" r="5.8" fill="#fff"></circle>
-              </svg>
-            </div>
-            <span class="game-launcher-label" data-ui="game-launch-label">Hangman - Pokemon</span>
-          </button>
-
           <button class="game-launcher-item" data-ui="game-launch" type="button" data-file="rngl.html" data-name="Random Letter">
             <div class="game-launcher-icon" data-ui="game-launch-surface">
               <svg class="icon" viewBox="0 0 120 120" aria-hidden="true">
@@ -89,20 +76,6 @@
               </svg>
             </div>
             <span class="game-launcher-label" data-ui="game-launch-label">Odd One Out</span>
-          </button>
-
-          <button class="game-launcher-item" data-ui="game-launch" type="button" data-file="oddoneoutpokemon.html" data-name="Odd One Out - Pokemon">
-            <div class="game-launcher-icon" data-ui="game-launch-surface">
-              <svg class="icon odd-one-out-icon odd-one-out-pokemon-icon" viewBox="0 0 120 120" aria-hidden="true">
-                <rect x="18" y="18" width="34" height="34" rx="5"></rect>
-                <rect x="68" y="18" width="34" height="34" rx="5"></rect>
-                <rect x="18" y="68" width="34" height="34" rx="5"></rect>
-                <circle cx="85" cy="85" r="18"></circle>
-                <path d="M67 85h36"></path>
-                <circle cx="85" cy="85" r="6" fill="var(--qb-color-surface)"></circle>
-              </svg>
-            </div>
-            <span class="game-launcher-label" data-ui="game-launch-label">Odd One Out - Pokemon</span>
           </button>
 
         
@@ -334,6 +307,13 @@
               <span class="visually-hidden" id="oddOneOutFullscreenLabel">Fullscreen</span>
             </button>
           </div>
+          <div class="edition-picker" data-ui="edition-picker" id="oddOneOutEditionPicker">
+            <button class="edition-picker-button" data-ui="edition-picker-trigger" id="oddOneOutEditionPickerButton" type="button" aria-expanded="false">
+              <img class="edition-picker-icon" id="oddOneOutEditionPickerIcon" src="" alt="" aria-hidden="true">
+              <span class="edition-chevron" aria-hidden="true">▼</span>
+            </button>
+            <div class="edition-panel" data-ui="edition-picker-panel" id="oddOneOutEditionPanel" role="menu"></div>
+          </div>
           <div class="odd-one-out-difficulty" data-ui="option-control" role="group" aria-label="Difficulty">
             <button type="button" data-difficulty="mixed" aria-pressed="true">Mixed</button>
             <button type="button" data-difficulty="medium" aria-pressed="false">Medium</button>
@@ -362,6 +342,13 @@
               <img id="oddOneOutPokemonFullscreenIcon" src="assets/fullscreen.svg" alt="" aria-hidden="true">
               <span class="visually-hidden" id="oddOneOutPokemonFullscreenLabel">Fullscreen</span>
             </button>
+          </div>
+          <div class="edition-picker" data-ui="edition-picker" id="oddOneOutPokemonEditionPicker">
+            <button class="edition-picker-button" data-ui="edition-picker-trigger" id="oddOneOutPokemonEditionPickerButton" type="button" aria-expanded="false">
+              <img class="edition-picker-icon" id="oddOneOutPokemonEditionPickerIcon" src="" alt="" aria-hidden="true">
+              <span class="edition-chevron" aria-hidden="true">▼</span>
+            </button>
+            <div class="edition-panel" data-ui="edition-picker-panel" id="oddOneOutPokemonEditionPanel" role="menu"></div>
           </div>
           <div class="odd-one-out-difficulty" data-ui="option-control" role="group" aria-label="Difficulty">
             <button type="button" data-difficulty="mixed" aria-pressed="true">Mixed</button>

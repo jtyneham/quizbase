@@ -6,6 +6,11 @@ import {
 import { initOddOneOut } from "../core/odd-one-out-engine.js";
 import { buildPokemonOddOneOutRoundBlueprints } from "../core/pokemon-odd-one-out-round-builder.js";
 
+const EDITIONS = [
+  { id: "general", name: "Odd One Out", icon: "assets/odd-one-out.svg", screenId: "oddoneout" },
+  { id: "pokemon", name: "Odd One Out Pokemon", icon: "assets/odd-one-out-pokemon.svg", screenId: "oddoneoutpokemon" }
+];
+
 // This edition deliberately reuses the shared Odd One Out lifecycle, haptics,
 // feedback, renderer boundary, and cooldowns. Only reviewed Pokémon data and
 // local element selectors differ. Grow it by adding reviewed relationship
@@ -23,6 +28,9 @@ export function initPokemonOddOneOut(root, app) {
     // last eight ensures either mode always has a fresh relationship to choose;
     // label protection remains the same three generated sets as General OOO.
     cooldownLimits: { relationships: 8, families: 4, visibleSets: 3 },
+    editions: EDITIONS,
+    editionId: "pokemon",
+    editionPickerPrefix: "oddOneOutPokemon",
     controls: {
       fullscreenButton: "#oddOneOutPokemonFullscreenButton",
       fullscreenIcon: "#oddOneOutPokemonFullscreenIcon",

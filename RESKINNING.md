@@ -120,6 +120,9 @@ Common roles include:
 - `primary-action`
 - `secondary-action`
 - `difficulty-control`
+- `edition-picker`
+- `edition-picker-trigger`
+- `edition-picker-panel`
 - `topic-picker`
 - `topic-picker-trigger`
 - `overlay`
@@ -158,7 +161,7 @@ A reskin may use cards, lists, terminals, diegetic panels, abstract navigation, 
 Unless the product explicitly changes, preserve:
 
 ### App
-- all six routes and Home navigation, including direct hash links and browser Back/Forward;
+- all eight routes and Home navigation, including direct hash links and browser Back/Forward;
 - fullscreen enter/exit and icon state;
 - haptics where supported;
 - no accidental page scrolling.
@@ -170,6 +173,15 @@ Unless the product explicitly changes, preserve:
 - reel/slot generation animation;
 - ability to accelerate/stop generation where supported;
 - reveal behavior and round lifecycle.
+
+### Edition pickers
+
+Missing Word, Hangman, and Odd One Out use the small shared selector in
+`js/core/edition-picker.js`. It owns only the icon trigger, vertical menu,
+open/close state, and accessibility state; each game engine still owns its
+edition data and navigation. A reskin may completely restyle or reposition the
+trigger and panel, but should preserve one active edition and a clear way to
+switch to every registered edition.
 
 ### Hangman siblings
 - six-miss round lifecycle;

@@ -1,6 +1,21 @@
 import { test, expect } from "@playwright/test";
 import { openGame } from "./helpers.js";
 
+test("Odd One Out switches editions from its compact header picker", async ({ page }) => {
+  const generalScreen = await openGame(page, { name: "Odd One Out" });
+  const trigger = generalScreen.locator('[data-ui="edition-picker-trigger"]');
+
+  await expect(trigger).toHaveAttribute("aria-label", "Edition: Odd One Out");
+  await trigger.click();
+  await expect(generalScreen.locator('[data-ui="edition-picker-panel"]')).toBeVisible();
+  await generalScreen.getByRole("menuitem", { name: "Odd One Out Pokemon" }).click();
+
+  const pokemonScreen = page.locator("#oddOneOutPokemonScreen");
+  await expect(pokemonScreen).toHaveClass(/active/);
+  await expect(pokemonScreen.locator('[data-ui="edition-picker-trigger"]'))
+    .toHaveAttribute("aria-label", "Edition: Odd One Out Pokemon");
+});
+
 test("Odd One Out generates a reviewed set and resolves correct and wrong picks", async ({ page }) => {
   const screen = await openGame(page, { name: "Odd One Out" });
   const next = screen.locator("#oddOneOutNextButton");

@@ -1,6 +1,7 @@
 import { bindFullscreenButton } from "./ui.js";
 import { isCorrectGuess, isSolved, normalizePlayableChar, normalizePlayableAnswer, normalizeSolveAttempt, pickDifferent, uniquePlayableLetters } from "./hangman-logic.js";
 import { createHangmanTopicPicker } from "./hangman-topic-picker.js";
+import { createEditionPicker } from "./edition-picker.js";
 import { createHangmanArtwork } from "./hangman-artwork.js";
 import { createHangmanVisualEffects } from "./hangman-visual-effects.js";
 
@@ -9,7 +10,16 @@ export const HANGMAN_TEMPLATE = `<div class="hangman-root" data-ui="game-root">
   <main class="game-card" data-ui="game-primary-surface" id="gameCard">
     <div class="status-row" data-ui="game-toolbar">
       <div class="status-actions" data-ui="utility-actions"><button class="home-button" data-ui="home-action" id="homeButton" type="button" aria-label="Back to Home" title="Home"><img src="assets/home.svg" alt="" aria-hidden="true"></button><button class="fullscreen-btn" data-ui="fullscreen-action" id="fullscreenBtn" type="button" aria-label="Toggle fullscreen" title="Fullscreen"><img src="assets/fullscreen.svg" alt="" aria-hidden="true"></button></div>
-<button class="topics-btn" data-ui="topic-picker-trigger" id="topicsBtn" type="button">Topics <span id="topicsCount">All</span></button>
+      <div class="hangman-picker-controls">
+        <div class="edition-picker" data-ui="edition-picker" id="editionPicker">
+          <button class="edition-picker-button" data-ui="edition-picker-trigger" id="editionPickerButton" type="button" aria-expanded="false">
+            <img class="edition-picker-icon" id="editionPickerIcon" src="" alt="" aria-hidden="true">
+            <span class="edition-chevron" aria-hidden="true">▼</span>
+          </button>
+          <div class="edition-panel" data-ui="edition-picker-panel" id="editionPanel" role="menu"></div>
+        </div>
+        <button class="topics-btn" data-ui="topic-picker-trigger" id="topicsBtn" type="button">Topics <span id="topicsCount">All</span></button>
+      </div>
       <span class="tries-text" data-ui="status-counter" id="triesText">0 / 6 misses</span>
     </div>
 
@@ -231,6 +241,16 @@ export function initializeHangmanEngine(root, app, config) {
     initialFeaturedMode: config.featuredMode,
     onApply: startRound
   });
+  const editionPicker = createEditionPicker({
+    root,
+    editions: config.editions,
+    activeEditionId: config.editionId,
+    onChoose: (edition) => {
+      topicPicker.close();
+      vibrate(12);
+      void app.openGame(edition.screenId);
+    }
+  });
 
   function startRound() {
     answer = pickWord();
@@ -305,7 +325,7 @@ export function initializeHangmanEngine(root, app, config) {
   solveBtn.addEventListener("click",enterSolve);solveCancelBtn.addEventListener("click",leaveSolve);
   newWordBtn.addEventListener("click",()=>{if(!active){startRound();return;}if(!confirmNewWord){confirmNewWord=true;newWordBtn.textContent="New Word?";newWordBtn.className="btn btn-danger";clearTimeout(confirmTimer);confirmTimer=setTimeout(()=>{confirmNewWord=false;newWordBtn.textContent="New Word";newWordBtn.className="btn btn-primary";},2200);return;}startRound();});
   bindFullscreenButton({button:fullscreenBtn,icon:fullscreenBtn.querySelector("img"),app});
-  root.getElementById("homeButton").addEventListener("click",()=>{app.haptic(12);topicPicker.close();app.showHome();});
+  root.getElementById("homeButton").addEventListener("click",()=>{app.haptic(12);editionPicker.close();topicPicker.close();app.showHome();});
   startRound();
 }
 

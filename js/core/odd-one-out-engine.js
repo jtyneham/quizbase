@@ -2,6 +2,7 @@ import { ODD_ONE_OUT_BLUEPRINTS } from "../../data/odd-one-out-knowledge.js";
 import { chooseRound } from "./odd-one-out-logic.js";
 import { bindFullscreenButton } from "./ui.js";
 import { createOddOneOutVisualRenderer } from "./odd-one-out-visual-renderer.js";
+import { createEditionPicker } from "./edition-picker.js";
 
 const INITIALISED_ROOTS = new WeakSet();
 // The 18-family pool keeps fast shared-screen sessions fresh: the same
@@ -27,6 +28,9 @@ export function initOddOneOut(root, app, {
   // shorten its history safely instead of exhausting every eligible idea and
   // falling back to an immediate repeat. These are round counts, never time.
   cooldownLimits = {},
+  editions = [],
+  editionId,
+  editionPickerPrefix = "",
   controls = {
     fullscreenButton: "#oddOneOutFullscreenButton",
     fullscreenIcon: "#oddOneOutFullscreenIcon",
@@ -49,6 +53,16 @@ export function initOddOneOut(root, app, {
     type: visualRenderer,
     root
   });
+  const editionPicker = editions.length ? createEditionPicker({
+    root,
+    editions,
+    activeEditionId: editionId,
+    idPrefix: editionPickerPrefix,
+    onChoose: (edition) => {
+      app.haptic?.(12);
+      void app.openGame(edition.screenId);
+    }
+  }) : null;
   let setting = "mixed";
   let currentRound = null;
   let answered = false;
@@ -123,6 +137,7 @@ export function initOddOneOut(root, app, {
   });
   root.querySelector(controls.homeButton).addEventListener("click", () => {
     app.haptic?.(12);
+    editionPicker?.close();
     app.showHome();
   });
   difficultyButtons.forEach((button) => {

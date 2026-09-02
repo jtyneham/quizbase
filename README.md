@@ -1,6 +1,6 @@
 # Quizbase
 
-Quizbase is a reusable base for browser quiz games. Missing Word currently contains General and Pokémon editions; Hangman, Random Letter, Odd One Out, and Number Play remain available from the launcher. It is a static GitHub Pages app with modular game code/data, shared gameplay engines, a semantic reskin layer, and automated regression coverage.
+Quizbase is a reusable base for browser quiz games. Missing Word, Hangman, and Odd One Out each contain General and Pokémon editions; Random Letter and Number Play remain available from the launcher. It is a static GitHub Pages app with modular game code/data, shared gameplay engines, a semantic reskin layer, and automated regression coverage.
 
 ## Development
 
@@ -52,7 +52,7 @@ coverage.
 - `js/core/missing-word-engine.js` powers both Missing Word editions; its template, edition picker, topic picker, and reel renderer live in dedicated core modules, while data/configuration remain separate.
 - `js/core/hangman-engine.js` powers both Hangman variants; its shared topic picker is isolated in `js/core/hangman-topic-picker.js`, while data/configuration remain separate.
 - `js/core/random-letter-ticker.js` owns the Random Letter Ideas ticker; generation animations remain in its game module.
-- `js/core/odd-one-out-engine.js` powers both Odd One Out editions from separate reviewed data pools and visual renderers.
+- `js/core/hangman-engine.js` and `js/core/odd-one-out-engine.js` each power General and Pokémon editions from separate reviewed data pools; the compact edition picker only controls navigation between them.
 - `js/core/target-pair-logic.js` and `js/core/number-detective-logic.js` hold Number Play's active procedural modes; its small mode registry is in `data/number-play-modes.js`, so future modes can share one shell without copying routes or navigation.
 - `js/core/*-logic.js` modules hold pure, testable gameplay logic.
 - `js/games/` contains thin game-specific wrappers.

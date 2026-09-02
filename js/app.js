@@ -50,7 +50,7 @@ const routes = {
   oddoneout: {
     hash: "#odd-one-out",
     aliases: ["#oddoneout"],
-    load: async () => (await import("./games/odd-one-out.js")).initOddOneOut(screens.oddoneout, api)
+    load: async () => (await import("./games/odd-one-out.js")).initGeneralOddOneOut(screens.oddoneout, api)
   },
   oddoneoutpokemon: {
     hash: "#odd-one-out-pokemon",

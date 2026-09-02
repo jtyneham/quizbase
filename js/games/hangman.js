@@ -7,6 +7,10 @@ import { COMICS_TOPIC, withComicsHangmanPool } from "../../data/comics-words.js"
 import { MANGA_ANIME_TOPIC, withMangaAnimeHangmanPool } from "../../data/manga-anime-words.js";
 
 const SPECIALIST_TOPICS = new Set([BUSINESS_MONEY_TOPIC, COMICS_TOPIC, MANGA_ANIME_TOPIC]);
+const EDITIONS = [
+  { id: "general", name: "Hangman", icon: "assets/hangman.svg", screenId: "hangman" },
+  { id: "pokemon", name: "Hangman Pokemon", icon: "assets/hangman-pokemon.svg", screenId: "hangmanpokemon" }
+];
 
 export function registerHangman(app) {
   const wordPool = curateHangmanDatabase(
@@ -30,6 +34,8 @@ export function registerHangman(app) {
       getPool: ({ selectedTopics, featuredMode }) => featuredMode
         ? wordPool.filter((entry) => !SPECIALIST_TOPICS.has(entry.category) && isGeneralHangmanEntry(entry))
         : wordPool.filter(entry => selectedTopics.has(entry.category)),
+      editions: EDITIONS,
+      editionId: "general"
     },
   });
 }
