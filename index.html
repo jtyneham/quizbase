@@ -310,6 +310,27 @@
             <p id="targetPairFeedback" class="target-pair-feedback" aria-live="polite"></p>
             <button id="numberPlayAction" class="number-play-action" data-ui="primary-action" type="button" hidden>Generate Set</button>
           </section>
+
+          <section id="numberPlayNumberGap" class="number-play-number-gap" aria-label="Number Gap" hidden>
+            <div class="number-gap-prompt" aria-live="polite">
+              <span>FIND THE</span>
+              <strong id="numberGapDirection">—</strong>
+              <span id="numberGapInstruction">Tap two numbers.</span>
+            </div>
+            <div id="numberGapChoices" class="number-gap-choices" data-ui="game-primary-surface" aria-live="polite"></div>
+            <p id="numberGapFeedback" class="number-gap-feedback" aria-live="polite"></p>
+            <button id="numberGapAction" class="number-play-action" data-ui="primary-action" type="button" hidden>Generate Set</button>
+          </section>
+
+          <section id="numberPlayNumberDetective" class="number-play-number-detective" aria-label="Odd Number Out" hidden>
+            <div class="number-detective-prompt" aria-live="polite">
+              <span>FIND THE</span>
+              <strong>ODD NUMBER</strong>
+            </div>
+            <div id="numberDetectiveChoices" class="number-detective-choices" data-ui="game-primary-surface" aria-live="polite"></div>
+            <p id="numberDetectiveFeedback" class="number-detective-feedback" aria-live="polite"></p>
+            <button id="numberDetectiveAction" class="number-play-action" data-ui="primary-action" type="button" hidden>Generate Set</button>
+          </section>
         </main>
       </div>
     </section>

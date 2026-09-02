@@ -53,7 +53,7 @@ coverage.
 - `js/core/hangman-engine.js` powers both Hangman variants; its shared topic picker is isolated in `js/core/hangman-topic-picker.js`, while data/configuration remain separate.
 - `js/core/random-letter-ticker.js` owns the Random Letter Ideas ticker; generation animations remain in its game module.
 - `js/core/odd-one-out-engine.js` powers both Odd One Out editions from separate reviewed data pools and visual renderers.
-- `js/core/target-pair-logic.js` holds Number Play's first procedural mode; its small mode registry is in `data/number-play-modes.js`, so future modes can share one shell without copying routes or navigation.
+- `js/core/target-pair-logic.js` and `js/core/number-detective-logic.js` hold Number Play's active procedural modes; its small mode registry is in `data/number-play-modes.js`, so future modes can share one shell without copying routes or navigation.
 - `js/core/*-logic.js` modules hold pure, testable gameplay logic.
 - `js/games/` contains thin game-specific wrappers.
 - `data/` contains game datasets.
@@ -69,6 +69,6 @@ Do not fork shared gameplay engines for visual variants. Prefer semantic tokens,
 
 ## Regression coverage
 
-The browser suite exercises launcher and direct hash routes, Home navigation, fullscreen controls, Missing Word generation/difficulty/topic-picker flows, Hangman keyboard/Solve/New Word/topic-picker flows, Random Letter generation/Ideas behavior, Odd One Out answer feedback, Number Play mode selection/Target Pair, and representative viewport overflow checks.
+The browser suite exercises launcher and direct hash routes, Home navigation, fullscreen controls, Missing Word generation/difficulty/topic-picker flows, Hangman keyboard/Solve/New Word/topic-picker flows, Random Letter generation/Ideas behavior, Odd One Out answer feedback, Number Play mode selection/Target Pair/Odd Number Out, and representative viewport overflow checks.
 
 Failed Playwright runs write ignored traces/screenshots under `test-results/` for diagnosis.

@@ -36,3 +36,19 @@ test("Number Play launches as a chooser and Target Pair runs inside its persiste
   await expect(screen.locator("#numberPlayModeMenu")).toBeVisible();
   await expect(screen.locator('#numberPlayModeMenu [data-mode="target-pair"]')).toHaveAttribute("aria-current", "true");
 });
+
+test("Odd Number Out generates a single-intruder round", async ({ page }) => {
+  const screen = await openGame(page, { name: "Number Play" });
+  await screen.getByRole("button", { name: /Odd Number Out Find the number/ }).click();
+
+  await expect(screen.locator("#numberPlayNumberDetective")).toBeVisible();
+  const action = screen.locator("#numberDetectiveAction");
+  await expect(action).toHaveText("Generate Set");
+  await action.click();
+
+  const cards = screen.locator("#numberDetectiveChoices .number-play-number-card");
+  await expect(cards).toHaveCount(4);
+  await cards.nth(0).click();
+  await expect(screen.locator("#numberDetectiveFeedback")).not.toBeEmpty();
+  await expect(action).toHaveText("Next Set");
+});

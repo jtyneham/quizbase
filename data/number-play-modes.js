@@ -25,9 +25,9 @@ export const NUMBER_PLAY_MODES = [
   },
   {
     id: "number-detective",
-    name: "Number Detective",
+    name: "Odd Number Out",
     description: "Find the number that breaks the rule.",
-    available: false
+    available: true
   }
 ];
 

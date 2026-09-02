@@ -327,7 +327,7 @@ availability state. A future mode should be added there, then implemented as a
 small pure logic module plus an isolated view in `js/games/number-play.js`; do
 not create a second route or duplicate the shared Home/fullscreen/picker code.
 
-The first mode, Target Pair, separates its procedural round rules from its
+Target Pair separates its procedural round rules from its
 presentation. `js/core/target-pair-logic.js` creates and validates one unique
 four-number pair for the shown target across addition, subtraction,
 multiplication, and exact division. It avoids recent visible quartets and
@@ -336,6 +336,13 @@ Target Pair also follows the shared Mixed / Medium / Hard convention: Mixed is
 65% Medium and 35% Hard. Keep its top-right three-way control and its active
 state semantics when reskinning; changing the control must affect the next
 generated round, not merely recolour the UI.
+
+Odd Number Out follows the same isolated view/pure-rule split.
+`js/core/number-detective-logic.js` generates four shuffled values with exactly
+three members of one reviewed mathematical pattern and one non-member. Its
+displayed prompt and feedback belong to the Odd Number Out view; a reskin may
+change those freely, but must retain the single-card choice, defensible intruder,
+and concise explanation of the pattern.
 `js/games/number-play.js` owns selection, answer feedback, haptics, and the
 mode shell, while `css/number-play.css` contains the default mobile/tablet
 visual language. A reskin may replace the target card, number tiles, picker,
