@@ -278,6 +278,14 @@
             </button>
           </div>
 
+          <div class="number-play-difficulty" data-ui="option-control" role="group" aria-label="Difficulty">
+            <button type="button" data-number-play-difficulty="mixed" aria-pressed="true">Mixed</button>
+            <button type="button" data-number-play-difficulty="medium" aria-pressed="false">Medium</button>
+            <button type="button" data-number-play-difficulty="hard" aria-pressed="false">Hard</button>
+          </div>
+        </header>
+
+        <div class="number-play-mode-band">
           <div class="number-play-mode-control">
             <button id="numberPlayModeButton" class="number-play-mode-trigger" data-ui="number-play-mode-picker" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="numberPlayModeMenu">
               <span id="numberPlayModeLabel">Choose a game</span>
@@ -285,12 +293,7 @@
             </button>
             <div id="numberPlayModeMenu" class="number-play-mode-menu" role="menu" aria-label="Number Play games" hidden></div>
           </div>
-          <div class="number-play-difficulty" data-ui="option-control" role="group" aria-label="Difficulty">
-            <button type="button" data-number-play-difficulty="mixed" aria-pressed="true">Mixed</button>
-            <button type="button" data-number-play-difficulty="medium" aria-pressed="false">Medium</button>
-            <button type="button" data-number-play-difficulty="hard" aria-pressed="false">Hard</button>
-          </div>
-        </header>
+        </div>
 
         <main class="number-play-main">
           <section id="numberPlayLaunch" class="number-play-launch" aria-label="Choose a Number Play game">
