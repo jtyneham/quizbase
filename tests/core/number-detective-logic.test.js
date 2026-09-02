@@ -19,14 +19,17 @@ function seededRandom(seed) {
 test("Odd Number Out creates four numbers with one defensible intruder", () => {
   const random = seededRandom(12);
   const seenPatterns = new Set();
+  const seenPowerBases = new Set();
   for (let turn = 0; turn < 2_000; turn += 1) {
     const round = createNumberDetectiveRound(random);
     assert.deepEqual(validateNumberDetectiveRound(round), []);
     assert.equal(round.values.filter((value) => round.pattern.matches(value, round)).length, 3);
     assert.equal(round.pattern.matches(round.oddValue, round), false);
     seenPatterns.add(round.pattern.id);
+    if (round.pattern.id === "powers") seenPowerBases.add(round.powerBase);
   }
   assert.deepEqual(seenPatterns, new Set(NUMBER_DETECTIVE_PATTERNS.map((pattern) => pattern.id)));
+  assert.deepEqual(seenPowerBases, new Set([2, 3]));
 });
 
 test("Odd Number Out difficulty selects Medium, Hard, or the documented Mixed weighting", () => {

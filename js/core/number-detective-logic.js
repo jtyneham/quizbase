@@ -31,8 +31,11 @@ function isPerfectSquare(value) {
   return Number.isInteger(Math.sqrt(value));
 }
 
-function isPowerOfTwo(value) {
-  return value > 0 && (value & (value - 1)) === 0;
+function isPowerOf(value, base) {
+  if (value < base) return false;
+  let remaining = value;
+  while (remaining % base === 0) remaining /= base;
+  return remaining === 1;
 }
 
 function isPrime(value) {
@@ -45,6 +48,19 @@ function isPrime(value) {
 
 function isTriangular(value) {
   return isPerfectSquare((8 * value) + 1);
+}
+
+function digitSum(value) {
+  return String(value).split("").reduce((total, digit) => total + Number(digit), 0);
+}
+
+function positiveDivisorCount(value) {
+  let count = 0;
+  for (let divisor = 1; divisor * divisor <= value; divisor += 1) {
+    if (value % divisor !== 0) continue;
+    count += divisor * divisor === value ? 1 : 2;
+  }
+  return count;
 }
 
 function membershipRound(random, { members, matches, oddMinimum, oddMaximum, explanation }) {
@@ -77,9 +93,50 @@ function multipleRound(random) {
   };
 }
 
+const POWERS_BY_BASE = {
+  2: [4, 8, 16, 32, 64, 128],
+  3: [3, 9, 27, 81, 243]
+};
 const FIBONACCI = [5, 8, 13, 21, 34, 55, 89];
 const TRIANGULAR = [3, 6, 10, 15, 21, 28, 36, 45, 55, 66];
 const CUBES = [8, 27, 64, 125];
+const PRONIC = Array.from({ length: 12 }, (_, index) => {
+  const factor = index + 2;
+  return factor * (factor + 1);
+});
+const FOUR_DIVISOR_NUMBERS = Array.from({ length: 115 }, (_, index) => index + 6)
+  .filter((value) => positiveDivisorCount(value) === 4);
+
+function powerRound(random) {
+  const powerBase = random() < 0.5 ? 2 : 3;
+  const maximum = powerBase === 2 ? 130 : 250;
+  return {
+    ...membershipRound(random, {
+      members: POWERS_BY_BASE[powerBase],
+      matches: (value) => isPowerOf(value, powerBase),
+      oddMinimum: 3,
+      oddMaximum: maximum,
+      explanation: (oddValue) => `${oddValue} is not a power of ${powerBase}. The others are.`
+    }),
+    powerBase
+  };
+}
+
+function digitSumRound(random) {
+  const targetSum = randomInteger(7, 12, random);
+  const members = Array.from({ length: 90 }, (_, index) => index + 10)
+    .filter((value) => digitSum(value) === targetSum);
+  return {
+    ...membershipRound(random, {
+      members,
+      matches: (value) => digitSum(value) === targetSum,
+      oddMinimum: 10,
+      oddMaximum: 99,
+      explanation: (oddValue) => `The digits of ${oddValue} add to ${digitSum(oddValue)}. The others add to ${targetSum}.`
+    }),
+    targetSum
+  };
+}
 
 export const NUMBER_DETECTIVE_PATTERNS = [
   {
@@ -101,16 +158,16 @@ export const NUMBER_DETECTIVE_PATTERNS = [
     })
   },
   {
-    id: "powers-of-two",
+    id: "powers",
     difficulty: NUMBER_DETECTIVE_DIFFICULTIES.medium,
-    matches: isPowerOfTwo,
-    create: (random) => membershipRound(random, {
-      members: [4, 8, 16, 32, 64, 128],
-      matches: isPowerOfTwo,
-      oddMinimum: 3,
-      oddMaximum: 130,
-      explanation: (oddValue) => `${oddValue} is not a power of two. The others are.`
-    })
+    matches: (value, round) => isPowerOf(value, round.powerBase),
+    create: powerRound
+  },
+  {
+    id: "digit-sums",
+    difficulty: NUMBER_DETECTIVE_DIFFICULTIES.medium,
+    matches: (value, round) => digitSum(value) === round.targetSum,
+    create: digitSumRound
   },
   {
     id: "prime-numbers",
@@ -158,6 +215,30 @@ export const NUMBER_DETECTIVE_PATTERNS = [
       oddMinimum: 8,
       oddMaximum: 125,
       explanation: (oddValue) => `${oddValue} is not a perfect cube. The others are.`
+    })
+  },
+  {
+    id: "pronic-numbers",
+    difficulty: NUMBER_DETECTIVE_DIFFICULTIES.hard,
+    matches: (value) => PRONIC.includes(value),
+    create: (random) => membershipRound(random, {
+      members: PRONIC,
+      matches: (value) => PRONIC.includes(value),
+      oddMinimum: 6,
+      oddMaximum: 182,
+      explanation: (oddValue) => `${oddValue} is not a product of consecutive integers. The others are.`
+    })
+  },
+  {
+    id: "four-divisors",
+    difficulty: NUMBER_DETECTIVE_DIFFICULTIES.hard,
+    matches: (value) => positiveDivisorCount(value) === 4,
+    create: (random) => membershipRound(random, {
+      members: FOUR_DIVISOR_NUMBERS,
+      matches: (value) => positiveDivisorCount(value) === 4,
+      oddMinimum: 6,
+      oddMaximum: 120,
+      explanation: (oddValue) => `${oddValue} has ${positiveDivisorCount(oddValue)} positive factors. The others have four.`
     })
   }
 ];
