@@ -1,0 +1,116 @@
+/* Default Quizbase skin for the reusable Missing Word edition selector. */
+.edition-picker {
+  position: relative;
+  z-index: 40;
+}
+
+.edition-picker-button {
+  width: 3.55rem;
+  height: 2.75rem;
+  padding: 0 0.48rem 0 0.58rem;
+  border: 1px solid var(--qb-color-line-strong);
+  border-radius: 0.65rem;
+  background: var(--qb-color-surface);
+  color: var(--qb-color-text-control);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.24rem;
+  box-shadow: var(--qb-shadow-control);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+.edition-picker-button:active {
+  transform: scale(0.96);
+  box-shadow: var(--qb-shadow-control-pressed);
+}
+
+.edition-picker-button:focus-visible {
+  outline: 0.14rem solid var(--accent);
+  outline-offset: 0.16rem;
+}
+
+.edition-picker-icon {
+  width: 1.65rem;
+  height: 1.65rem;
+  display: block;
+  padding: 0.08rem;
+  border: 1px solid var(--qb-color-line-strong);
+  border-radius: 0.4rem;
+  background: var(--qb-color-surface-subtle);
+  object-fit: contain;
+}
+
+.edition-chevron {
+  flex: 0 0 auto;
+  font-size: 0.7rem;
+  line-height: 1;
+  transition: transform 160ms ease;
+}
+
+.edition-picker.open .edition-chevron {
+  transform: rotate(180deg);
+}
+
+.edition-panel {
+  position: absolute;
+  top: calc(100% + 0.45rem);
+  left: 50%;
+  width: min(15rem, calc(100vw - 2rem));
+  padding: 0.42rem;
+  border: 1px solid var(--qb-picker-border);
+  border-radius: 0.75rem;
+  background: var(--qb-color-surface);
+  box-shadow: 0 0.8rem 2rem rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, -0.3rem);
+  transition: opacity 140ms ease, transform 140ms ease, visibility 140ms ease;
+}
+
+.edition-picker.open .edition-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%);
+}
+
+.edition-option {
+  width: 100%;
+  min-height: 3.25rem;
+  padding: 0.45rem 0.58rem;
+  border: 0;
+  border-radius: 0.55rem;
+  background: transparent;
+  color: var(--qb-color-text-control);
+  display: flex;
+  align-items: center;
+  gap: 0.72rem;
+  font: inherit;
+  font-weight: 650;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.edition-option img {
+  width: 2.2rem;
+  height: 2.2rem;
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+
+.edition-option:hover {
+  background: var(--qb-picker-row-hover);
+}
+
+.edition-option.active {
+  background: var(--accent);
+  color: var(--qb-color-control-active-text);
+}
+
+.edition-option:focus-visible {
+  outline: 0.14rem solid var(--accent);
+  outline-offset: -0.08rem;
+}

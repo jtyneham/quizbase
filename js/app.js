@@ -76,6 +76,7 @@ const api = {
   toggleFullscreen: fullscreenService.toggle,
   onFullscreenChange(callback) { return fullscreenService.onChange(callback); },
   showHome() { return navigate("home"); },
+  openGame(name) { return navigate(name); },
   isScreenActive(name) { return current === name; }
 };
 

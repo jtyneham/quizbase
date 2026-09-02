@@ -1,6 +1,6 @@
 # Quizbase
 
-Quizbase is a reusable base for browser quiz games: Missing Word, Missing Word Pokémon, Hangman, Hangman Pokémon, Random Letter, Odd One Out, Odd One Out Pokémon, and Number Play. It is a static GitHub Pages app with modular game code/data, shared gameplay engines, a semantic reskin layer, and automated regression coverage.
+Quizbase is a reusable base for browser quiz games. Missing Word currently contains General and Pokémon editions; Hangman, Random Letter, Odd One Out, and Number Play remain available from the launcher. It is a static GitHub Pages app with modular game code/data, shared gameplay engines, a semantic reskin layer, and automated regression coverage.
 
 ## Development
 
@@ -49,7 +49,7 @@ coverage.
 
 ## Architecture
 
-- `js/core/missing-word-engine.js` powers both Missing Word variants; its template, topic picker, and reel renderer live in dedicated core modules, while data/configuration remain separate.
+- `js/core/missing-word-engine.js` powers both Missing Word editions; its template, edition picker, topic picker, and reel renderer live in dedicated core modules, while data/configuration remain separate.
 - `js/core/hangman-engine.js` powers both Hangman variants; its shared topic picker is isolated in `js/core/hangman-topic-picker.js`, while data/configuration remain separate.
 - `js/core/random-letter-ticker.js` owns the Random Letter Ideas ticker; generation animations remain in its game module.
 - `js/core/odd-one-out-engine.js` powers both Odd One Out editions from separate reviewed data pools and visual renderers.

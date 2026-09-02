@@ -6,6 +6,22 @@ const variants = [
   { name: "Missing Word - Pokemon", screen: "missingWordPokemonScreen" },
 ];
 
+test("Missing Word switches editions from its compact header picker", async ({ page }) => {
+  const generalScreen = await openGame(page, { name: "Missing Word", screen: "missingWordScreen" });
+  const trigger = generalScreen.locator('[data-ui="edition-picker-trigger"]');
+
+  await expect(trigger).toHaveAttribute("aria-label", "Edition: Missing Word");
+  await trigger.click();
+  await expect(generalScreen.locator('[data-ui="edition-picker-panel"]')).toBeVisible();
+  await generalScreen.getByRole("menuitem", { name: "Missing Word Pokemon" }).click();
+
+  const pokemonScreen = page.locator("#missingWordPokemonScreen");
+  await expect(pokemonScreen).toHaveClass(/active/);
+  await expect(page).toHaveURL(/#missingwordpokemon$/);
+  await expect(pokemonScreen.locator('[data-ui="edition-picker-trigger"]'))
+    .toHaveAttribute("aria-label", "Edition: Missing Word Pokemon");
+});
+
 for (const variant of variants) {
   test.describe(variant.name, () => {
     test("generates, changes difficulty, and uses topic picker", async ({ page }) => {

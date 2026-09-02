@@ -25,9 +25,14 @@ export async function openGame(page, game) {
   // button, so a visual navigation affordance does not invalidate the route
   // regression suite.
   const escapedName = canonicalGame.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  await page.getByRole("button", {
+  const launcher = page.getByRole("button", {
     name: new RegExp(`^${escapedName}(?:\\s+›)?$`)
-  }).click();
+  });
+  if (await launcher.count()) {
+    await launcher.click();
+  } else {
+    await page.goto(`/${canonicalGame.hash}`);
+  }
   const screen = page.locator(`#${canonicalGame.screen}`);
   await expect(screen).toHaveClass(/active/);
   await expect(page).toHaveURL(new RegExp(`${canonicalGame.hash}$`));

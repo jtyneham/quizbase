@@ -1,4 +1,6 @@
 
+    @import url("./missing-word-edition-picker.css");
+
     :host {
       --page-bg: var(--qb-color-page);
       --card-bg: var(--qb-color-surface);

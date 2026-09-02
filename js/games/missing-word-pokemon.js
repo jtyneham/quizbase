@@ -2,6 +2,11 @@ import { POKEMON_WORDS } from "../../data/missing-word-pokemon-words.js";
 import { POKEMON_TOPICS } from "../core/pokemon-topics.js";
 import { registerMissingWordGame } from "../core/missing-word-engine.js";
 
+const EDITIONS = [
+  { id: "general", name: "Missing Word", icon: "assets/missing-word.svg", screenId: "missingword" },
+  { id: "pokemon", name: "Missing Word Pokemon", icon: "assets/missing-word-pokemon.svg", screenId: "missingwordpokemon" }
+];
+
 export function registerMissingWordPokemon(app) {
   registerMissingWordGame({
     app,
@@ -11,6 +16,8 @@ export function registerMissingWordPokemon(app) {
     wordPool: POKEMON_WORDS,
     topics: POKEMON_TOPICS,
     initialTopics: [],
-    topicMode: "pokemon"
+    topicMode: "pokemon",
+    editions: EDITIONS,
+    editionId: "pokemon"
   });
 }

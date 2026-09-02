@@ -11,6 +11,13 @@ export const missingWordTemplate = `
           <span id="fullscreenLabel" class="visually-hidden">Fullscreen</span>
         </button>
       </div>
+      <div class="edition-picker" data-ui="edition-picker" id="editionPicker">
+        <button class="edition-picker-button" data-ui="edition-picker-trigger" id="editionPickerButton" type="button" aria-expanded="false">
+          <img class="edition-picker-icon" id="editionPickerIcon" src="" alt="" aria-hidden="true">
+          <span class="edition-chevron" aria-hidden="true">▼</span>
+        </button>
+        <div class="edition-panel" data-ui="edition-picker-panel" id="editionPanel" role="menu"></div>
+      </div>
       <div class="difficulty-control" data-ui="difficulty-control" aria-label="Difficulty">
         <button type="button" class="active" data-level="mixed" aria-pressed="true">Mixed</button>
         <button type="button" data-level="2" aria-pressed="false">Medium</button>

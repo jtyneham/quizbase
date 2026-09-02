@@ -1,10 +1,11 @@
 import { bindFullscreenButton } from "./ui.js";
+import { createEditionPicker } from "./edition-picker.js";
 import { filterWordPool, weightedWordChoice, blankCountFor, wordLetterGroups, longestBlankRun, eachWordKeepsVisibleLetter } from "./missing-word-logic.js";
 import { createMissingWordTopicPicker } from "./missing-word-topic-picker.js";
 import { missingWordTemplate } from "./missing-word-template.js";
 import { createMissingWordVisualRenderer } from "./missing-word-visual-renderer.js";
 function initializeGame(root, app, config) {
-    const { wordPool, topics: configuredTopics, screenId, topicMode = "general", initialTopics = ["General"], visualRenderer = "dom" } = config;
+    const { wordPool, topics: configuredTopics, screenId, topicMode = "general", initialTopics = ["General"], visualRenderer = "dom", editions, editionId } = config;
 
     // Shared Missing Word engine. Game-specific data/topic behavior is injected by the wrapper.
     const GAME_CONFIG = {
@@ -68,6 +69,16 @@ function initializeGame(root, app, config) {
       topics: TOPICS,
       mode: topicMode,
       initialTopics
+    });
+    const editionPicker = createEditionPicker({
+      root,
+      editions,
+      activeEditionId: editionId,
+      onChoose: (edition) => {
+        topicPicker.close();
+        app.haptic(12);
+        void app.openGame(edition.screenId);
+      }
     });
 
     // A reskin can register a Pixi/SVG renderer and select it through config;
@@ -355,6 +366,7 @@ function initializeGame(root, app, config) {
     root.getElementById("homeButton").addEventListener("click", () => {
       app.haptic(12);
       topicPicker.close();
+      editionPicker.close();
       app.showHome();
     });
 
@@ -394,7 +406,9 @@ export function registerMissingWordGame({
   wordPool,
   topics,
   initialTopics = ["General"],
-  topicMode = "general"
+  topicMode = "general",
+  editions,
+  editionId
 }) {
   if (customElements.get(elementName)) return;
 
@@ -408,7 +422,7 @@ export function registerMissingWordGame({
       const wrapper = document.createElement("div");
       wrapper.innerHTML = missingWordTemplate;
       root.append(link, wrapper);
-      initializeGame(root, app, { wordPool, topics, screenId, initialTopics, topicMode });
+      initializeGame(root, app, { wordPool, topics, screenId, initialTopics, topicMode, editions, editionId });
     }
   }
 
