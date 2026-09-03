@@ -191,6 +191,8 @@ switch to every registered edition.
 - New Word and confirmation behavior;
 - win/loss presentation state;
 - topic filtering;
+- answer cooldown: keep the last 30 answers out of the active pool, capped at
+  half of a future smaller pool;
 - visible multiline answer slots;
 - gallows progression.
 

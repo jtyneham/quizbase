@@ -33,3 +33,16 @@ export function pickDifferent(pool, previous, getAnswer = value => value) {
   }
   return next;
 }
+
+export function answerCooldownLimit(poolLength, maximum = 30) {
+  return Math.min(maximum, Math.floor(poolLength / 2));
+}
+
+export function pickWithAnswerCooldown(pool, recentAnswers, getAnswer = value => value, random = Math.random) {
+  if (!pool.length) return "";
+
+  const recent = new Set(recentAnswers.map(normalizePlayableAnswer));
+  const eligible = pool.filter((entry) => !recent.has(normalizePlayableAnswer(getAnswer(entry))));
+  const choices = eligible.length ? eligible : pool;
+  return getAnswer(choices[Math.floor(random() * choices.length)]);
+}

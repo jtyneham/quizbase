@@ -1,5 +1,5 @@
 import { bindFullscreenButton } from "./ui.js";
-import { isCorrectGuess, isSolved, normalizePlayableChar, normalizePlayableAnswer, normalizeSolveAttempt, pickDifferent, uniquePlayableLetters } from "./hangman-logic.js";
+import { answerCooldownLimit, isCorrectGuess, isSolved, normalizePlayableChar, normalizePlayableAnswer, normalizeSolveAttempt, pickWithAnswerCooldown, uniquePlayableLetters } from "./hangman-logic.js";
 import { createHangmanTopicPicker } from "./hangman-topic-picker.js";
 import { createEditionPicker } from "./edition-picker.js";
 import { createHangmanArtwork } from "./hangman-artwork.js";
@@ -218,7 +218,7 @@ export function initializeHangmanEngine(root, app, config) {
   const solveUi = root.getElementById("solveUi");
   const solveText = root.getElementById("solveText");
   const solveCancelBtn = root.getElementById("solveCancelBtn");
-  let answer="", guessed=new Set(), misses=[], wrongCount=0;
+  let answer="", recentAnswers=[], guessed=new Set(), misses=[], wrongCount=0;
   let active=false, solveMode=false, solveBuffer="", confirmNewWord=false, confirmTimer=null;
   let backspaceHoldTimer=null, backspaceRepeatTimer=null, backspaceHoldActive=false, backspaceConsumedClick=false;
   const KEY_HAPTIC_MS=6, ENTER_HAPTIC_MS=8;
@@ -229,7 +229,8 @@ export function initializeHangmanEngine(root, app, config) {
   }
 
   function pickWord() {
-    return pickDifferent(getActivePool(), answer, config.getAnswer);
+    const pool = getActivePool();
+    return pickWithAnswerCooldown(pool, recentAnswers, config.getAnswer);
   }
 
   const topicPicker = createHangmanTopicPicker({
@@ -255,6 +256,10 @@ export function initializeHangmanEngine(root, app, config) {
   function startRound() {
     answer = pickWord();
     if (!answer) return;
+    const cooldown = answerCooldownLimit(getActivePool().length);
+    recentAnswers = cooldown
+      ? [...recentAnswers, answer].slice(-cooldown)
+      : [];
 
     guessed = new Set();
     misses = [];

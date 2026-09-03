@@ -1,12 +1,14 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {
+  answerCooldownLimit,
   isCorrectGuess,
   isSolved,
   normalizePlayableAnswer,
   normalizePlayableChar,
   normalizeSolveAttempt,
   pickDifferent,
+  pickWithAnswerCooldown,
   uniquePlayableLetters,
 } from "../../js/core/hangman-logic.js";
 
@@ -41,5 +43,19 @@ test("pickDifferent avoids immediately repeating an answer when possible", () =>
     assert.equal(pickDifferent([], "A"), "");
   } finally {
     Math.random = originalRandom;
+  }
+});
+
+test("Hangman answer cooldown keeps recent answers out while preserving a safe pool reserve", () => {
+  assert.equal(answerCooldownLimit(79), 30);
+  assert.equal(answerCooldownLimit(7), 3);
+
+  const pool = Array.from({ length: 79 }, (_, index) => `ANSWER ${index + 1}`);
+  const recent = [];
+  for (let turn = 0; turn < 60; turn += 1) {
+    const answer = pickWithAnswerCooldown(pool, recent, value => value, () => 0);
+    assert.equal(recent.includes(answer), false, `${answer} repeated during its cooldown`);
+    recent.push(answer);
+    recent.splice(0, Math.max(0, recent.length - answerCooldownLimit(pool.length)));
   }
 });
