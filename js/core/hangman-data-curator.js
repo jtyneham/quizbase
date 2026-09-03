@@ -9,7 +9,8 @@ const UNSUITABLE_STANDALONE_ANSWERS = new Set([
   // Activities: isolated fragments rather than satisfying answers.
   "CARD", "COIN", "GAMES", "STAMPS",
   // History: meaningful only with missing context.
-  "PACT", "RACE",
+  "PACT", "RACE", "THE", "CIVIL", "RIGHTS", "VIII", "XIV", "WALL",
+  "CURTAIN", "RUSH", "UNDERGROUND",
   // Sports: generic equipment, locations, actions, or roles with no sport.
   "ARENA", "BALL", "BAT", "BATTER", "CATCHER", "CORNER", "COURT", "DEFENDER",
   "GOAL", "MEDAL", "NET", "PITCH", "POOL", "REFEREE", "RUN", "SERVE", "SHOT",
@@ -31,10 +32,7 @@ export function curateHangmanDatabase(entries) {
 
   return entries.flatMap((entry) => {
     const canonical = canonicalAnswer(entry.answer);
-    if (
-      (UNSUITABLE_STANDALONE_ANSWERS.has(entry.answer) && entry.category !== "Business & Money") ||
-      seenAnswers.has(canonical)
-    ) {
+    if (!isCuratedHangmanAnswer(entry) || seenAnswers.has(canonical)) {
       return [];
     }
 
@@ -47,5 +45,8 @@ export function curateHangmanDatabase(entries) {
 }
 
 export function isCuratedHangmanAnswer(entry) {
-  return !UNSUITABLE_STANDALONE_ANSWERS.has(entry.answer);
+  return (
+    (!UNSUITABLE_STANDALONE_ANSWERS.has(entry.answer) || entry.category === "Business & Money") &&
+    /[A-Z]/i.test(entry.answer)
+  );
 }

@@ -18,6 +18,21 @@ const TOPIC_OVERRIDES = new Map([
 ]);
 
 /**
+ * Canonical display spellings for the two duplicate concepts found in the
+ * player-facing pool.  Each keeps the union of its genuinely relevant tags.
+ */
+const ENTRY_OVERRIDES = new Map([
+  ["packet loss", {
+    difficulty: 3,
+    topics: ["Games", "Video Games", "IT & Technology", "Nouns"]
+  }],
+  ["toolbox", {
+    difficulty: 1,
+    topics: ["Tools", "Everyday Objects", "Nouns"]
+  }]
+]);
+
+/**
  * Terms which are valid English words but are not fair answers in the listed
  * specialist topic without an omitted companion word.  For example, `cord`
  * is a word, but it is not a Human Body answer unless the player is expected
@@ -62,7 +77,23 @@ const TOPIC_REMOVALS = new Map([
     "one", "rock", "running shoes", "ski", "sport", "stadium", "track"
   ])],
   // These are generic qualifiers, not usable Games answers by themselves.
-  ["Games", new Set(["bad", "best", "good", "new", "open", "true", "weak"])],
+  ["Games", new Set([
+    // Generic fragments that need a companion (for example, Game Boy,
+    // health bar, cloud gaming, or a skill tree) are not fair answers here.
+    "angle", "artificial", "badge", "bar", "barrel", "basic", "box", "boy",
+    "button", "cap", "cast", "chain", "channel", "click", "cloud", "code",
+    "compass", "core", "couch", "cube", "daily", "data", "dialogue", "duo",
+    "early", "egg", "energy", "escape", "extra", "file", "final", "flag",
+    "frame", "free", "global", "grand", "gun", "heavy", "hero", "hide",
+    "high", "hill", "history", "hunter", "icon", "input", "invisible", "iron",
+    "kit", "light", "lock", "log", "manual", "marker", "master", "mouse",
+    "multiple", "music", "network", "novel", "number", "object", "packet",
+    "payload", "personal", "physical", "physics", "power", "probability", "profile",
+    "quick", "radial", "room", "safe", "screen", "secret", "setting", "space",
+    "special", "stack", "stash", "station", "sudden", "system", "tag", "title",
+    "track", "tree", "video", "virtual", "war", "wheel",
+    "bad", "best", "good", "new", "open", "true", "weak"
+  ])],
   ["Music", new Set(["grand"])],
   // Second specialist-audit batch: practical and everyday subjects.
   ["Books & Literature", new Set(["science", "short"])],
@@ -94,7 +125,7 @@ const TOPIC_REMOVALS = new Map([
   ])],
   ["Brands", new Set(["burger", "king"])],
   // These are not standalone English verb/adjective answers in this base pool.
-  ["Verbs", new Set(["pomegranate"])],
+  ["Verbs", new Set(["not", "pomegranate"])],
   ["Adjectives", new Set([
     "bake", "bulldog", "iguana", "jackal", "montreal", "ostrich", "portugal", "starfish"
   ])]
@@ -105,7 +136,10 @@ const OMITTED_ANSWERS = new Set([
   "and",
   // Both are unreachable under Missing Word's documented maximums.
   "declaration of independence",
-  "lord of the rings"
+  "lord of the rings",
+  // Duplicate spellings are consolidated through ENTRY_OVERRIDES above.
+  "packetloss",
+  "tool box"
 ]);
 
 /**
@@ -117,10 +151,46 @@ export function curateMissingWordPool(entries) {
   const corrected = entries.flatMap((entry) => {
     // Pokémon belongs exclusively to the dedicated Pokémon Missing Word game.
     if (OMITTED_ANSWERS.has(entry.word) || entry.topics.includes("Pokemon")) return [];
-    const candidateTopics = TOPIC_OVERRIDES.get(entry.word) ?? entry.topics;
+    const override = ENTRY_OVERRIDES.get(entry.word);
+    const candidateTopics = override?.topics ?? TOPIC_OVERRIDES.get(entry.word) ?? entry.topics;
     const topics = candidateTopics.filter((topic) => !TOPIC_REMOVALS.get(topic)?.has(entry.word));
-    return [{ ...entry, topics }];
+    return [{ ...entry, difficulty: override?.difficulty ?? entry.difficulty, topics }];
   });
 
-  return withCuratedGeneralTopic(corrected);
+  return withCuratedGeneralTopic(corrected).filter((entry) => entry.topics.length > 0);
+}
+
+function canonicalWord(word) {
+  return String(word)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "");
+}
+
+/**
+ * Applies Missing Word's actual display limits after every specialist topic
+ * has been integrated.  Keeping this separate lets those shared topic lists
+ * remain available to Hangman, whose renderer supports longer answers.
+ */
+export function finalizeMissingWordPool(entries, { maxLetters = 20, maxWords = 3 } = {}) {
+  const seenWords = new Set();
+
+  return entries.flatMap((entry) => {
+    const letterCount = (entry.word.match(/[A-Za-z]/g) ?? []).length;
+    const wordCount = entry.word.trim().split(/\s+/).filter(Boolean).length;
+    const canonical = canonicalWord(entry.word);
+    if (
+      entry.topics.length === 0 ||
+      letterCount < 2 ||
+      letterCount > maxLetters ||
+      wordCount > maxWords ||
+      seenWords.has(canonical)
+    ) {
+      return [];
+    }
+
+    seenWords.add(canonical);
+    return [entry];
+  });
 }

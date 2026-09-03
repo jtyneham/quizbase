@@ -1,6 +1,6 @@
 import { WORDS } from "../../data/missing-word-words.js";
 import { registerMissingWordGame } from "../core/missing-word-engine.js";
-import { curateMissingWordPool } from "../core/missing-word-data-curator.js";
+import { curateMissingWordPool, finalizeMissingWordPool } from "../core/missing-word-data-curator.js";
 import { withBusinessMoneyMissingWordPool } from "../../data/business-money-words.js";
 import { withComicsMissingWordPool } from "../../data/comics-words.js";
 import { withMangaAnimeMissingWordPool } from "../../data/manga-anime-words.js";
@@ -19,9 +19,11 @@ export function registerMissingWord(app) {
     screenId: "missingword",
     // General is intentionally a curated default, while the full data remains
     // available through each specialist topic.
-    wordPool: withMangaAnimeMissingWordPool(
-      withComicsMissingWordPool(
-        withBusinessMoneyMissingWordPool(curateMissingWordPool(WORDS))
+    wordPool: finalizeMissingWordPool(
+      withMangaAnimeMissingWordPool(
+        withComicsMissingWordPool(
+          withBusinessMoneyMissingWordPool(curateMissingWordPool(WORDS))
+        )
       )
     ),
     topics: TOPICS,
