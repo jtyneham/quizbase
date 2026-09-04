@@ -1,6 +1,6 @@
 import { bindFullscreenButton } from "./ui.js";
 import { createEditionPicker } from "./edition-picker.js";
-import { filterWordPool, weightedWordChoice, blankCountFor, wordLetterGroups, longestBlankRun, eachWordKeepsVisibleLetter } from "./missing-word-logic.js";
+import { filterWordPool, drawWordFromDeck, blankCountFor, wordLetterGroups, longestBlankRun, eachWordKeepsVisibleLetter } from "./missing-word-logic.js";
 import { createMissingWordTopicPicker } from "./missing-word-topic-picker.js";
 import { missingWordTemplate } from "./missing-word-template.js";
 import { createMissingWordVisualRenderer } from "./missing-word-visual-renderer.js";
@@ -36,10 +36,6 @@ function initializeGame(root, app, config) {
         nextWordDuration: 1500,
         frameInterval: 55,
         revealDuration: 240
-      },
-
-      history: {
-        recentWordLimit: 20
       },
 
       difficulty: {
@@ -87,7 +83,7 @@ function initializeGame(root, app, config) {
       type: visualRenderer,
       wordDisplay
     });
-    const recentWords = [];
+    const usedWordsByContext = new Map();
     const previousMasks = new Map();
 
     let gameState = "empty";
@@ -114,26 +110,44 @@ function initializeGame(root, app, config) {
         wordPool,
         roundDifficulty,
         gameConfig: GAME_CONFIG,
-        recentWords,
+        recentWords: [],
         allTopicsMode,
         selectedTopics
       });
     }
 
+    function deckContextKey() {
+      const { selectedTopics, allTopicsMode } = topicPicker.getState();
+      const difficulty = GAME_CONFIG.difficulty.activeLevel;
+      return `${allTopicsMode ? "all" : "topics"}:${[...selectedTopics].sort().join("|")}:${difficulty}`;
+    }
+
     function chooseWord() {
-      let pool = filteredWordPool(currentRoundDifficulty);
+      const contextKey = deckContextKey();
+      const usedWords = usedWordsByContext.get(contextKey) ?? new Set();
+      let roundDifficulty = pickRoundDifficulty();
+      let pool = filteredWordPool(roundDifficulty);
+      let hasUnseen = pool.some((entry) => !usedWords.has(entry.word.toLowerCase()));
 
-      if (pool.length === 0) {
-        recentWords.splice(0, recentWords.length);
-        pool = filteredWordPool(currentRoundDifficulty);
+      // Mixed shares one deck between its two difficulty layers. If the
+      // Medium-eligible layer is exhausted while Hard-only words remain, draw
+      // from Hard instead of restarting the whole topic cycle early.
+      if (!hasUnseen && GAME_CONFIG.difficulty.activeLevel === "mixed" && roundDifficulty === "medium") {
+        const hardPool = filteredWordPool("hard");
+        const hardHasUnseen = hardPool.some((entry) => !usedWords.has(entry.word.toLowerCase()));
+        if (hardPool.length && (hardHasUnseen || pool.length === 0)) {
+          roundDifficulty = "hard";
+          pool = hardPool;
+          hasUnseen = hardHasUnseen;
+        }
       }
 
-      if (pool.length === 0) {
-        return null;
-      }
+      if (!pool.length) return null;
+      const deck = drawWordFromDeck(pool, hasUnseen ? usedWords : new Set(), roundDifficulty);
+      if (!deck.entry) return null;
 
-      const picked = weightedWordChoice(pool, currentRoundDifficulty);
-      return picked.word.toUpperCase();
+      usedWordsByContext.set(contextKey, deck.usedWords);
+      return { word: deck.entry.word.toUpperCase(), roundDifficulty };
     }
 
     function createMask(word, roundDifficulty = currentRoundDifficulty) {
@@ -247,8 +261,9 @@ function initializeGame(root, app, config) {
     async function nextWord() {
       actionButton.classList.remove("reveal-mode");
 
-      currentRoundDifficulty = pickRoundDifficulty();
-      currentWord = chooseWord();
+      const selection = chooseWord();
+      currentWord = selection?.word ?? "";
+      currentRoundDifficulty = selection?.roundDifficulty ?? currentRoundDifficulty;
 
       if (!currentWord) {
         wordDisplay.replaceChildren();
@@ -260,11 +275,6 @@ function initializeGame(root, app, config) {
       }
 
       currentMask = createMask(currentWord, currentRoundDifficulty);
-      recentWords.push(currentWord.toLowerCase());
-      while (recentWords.length > GAME_CONFIG.history.recentWordLimit) {
-        recentWords.shift();
-      }
-
       gameState = "generating";
       // The reel animation is decorative. A browser can interrupt its timing
       // during a page lifecycle change, so a round must never depend on the
@@ -346,7 +356,7 @@ function initializeGame(root, app, config) {
 
     function setDifficulty(level) {
       GAME_CONFIG.difficulty.activeLevel =
-        level === "mixed" ? "mixed" : Number(level);
+        level === "mixed" ? "mixed" : level === "medium" ? 2 : 3;
 
       difficultyButtons.forEach((button) => {
         const active = button.dataset.level === String(level);

@@ -51,6 +51,24 @@ export function weightedWordChoice(pool, roundDifficulty, random = Math.random) 
   return weighted[weighted.length - 1].entry;
 }
 
+/**
+ * Draws a word without replacement for one topic/difficulty session context.
+ * A new cycle begins only once that context has exhausted its whole pool.
+ */
+export function drawWordFromDeck(pool, usedWords = new Set(), roundDifficulty, random = Math.random) {
+  if (!pool.length) return { entry: null, usedWords: new Set(), recycled: false };
+
+  const used = new Set([...usedWords].map((word) => String(word).toLowerCase()));
+  const unseen = pool.filter((entry) => !used.has(entry.word.toLowerCase()));
+  const recycled = unseen.length === 0;
+  const choices = recycled ? pool : unseen;
+  const entry = weightedWordChoice(choices, roundDifficulty, random);
+  const nextUsed = recycled ? new Set() : used;
+  nextUsed.add(entry.word.toLowerCase());
+
+  return { entry, usedWords: nextUsed, recycled };
+}
+
 export function blankCountFor(length, profile) {
   const target = Math.round(length * profile.blankRatio);
   return Math.max(1, Math.min(target, Math.max(1, length - 1)));

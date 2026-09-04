@@ -23,26 +23,20 @@ export function normalizeSolveAttempt(value) {
   return normalizePlayableAnswer(String(value || "").trim().replace(/\s+/g, " ").toUpperCase());
 }
 
-export function pickDifferent(pool, previous, getAnswer = value => value) {
-  if (!pool.length) return "";
-  let index = Math.floor(Math.random() * pool.length);
-  let next = getAnswer(pool[index]);
-  if (pool.length > 1 && next === previous) {
-    index = (index + 1) % pool.length;
-    next = getAnswer(pool[index]);
-  }
-  return next;
-}
+/**
+ * Draws without replacement for one active topic setup. Once every answer in
+ * that setup has appeared, it starts a newly shuffled cycle on the next draw.
+ */
+export function pickWithAnswerDeck(pool, usedAnswers = new Set(), getAnswer = value => value, random = Math.random) {
+  if (!pool.length) return { value: null, usedAnswers: new Set(), recycled: false };
 
-export function answerCooldownLimit(poolLength, maximum = 30) {
-  return Math.min(maximum, Math.floor(poolLength / 2));
-}
+  const used = new Set([...usedAnswers].map(normalizePlayableAnswer));
+  const unseen = pool.filter((entry) => !used.has(normalizePlayableAnswer(getAnswer(entry))));
+  const recycled = unseen.length === 0;
+  const choices = recycled ? pool : unseen;
+  const value = choices[Math.floor(random() * choices.length)];
+  const nextUsed = recycled ? new Set() : used;
+  nextUsed.add(normalizePlayableAnswer(getAnswer(value)));
 
-export function pickWithAnswerCooldown(pool, recentAnswers, getAnswer = value => value, random = Math.random) {
-  if (!pool.length) return "";
-
-  const recent = new Set(recentAnswers.map(normalizePlayableAnswer));
-  const eligible = pool.filter((entry) => !recent.has(normalizePlayableAnswer(getAnswer(entry))));
-  const choices = eligible.length ? eligible : pool;
-  return getAnswer(choices[Math.floor(random() * choices.length)]);
+  return { value, usedAnswers: nextUsed, recycled };
 }

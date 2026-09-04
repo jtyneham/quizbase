@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   filterWordPool,
+  drawWordFromDeck,
   weightedWordChoice,
   blankCountFor,
   wordLetterGroups,
@@ -52,6 +53,28 @@ test("weighted selection honors deterministic roll boundaries", () => {
   ];
   assert.equal(weightedWordChoice(choices, "medium", () => 0).word, "easy");
   assert.equal(weightedWordChoice(choices, "medium", () => 0.99).word, "medium");
+});
+
+test("Missing Word deck exhausts every eligible word before recycling", () => {
+  const entries = [
+    { word: "cat", difficulty: 1 },
+    { word: "dog", difficulty: 1 },
+    { word: "owl", difficulty: 1 }
+  ];
+  let usedWords = new Set();
+  const drawn = [];
+
+  for (let turn = 0; turn < entries.length; turn += 1) {
+    const result = drawWordFromDeck(entries, usedWords, "medium", () => 0);
+    drawn.push(result.entry.word);
+    usedWords = result.usedWords;
+    assert.equal(result.recycled, false);
+  }
+
+  assert.equal(new Set(drawn).size, entries.length);
+  const next = drawWordFromDeck(entries, usedWords, "medium", () => 0);
+  assert.equal(next.recycled, true);
+  assert.equal(next.entry.word, "cat");
 });
 
 test("mask helpers preserve at least one visible letter per word", () => {

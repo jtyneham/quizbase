@@ -1,14 +1,12 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {
-  answerCooldownLimit,
   isCorrectGuess,
   isSolved,
   normalizePlayableAnswer,
   normalizePlayableChar,
   normalizeSolveAttempt,
-  pickDifferent,
-  pickWithAnswerCooldown,
+  pickWithAnswerDeck,
   uniquePlayableLetters,
 } from "../../js/core/hangman-logic.js";
 
@@ -34,28 +32,21 @@ test("solve attempts collapse whitespace and normalize accents", () => {
   assert.equal(normalizeSolveAttempt("mr.   mime"), "MR. MIME");
 });
 
-test("pickDifferent avoids immediately repeating an answer when possible", () => {
-  const originalRandom = Math.random;
-  Math.random = () => 0;
-  try {
-    assert.equal(pickDifferent(["A", "B"], "A"), "B");
-    assert.equal(pickDifferent(["A"], "A"), "A");
-    assert.equal(pickDifferent([], "A"), "");
-  } finally {
-    Math.random = originalRandom;
-  }
-});
+test("Hangman answer deck exhausts an active topic before it recycles", () => {
+  const pool = ["A", "B", "C"];
+  let usedAnswers = new Set();
+  const drawn = [];
 
-test("Hangman answer cooldown keeps recent answers out while preserving a safe pool reserve", () => {
-  assert.equal(answerCooldownLimit(79), 30);
-  assert.equal(answerCooldownLimit(7), 3);
-
-  const pool = Array.from({ length: 79 }, (_, index) => `ANSWER ${index + 1}`);
-  const recent = [];
-  for (let turn = 0; turn < 60; turn += 1) {
-    const answer = pickWithAnswerCooldown(pool, recent, value => value, () => 0);
-    assert.equal(recent.includes(answer), false, `${answer} repeated during its cooldown`);
-    recent.push(answer);
-    recent.splice(0, Math.max(0, recent.length - answerCooldownLimit(pool.length)));
+  for (let turn = 0; turn < pool.length; turn += 1) {
+    const result = pickWithAnswerDeck(pool, usedAnswers, (value) => value, () => 0);
+    drawn.push(result.value);
+    usedAnswers = result.usedAnswers;
+    assert.equal(result.recycled, false);
   }
+
+  assert.equal(new Set(drawn).size, pool.length);
+  const next = pickWithAnswerDeck(pool, usedAnswers, (value) => value, () => 0);
+  assert.equal(next.recycled, true);
+  assert.equal(next.value, "A");
+  assert.deepEqual([...next.usedAnswers], ["A"]);
 });
