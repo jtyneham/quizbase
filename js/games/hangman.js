@@ -5,8 +5,9 @@ import { curateHangmanDatabase } from "../core/hangman-data-curator.js";
 import { BUSINESS_MONEY_TOPIC, withBusinessMoneyHangmanPool } from "../../data/business-money-words.js";
 import { COMICS_TOPIC, withComicsHangmanPool } from "../../data/comics-words.js";
 import { MANGA_ANIME_TOPIC, withMangaAnimeHangmanPool } from "../../data/manga-anime-words.js";
+import { UFC_FIGHTERS_TOPIC, withUfcFightersHangmanPool } from "../../data/ufc-fighters.js";
 
-const SPECIALIST_TOPICS = new Set([BUSINESS_MONEY_TOPIC, COMICS_TOPIC, MANGA_ANIME_TOPIC]);
+const SPECIALIST_TOPICS = new Set([BUSINESS_MONEY_TOPIC, COMICS_TOPIC, MANGA_ANIME_TOPIC, UFC_FIGHTERS_TOPIC]);
 const EDITIONS = [
   { id: "general", name: "Hangman", icon: "assets/hangman.svg", screenId: "hangman" },
   { id: "pokemon", name: "Hangman Pokemon", icon: "assets/hangman-pokemon.svg", screenId: "hangmanpokemon" }
@@ -14,9 +15,11 @@ const EDITIONS = [
 
 export function registerHangman(app) {
   const wordPool = curateHangmanDatabase(
-    withMangaAnimeHangmanPool(
-      withComicsHangmanPool(
-        withBusinessMoneyHangmanPool(GAME_DATABASE)
+    withUfcFightersHangmanPool(
+      withMangaAnimeHangmanPool(
+        withComicsHangmanPool(
+          withBusinessMoneyHangmanPool(GAME_DATABASE)
+        )
       )
     )
   );
