@@ -18,6 +18,11 @@ export const COMICS_WORDS = [
   ["Obelix", 1], ["Garfield", 1], ["Peanuts", 1], ["Snoopy", 1], ["Calvin", 1],
   ["Hobbes", 1], ["Archie", 1], ["Jughead", 1], ["The Phantom", 1], ["Spawn", 1],
   ["Invincible", 1], ["Judge Dredd", 1], ["The Walking Dead", 1], ["The Punisher", 1], ["Blade", 1],
+  ["Lois Lane", 1], ["Jimmy Olsen", 1], ["Perry White", 1], ["Brainiac", 1], ["Bizarro", 1],
+  ["Darkseid", 1], ["Green Goblin", 1], ["Doctor Octopus", 1], ["Mysterio", 1], ["Kingpin", 1],
+  ["Ghost Rider", 1], ["Jean Grey", 1], ["Nightcrawler", 1], ["Gambit", 1], ["Hawkeye", 1],
+  ["Scarlet Witch", 1], ["Ant-Man", 1], ["Wasp", 1], ["Invisible Woman", 1], ["Human Torch", 1],
+  ["Black Bolt", 1], ["Squirrel Girl", 1], ["She-Hulk", 1], ["Blue Beetle", 1], ["Zatanna", 1],
 
   // Medium: established titles, supporting characters, publishers, creators.
   ["Marvel Comics", 2], ["DC Comics", 2], ["Stan Lee", 2], ["Jack Kirby", 2], ["Alan Moore", 2],
@@ -31,12 +36,19 @@ export const COMICS_WORDS = [
   ["Maus", 2], ["Persepolis", 2], ["Bone", 2], ["Fables", 2], ["Y the Last Man", 2],
   ["The Authority", 2], ["Usagi Yojimbo", 2], ["Scott Pilgrim", 2], ["Dilbert", 2], ["The Far Side", 2],
   ["Dennis the Menace", 2], ["Lucky Luke", 2], ["Corto Maltese", 2], ["The Umbrella Academy", 2], ["Locke and Key", 2],
+  ["Paper Girls", 2], ["Gideon Falls", 2], ["Black Science", 2], ["East of West", 2], ["Chew", 2],
+  ["Monstress", 2], ["Descender", 2], ["Stray Bullets", 2], ["The Sixth Gun", 2], ["Lazarus", 2],
+  ["American Vampire", 2], ["Radiant Black", 2], ["Giant Days", 2], ["Valiant Comics", 2], ["IDW Publishing", 2],
+  ["Boom Studios", 2], ["Dynamite Comics", 2], ["Top Cow", 2], ["Oni Press", 2], ["Fantagraphics", 2],
+  ["Bill Watterson", 2], ["Charles Schulz", 2], ["Garry Trudeau", 2], ["Jim Davis", 2], ["The Tick", 2],
 
   // Hard: acclaimed creators and specialist comic titles.
   ["Art Spiegelman", 3], ["Brian K Vaughan", 3], ["Grant Morrison", 3], ["Chris Claremont", 3], ["Marjane Satrapi", 3],
   ["Moebius", 3], ["Hergé", 3], ["Love and Rockets", 3], ["Transmetropolitan", 3], ["100 Bullets", 3],
   ["The Dark Knight Returns", 3], ["Crisis on Infinite Earths", 3], ["The League of Extraordinary Gentlemen", 3], ["Preacher", 3], ["The Invisibles", 3],
-  ["Planetary", 3], ["Black Hammer", 3], ["The Question", 3], ["Concrete", 3], ["Strangers in Paradise", 3]
+  ["Planetary", 3], ["Black Hammer", 3], ["The Question", 3], ["Concrete", 3], ["Strangers in Paradise", 3],
+  ["Dave Gibbons", 3], ["George Perez", 3], ["John Byrne", 3], ["Todd McFarlane", 3], ["Mark Waid", 3],
+  ["Brian Bendis", 3], ["Chris Ware", 3], ["Alison Bechdel", 3], ["Jaime Hernandez", 3], ["Gilbert Hernandez", 3]
 ];
 
 export const COMICS_HANGMAN_WORDS = COMICS_WORDS.filter(([, difficulty]) => difficulty <= 2);
