@@ -1,4 +1,4 @@
-import { withCuratedHangmanTopic } from "./topic-pool-utils.js";
+import { withCuratedHangmanTopic, withCuratedMissingWordTopic } from "./topic-pool-utils.js";
 
 /**
  * A deliberately timeless UFC topic: every entry is a fighter who has
@@ -45,15 +45,22 @@ export const UFC_FIGHTERS_WORDS = [
   ["Pedro Munhoz", 2], ["Jimmie Rivera", 2], ["Raphael Assuncao", 2], ["T.J. Dillashaw", 2],
   ["Renan Barao", 2], ["William Gomis", 2], ["Beneil Dariush", 2], ["Rafael Fiziev", 2],
   ["Mateusz Gamrot", 2], ["Arman Tsarukyan", 2], ["Dan Ige", 2], ["Josh Emmett", 2],
-  ["Edson Barboza", 2], ["Bobby Green", 2], ["Grant Dawson", 2], ["Renato Moicano", 2],
-  ["Michael Chandler", 2], ["Rafael dos Anjos", 2], ["Carlos Condit", 2], ["Robbie Lawler", 2],
-  ["Johny Hendricks", 2], ["Tyron Woodley", 2], ["Belal Muhammad", 2], ["Jack Della Maddalena", 2],
-  ["Ian Machado Garry", 2], ["Vicente Luque", 2], ["Geoff Neal", 2], ["Neil Magny", 2],
-  ["Jared Cannonier", 2], ["Marvin Vettori", 2], ["Derek Brunson", 2], ["Kelvin Gastelum", 2],
-  ["Roman Dolidze", 2], ["Nassourdine Imavov", 2], ["Tatiana Suarez", 2], ["Carla Esparza", 2],
-  ["Jessica Andrade", 2], ["Michelle Waterson", 2], ["Maycee Barber", 2], ["Erin Blanchfield", 2],
-  ["Katlyn Cerminara", 2], ["Jessica Eye", 2], ["Lauren Murphy", 2], ["Germaine de Randamie", 2]
+  ["Edson Barboza", 2], ["Bobby Green", 2],
+
+  // Hard: deeper cuts reserved for Missing Word's Hard layer.
+  ["Grant Dawson", 3], ["Renato Moicano", 3], ["Michael Chandler", 3], ["Rafael dos Anjos", 3],
+  ["Carlos Condit", 3], ["Robbie Lawler", 3], ["Johny Hendricks", 3], ["Tyron Woodley", 3],
+  ["Belal Muhammad", 3], ["Jack Della Maddalena", 3], ["Ian Machado Garry", 3], ["Vicente Luque", 3],
+  ["Geoff Neal", 3], ["Neil Magny", 3], ["Jared Cannonier", 3], ["Marvin Vettori", 3],
+  ["Derek Brunson", 3], ["Kelvin Gastelum", 3], ["Roman Dolidze", 3], ["Nassourdine Imavov", 3],
+  ["Tatiana Suarez", 3], ["Carla Esparza", 3], ["Jessica Andrade", 3], ["Michelle Waterson", 3],
+  ["Maycee Barber", 3], ["Erin Blanchfield", 3], ["Katlyn Cerminara", 3], ["Jessica Eye", 3],
+  ["Lauren Murphy", 3], ["Germaine de Randamie", 3]
 ];
+
+export function withUfcFightersMissingWordPool(entries) {
+  return withCuratedMissingWordTopic(entries, { topic: UFC_FIGHTERS_TOPIC, words: UFC_FIGHTERS_WORDS });
+}
 
 export function withUfcFightersHangmanPool(entries) {
   return withCuratedHangmanTopic(entries, { topic: UFC_FIGHTERS_TOPIC, words: UFC_FIGHTERS_WORDS });
