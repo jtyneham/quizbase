@@ -41,7 +41,7 @@ test("Dark applies its readable palette through every game", async ({ page }) =>
     await page.goto(`/${game.hash}`);
     const root = page.locator(`#${game.screen} [data-ui="game-root"]`);
     await expect(root).toBeVisible();
-    await expect(root).toHaveCSS("background-color", "rgb(20, 23, 29)");
+    await expect(root).toHaveCSS("background-color", "rgb(18, 20, 23)");
     await root.locator('[data-ui="home-action"]').click();
     await expect(picker).toHaveValue("dark");
     await assertNoPageOverflow(page);

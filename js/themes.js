@@ -3,7 +3,7 @@
 (() => {
   const themes = [
     { id: "classic", name: "Classic", browserColor: "#eeeeee" },
-    { id: "dark", name: "Dark", browserColor: "#14171d" },
+    { id: "dark", name: "Dark", browserColor: "#121417" },
     { id: "automata", name: "Automata", browserColor: "#d6d3bd" },
   ];
   const storageKey = "quizbase.theme";

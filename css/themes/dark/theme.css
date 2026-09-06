@@ -3,39 +3,40 @@
 :root[data-theme="dark"] {
   color-scheme: dark;
 
-  --qb-color-page: #14171d;
-  --qb-color-game-page: #14171d;
-  --qb-color-surface: #20252e;
-  --qb-color-surface-hover: #292f3a;
-  --qb-color-surface-subtle: #1b2028;
-  --qb-color-surface-muted: #292f38;
+  --qb-color-page: #121417;
+  --qb-color-game-page: #121417;
+  --qb-color-surface: #242932;
+  --qb-color-surface-hover: #2d3440;
+  --qb-color-surface-subtle: #1b2027;
+  --qb-color-surface-muted: #303844;
   --qb-color-overlay: rgba(3, 5, 8, .68);
 
-  --qb-color-text: #e5e9ef;
+  --qb-color-text: #e8edf4;
   --qb-color-text-strong: #f7f9fc;
   --qb-color-text-on-surface: #f7f9fc;
-  --qb-color-text-muted: #aeb7c5;
-  --qb-color-text-muted-soft: #939dab;
-  --qb-color-text-control: #e5e9ef;
-  --qb-color-line: #394250;
-  --qb-color-line-strong: #505c6d;
+  --qb-color-text-muted: #b8c0cc;
+  --qb-color-text-muted-soft: #aeb7c2;
+  --qb-color-text-control: #f0f3f8;
+  --qb-color-line: #343d49;
+  --qb-color-line-strong: #586678;
 
-  --qb-color-accent: #5c96ef;
-  --qb-color-accent-strong: #5c96ef;
-  --qb-color-accent-hover: #79a9f2;
-  --qb-color-accent-soft: #202f46;
-  --qb-color-reveal: #a48ceb;
-  --qb-color-reveal-hover: #b7a3f2;
-  --qb-color-success: #65be82;
-  --qb-color-danger: #ef7777;
-  --qb-color-generating: #aeb7c5;
-  --qb-color-focus: rgba(121, 169, 242, .9);
+  --qb-color-accent: #2f6dc0;
+  --qb-color-accent-strong: #2f6dc0;
+  --qb-color-accent-text: #69a8ff;
+  --qb-color-accent-hover: #285da6;
+  --qb-color-accent-soft: #203752;
+  --qb-color-reveal: #7658c8;
+  --qb-color-reveal-hover: #6447b2;
+  --qb-color-success: #76cf93;
+  --qb-color-danger: #ff8d8d;
+  --qb-color-generating: #b8c0cc;
+  --qb-color-focus: rgba(105, 168, 255, .95);
 
-  --qb-color-control-track: #303946;
-  --qb-color-control-border: #596677;
-  --qb-color-control-knob: #d7dee9;
+  --qb-color-control-track: #303844;
+  --qb-color-control-border: #68778a;
+  --qb-color-control-knob: #edf1f7;
   --qb-color-control-active-text: #ffffff;
-  --qb-color-danger-soft: #482b31;
+  --qb-color-danger-soft: #47272b;
 
   --qb-shadow-card: 0 .7rem 1.8rem rgba(0, 0, 0, .34), 0 .15rem .5rem rgba(0, 0, 0, .22);
   --qb-shadow-card-hover: 0 .85rem 1.9rem rgba(0, 0, 0, .4), 0 .2rem .55rem rgba(0, 0, 0, .28);
@@ -43,21 +44,21 @@
   --qb-shadow-control-pressed: 0 .1rem .35rem rgba(0, 0, 0, .28);
   --qb-shadow-game: 0 .375rem 1.375rem rgba(0, 0, 0, .3);
 
-  --qb-picker-control-bg: #2a313c;
-  --qb-picker-control-text: #e5e9ef;
-  --qb-picker-border: #505c6d;
-  --qb-picker-field-border: #505c6d;
-  --qb-picker-field-focus: #79a9f2;
-  --qb-picker-row-hover: #2b3441;
-  --qb-picker-footer-line: #394250;
+  --qb-picker-control-bg: #303844;
+  --qb-picker-control-text: #f0f3f8;
+  --qb-picker-border: #586678;
+  --qb-picker-field-border: #586678;
+  --qb-picker-field-focus: #69a8ff;
+  --qb-picker-row-hover: #303844;
+  --qb-picker-footer-line: #3c4654;
 
-  --qb-keyboard-bg: #1d232c;
-  --qb-key-bg: #2a313c;
+  --qb-keyboard-bg: #1b2027;
+  --qb-key-bg: #303844;
   --qb-key-text: #f7f9fc;
-  --qb-key-bg-pressed: #3a4554;
-  --qb-key-bg-special: #35404e;
-  --qb-key-bg-correct: #244b35;
-  --qb-key-bg-wrong: #502f36;
+  --qb-key-bg-pressed: #414c5b;
+  --qb-key-bg-special: #3a4553;
+  --qb-key-bg-correct: #23402d;
+  --qb-key-bg-wrong: #47272b;
 
   --qb-ticker-bg: #0f1319;
   --qb-ticker-text: #f7f9fc;
@@ -69,5 +70,5 @@
   --qb-hangman-wood-mid: #a38358;
   --qb-hangman-wood-light: #e0c69d;
   --qb-hangman-rope: #d6b987;
-  --qb-hangman-figure: #f0f3f8;
+  --qb-hangman-figure: #e8edf4;
 }

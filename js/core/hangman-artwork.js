@@ -12,7 +12,7 @@ import { Application, Container, Graphics } from "pixi.js";
 // coordinate system makes future visual adjustments direct and predictable.
 const ART_WIDTH = 452;
 const ART_HEIGHT = 557;
-const INK = 0x111111;
+const DEFAULT_INK = "#111111";
 const STROKE_WIDTH = 6;
 const STAGE_DURATION_MS = 220;
 const DEATH_EYES_DELAY_MS = 80;
@@ -26,56 +26,56 @@ const LIMBS = [
   [370, 300, 413, 378],
 ];
 
-function drawLine(graphics, x1, y1, x2, y2, progress = 1) {
+function drawLine(graphics, ink, x1, y1, x2, y2, progress = 1) {
   const endX = x1 + (x2 - x1) * progress;
   const endY = y1 + (y2 - y1) * progress;
   graphics.moveTo(x1, y1).lineTo(endX, endY).stroke({
-    color: INK,
+    color: ink,
     width: STROKE_WIDTH,
     cap: "round",
     join: "round",
   });
 }
 
-function drawStaticGallows(graphics) {
+function drawStaticGallows(graphics, ink) {
   // Exact construction of the supplied reference: a stepped base, a hollow
   // post that shares its outer edge with the boxed beam, and a two-line brace
   // which ends on the beam's underside rather than crossing its face.
-  drawLine(graphics, 30, 509, 30, 483);
-  drawLine(graphics, 30, 483, 198, 483);
-  drawLine(graphics, 198, 483, 198, 509);
-  drawLine(graphics, 198, 509, 30, 509);
+  drawLine(graphics, ink, 30, 509, 30, 483);
+  drawLine(graphics, ink, 30, 483, 198, 483);
+  drawLine(graphics, ink, 198, 483, 198, 509);
+  drawLine(graphics, ink, 198, 509, 30, 509);
 
-  drawLine(graphics, 54, 483, 54, 459);
-  drawLine(graphics, 54, 459, 174, 459);
-  drawLine(graphics, 174, 459, 174, 483);
+  drawLine(graphics, ink, 54, 483, 54, 459);
+  drawLine(graphics, ink, 54, 459, 174, 459);
+  drawLine(graphics, ink, 174, 459, 174, 483);
 
-  drawLine(graphics, 101, 459, 101, 27);
-  drawLine(graphics, 101, 27, 394, 27);
-  drawLine(graphics, 394, 27, 394, 51);
-  drawLine(graphics, 394, 51, 126, 51);
-  drawLine(graphics, 126, 51, 126, 459);
+  drawLine(graphics, ink, 101, 459, 101, 27);
+  drawLine(graphics, ink, 101, 27, 394, 27);
+  drawLine(graphics, ink, 394, 27, 394, 51);
+  drawLine(graphics, ink, 394, 51, 126, 51);
+  drawLine(graphics, ink, 126, 51, 126, 459);
 
-  drawLine(graphics, 126, 98, 172, 51);
-  drawLine(graphics, 126, 128, 218, 51);
-  drawLine(graphics, 369, 51, 369, 133);
+  drawLine(graphics, ink, 126, 98, 172, 51);
+  drawLine(graphics, ink, 126, 128, 218, 51);
+  drawLine(graphics, ink, 369, 51, 369, 133);
 }
 
-function drawHead(graphics, progress) {
+function drawHead(graphics, ink, progress) {
   const start = -Math.PI / 2;
   graphics.arc(370, 176, 43, start, start + Math.PI * 2 * progress).stroke({
-    color: INK,
+    color: ink,
     width: STROKE_WIDTH,
     cap: "round",
     join: "round",
   });
 }
 
-function drawDeathEyes(graphics) {
+function drawDeathEyes(graphics, ink) {
   const eyeSize = 4;
   for (const centerX of [353, 387]) {
-    drawLine(graphics, centerX - eyeSize, 168 - eyeSize, centerX + eyeSize, 168 + eyeSize);
-    drawLine(graphics, centerX + eyeSize, 168 - eyeSize, centerX - eyeSize, 168 + eyeSize);
+    drawLine(graphics, ink, centerX - eyeSize, 168 - eyeSize, centerX + eyeSize, 168 + eyeSize);
+    drawLine(graphics, ink, centerX + eyeSize, 168 - eyeSize, centerX - eyeSize, 168 + eyeSize);
   }
 }
 
@@ -101,6 +101,11 @@ export function createHangmanArtwork(root) {
   let tickerCallback;
   let deathEyesTimer;
 
+  function currentInk() {
+    const element = root.host || root.querySelector("[data-ui='game-root']");
+    return getComputedStyle(element).getPropertyValue("--qb-hangman-figure").trim() || DEFAULT_INK;
+  }
+
   function layout() {
     if (!app || !scene) return;
     const scale = Math.min(app.renderer.width / ART_WIDTH, app.renderer.height / ART_HEIGHT);
@@ -111,19 +116,20 @@ export function createHangmanArtwork(root) {
 
   function draw() {
     if (!graphics) return;
+    const ink = currentInk();
     graphics.clear();
-    drawStaticGallows(graphics);
+    drawStaticGallows(graphics, ink);
 
     for (let stage = 1; stage <= misses; stage += 1) {
       const progress = stage === activeStage ? stageProgress : 1;
-      if (stage === 1) drawHead(graphics, progress);
+      if (stage === 1) drawHead(graphics, ink, progress);
       else {
         const [x1, y1, x2, y2] = LIMBS[stage - 2];
-        drawLine(graphics, x1, y1, x2, y2, progress);
+        drawLine(graphics, ink, x1, y1, x2, y2, progress);
       }
     }
 
-    if (showDeathEyes) drawDeathEyes(graphics);
+    if (showDeathEyes) drawDeathEyes(graphics, ink);
   }
 
   function stopStageAnimation() {
@@ -153,6 +159,11 @@ export function createHangmanArtwork(root) {
     app.ticker.add(tickerCallback);
     draw();
   }
+
+  const themeObserver = root.host
+    ? new MutationObserver(() => draw())
+    : null;
+  themeObserver?.observe(root.host, { attributes: true, attributeFilter: ["data-theme"] });
 
   async function initialise() {
     if (!host) return;

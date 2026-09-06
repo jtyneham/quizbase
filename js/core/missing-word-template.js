@@ -13,7 +13,7 @@ export const missingWordTemplate = `
       </div>
       <div class="edition-picker" data-ui="edition-picker" id="editionPicker">
         <button class="edition-picker-button" data-ui="edition-picker-trigger" id="editionPickerButton" type="button" aria-expanded="false">
-          <img class="edition-picker-icon" id="editionPickerIcon" src="" alt="" aria-hidden="true">
+          <span class="edition-picker-icon-frame"><img class="edition-picker-icon" id="editionPickerIcon" src="" alt="" aria-hidden="true"></span>
           <span class="edition-chevron" aria-hidden="true">▼</span>
         </button>
         <div class="edition-panel" data-ui="edition-picker-panel" id="editionPanel" role="menu"></div>

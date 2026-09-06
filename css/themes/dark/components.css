@@ -1,20 +1,41 @@
 /* Imported at Shadow DOM boundaries. Token overrides carry most of Dark;
  * these rules cover the few legacy component fills that pre-date the token API. */
 :is(:root[data-theme="dark"], :host([data-theme="dark"])) {
-  [data-ui="game-root"] { color: var(--qb-color-text); }
+  [data-ui="game-root"] {
+    background-color: var(--qb-color-page);
+    color: var(--qb-color-text);
+  }
 
-  .edition-picker-icon,
-  [data-ui="edition-picker-trigger"],
+  .edition-picker-icon-frame,
   [data-ui="home-action"],
   [data-ui="fullscreen-action"],
   [data-ui="topic-picker-trigger"] {
+    background: var(--qb-color-surface-muted);
+    color: var(--qb-color-text-strong);
+    border: 1px solid var(--qb-color-line-strong);
+  }
+  [data-ui="edition-picker-trigger"] {
     background: var(--qb-color-surface);
-    color: var(--qb-color-text);
-    border-color: var(--qb-color-line-strong);
+    color: var(--qb-color-text-strong);
+    border: 1px solid var(--qb-color-line-strong);
+  }
+  [data-ui="home-action"] img,
+  [data-ui="fullscreen-action"] img,
+  [data-ui="edition-picker-trigger"] img,
+  [data-ui="edition-picker-panel"] img {
+    filter: brightness(0) invert(1);
+    opacity: .94;
   }
   [data-ui="edition-picker-panel"], [data-ui="overlay-panel"],
   .topic-panel, .topics-sheet, .solve-ui { background: var(--qb-color-surface); color: var(--qb-color-text); }
-  .topic-row:hover, .topic-item:hover { background: var(--qb-picker-row-hover); }
+  .topic-row:hover, .topic-item:hover, .topic-option:hover { background: var(--qb-picker-row-hover); }
+  .topic-checkbox { border-color: var(--qb-color-control-border); }
+  .topic-clear {
+    background: var(--qb-color-surface-muted);
+    border-color: var(--qb-color-line-strong);
+    color: var(--qb-color-text-strong);
+  }
+  .topic-clear:hover, .topic-clear:active { background: var(--qb-color-surface-hover); }
 
   [data-ui="game-keyboard"] { background: var(--qb-keyboard-bg); }
   .kb-key { background: var(--qb-key-bg); color: var(--qb-key-text); border-color: var(--qb-color-line-strong); }
@@ -31,6 +52,8 @@
   .number-gap-prompt, .number-detective-prompt { background: var(--qb-color-surface); color: var(--qb-color-text-strong); }
   .number-play-number-card.selected { background: var(--qb-color-accent-soft); }
   .number-play-number-card.correct { background: var(--qb-key-bg-correct); color: var(--qb-color-success); }
+  .number-play-mode-option:disabled, .number-play-launch-option:disabled { opacity: .72; }
+  .target-pair-instruction strong { color: var(--qb-color-accent-text); }
 
   .odd-one-out-card { background: var(--qb-color-surface); color: var(--qb-color-text-on-surface); border-color: var(--qb-color-line-strong); }
   .odd-one-out-card.correct { background: var(--qb-key-bg-correct); color: var(--qb-color-success); }
@@ -38,4 +61,9 @@
 
   .roulette, .roulette-window, .missing-word-card, .word-card { background: var(--qb-color-surface); }
   .slot, .slot-word, .reel { color: var(--qb-color-text-strong); }
+  .slot.blank::after { background: var(--qb-color-text-strong); }
+
+  .answer-length-value, .btn-secondary, .topics-btn span, .topic-chip.selected {
+    color: var(--qb-color-accent-text);
+  }
 }

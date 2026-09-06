@@ -32,14 +32,21 @@
   outline-offset: 0.16rem;
 }
 
-.edition-picker-icon {
+.edition-picker-icon-frame {
   width: 1.65rem;
   height: 1.65rem;
-  display: block;
+  display: grid;
+  place-items: center;
   padding: 0.08rem;
   border: 1px solid var(--qb-color-line-strong);
   border-radius: 0.4rem;
   background: var(--qb-color-surface-subtle);
+}
+
+.edition-picker-icon {
+  width: 100%;
+  height: 100%;
+  display: block;
   object-fit: contain;
 }
 
