@@ -26,6 +26,20 @@
 .number-play-utility img { width: 1.35rem; height: 1.35rem; display: block; }
 .number-play-utility:active { transform: scale(.96); box-shadow: var(--qb-shadow-control-pressed); }
 
+/* Keep Home visually consistent with the shared white, wider home control.
+   Fullscreen intentionally stays the compact muted-square utility button. */
+#numberPlayHomeButton {
+  width: auto;
+  min-width: 0;
+  padding: 0 1rem;
+  background: var(--qb-color-surface);
+}
+
+#numberPlayHomeButton img {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
 .number-play-mode-band {
   position: relative; z-index: 3; display: grid; place-items: center;
   padding: 0 max(var(--number-play-inline), env(safe-area-inset-right)) 0 max(var(--number-play-inline), env(safe-area-inset-left));

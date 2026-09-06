@@ -47,6 +47,22 @@
 .odd-one-out-utility:active { transform: scale(.96); box-shadow: var(--qb-shadow-control-pressed); }
 .odd-one-out-utility:focus-visible, .odd-one-out-card:focus-visible, .odd-one-out-next:focus-visible, .odd-one-out-difficulty button:focus-visible { outline: 0.18rem solid var(--qb-color-focus); outline-offset: 0.2rem; }
 
+/* Home is deliberately a slightly wider white control, matching the other
+   games' back-to-home affordance; fullscreen remains the compact muted square. */
+#oddOneOutHomeButton,
+#oddOneOutPokemonHomeButton {
+  width: auto;
+  min-width: 0;
+  padding: 0 1rem;
+  background: var(--qb-color-surface);
+}
+
+#oddOneOutHomeButton img,
+#oddOneOutPokemonHomeButton img {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
 .odd-one-out-difficulty {
   display: inline-flex;
   align-items: center;

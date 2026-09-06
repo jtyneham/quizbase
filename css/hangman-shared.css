@@ -63,7 +63,7 @@
     padding:0;
     border:0;
     border-radius:0.75rem;
-    background:var(--qb-color-surface-subtle);
+    background:var(--qb-color-surface-muted);
     color:var(--text);
     font-size:clamp(1.15rem,4vw,1.45rem);
     line-height:1;
