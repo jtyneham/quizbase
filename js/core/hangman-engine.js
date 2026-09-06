@@ -1,5 +1,5 @@
 import { bindFullscreenButton } from "./ui.js";
-import { isCorrectGuess, isSolved, normalizePlayableChar, normalizePlayableAnswer, normalizeSolveAttempt, pickWithAnswerDeck, uniquePlayableLetters } from "./hangman-logic.js";
+import { answerLetterCounts, isCorrectGuess, isSolved, normalizePlayableChar, normalizePlayableAnswer, normalizeSolveAttempt, pickWithAnswerDeck, uniquePlayableLetters } from "./hangman-logic.js";
 import { createHangmanTopicPicker } from "./hangman-topic-picker.js";
 import { createEditionPicker } from "./edition-picker.js";
 import { createHangmanArtwork } from "./hangman-artwork.js";
@@ -136,6 +136,10 @@ export const HANGMAN_TEMPLATE = `<div class="hangman-root" data-ui="game-root">
 
     <section class="word-zone" data-ui="answer-display" id="wordZone" title="Tap here to type a letter">
       <div class="slots" id="slots"></div>
+      <div class="answer-length" data-ui="answer-length" aria-live="polite">
+        <span class="answer-length-value" id="answerLengthValue">—</span>
+        <span id="answerLengthLabel">letters</span>
+      </div>
     </section>
 
     <div class="feedback-zone">
@@ -206,6 +210,8 @@ export const HANGMAN_TEMPLATE = `<div class="hangman-root" data-ui="game-root">
 export function initializeHangmanEngine(root, app, config) {
   const slots = root.getElementById("slots");
   const missesList = root.getElementById("missesList");
+  const answerLengthValue = root.getElementById("answerLengthValue");
+  const answerLengthLabel = root.getElementById("answerLengthLabel");
   const triesText = root.getElementById("triesText");
   const message = root.getElementById("message");
   const solveBtn = root.getElementById("solveBtn");
@@ -315,6 +321,10 @@ export function initializeHangmanEngine(root, app, config) {
     }
 
     missesList.textContent = misses.length ? misses.join(" · ") : "";
+    const letterCounts = answerLetterCounts(answer);
+    const totalLetters = letterCounts.reduce((total, count) => total + count, 0);
+    answerLengthValue.textContent = letterCounts.join(" + ") || "—";
+    answerLengthLabel.textContent = totalLetters === 1 ? "letter" : "letters";
     triesText.textContent = `${wrongCount} / 6 misses`;
     triesText.classList.toggle("warning", wrongCount >= 4);
 

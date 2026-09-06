@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {
+  answerLetterCounts,
   isCorrectGuess,
   isSolved,
   normalizePlayableAnswer,
@@ -18,6 +19,12 @@ test("normalizes accented playable letters without destroying punctuation", () =
 
 test("extracts unique playable letters from multiword and punctuated answers", () => {
   assert.deepEqual(uniquePlayableLetters("MR. MIME"), ["M", "R", "I", "E"]);
+});
+
+test("counts visible answer groups without treating spaces or punctuation as letters", () => {
+  assert.deepEqual(answerLetterCounts("Jean Grey"), [4, 4]);
+  assert.deepEqual(answerLetterCounts("Sean O'Malley"), [4, 7]);
+  assert.deepEqual(answerLetterCounts("X"), [1]);
 });
 
 test("correct guesses and solved state work for normalized answers", () => {

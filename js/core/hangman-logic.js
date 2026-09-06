@@ -11,6 +11,18 @@ export function uniquePlayableLetters(value) {
   return [...new Set([...String(value || "")].map(normalizePlayableChar).filter(Boolean))];
 }
 
+/**
+ * Counts playable letters in each visible word. Spaces split the displayed
+ * answer groups; punctuation stays visible in its group but is not counted.
+ */
+export function answerLetterCounts(value) {
+  return String(value || "")
+    .trim()
+    .split(/\s+/)
+    .map((word) => [...word].filter(normalizePlayableChar).length)
+    .filter(Boolean);
+}
+
 export function isSolved(answer, guessed) {
   return uniquePlayableLetters(answer).every(letter => guessed.has(letter));
 }
