@@ -78,9 +78,10 @@ choice before first paint, with Classic as the fallback when storage is
 unavailable or a saved ID is unknown. It sets `data-theme` on the document
 and existing custom-element hosts; theme changes do not recreate games.
 
-Classic defaults remain in `css/theme.css`. Automata's token overrides and
-shared structural rules live in `css/themes/automata/`. Component styles
-import the shared theme rules at their Shadow DOM boundaries. Keep new theme
+Classic defaults remain in `css/theme.css`. Dark's token-only palette and
+component compatibility rules live in `css/themes/dark/`; Automata's token
+overrides and shared structural rules live in `css/themes/automata/`.
+Component styles import the shared theme rules at their Shadow DOM boundaries. Keep new theme
 assets and rules grouped similarly, and register their name and ID centrally.
 `css/compact-landscape.css` contains shared short-screen geometry corrections
 for both skins. Browser regression projects cover both themes at all four

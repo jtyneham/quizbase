@@ -1,0 +1,41 @@
+/* Imported at Shadow DOM boundaries. Token overrides carry most of Dark;
+ * these rules cover the few legacy component fills that pre-date the token API. */
+:is(:root[data-theme="dark"], :host([data-theme="dark"])) {
+  [data-ui="game-root"] { color: var(--qb-color-text); }
+
+  .edition-picker-icon,
+  [data-ui="edition-picker-trigger"],
+  [data-ui="home-action"],
+  [data-ui="fullscreen-action"],
+  [data-ui="topic-picker-trigger"] {
+    background: var(--qb-color-surface);
+    color: var(--qb-color-text);
+    border-color: var(--qb-color-line-strong);
+  }
+  [data-ui="edition-picker-panel"], [data-ui="overlay-panel"],
+  .topic-panel, .topics-sheet, .solve-ui { background: var(--qb-color-surface); color: var(--qb-color-text); }
+  .topic-row:hover, .topic-item:hover { background: var(--qb-picker-row-hover); }
+
+  [data-ui="game-keyboard"] { background: var(--qb-keyboard-bg); }
+  .kb-key { background: var(--qb-key-bg); color: var(--qb-key-text); border-color: var(--qb-color-line-strong); }
+  .kb-key:active, .kb-key.key-pressed { background: var(--qb-key-bg-pressed); }
+  .key-icon { stroke: var(--qb-key-text); }
+
+  .number-play-mode-band, .number-play-mode-menu, .number-play-launch-option,
+  .target-pair-feedback, .number-gap-feedback, .number-detective-feedback {
+    background: var(--qb-color-surface);
+    color: var(--qb-color-text);
+    border-color: var(--qb-color-line-strong);
+  }
+  .number-play-number-card, .target-pair-instruction strong,
+  .number-gap-prompt, .number-detective-prompt { background: var(--qb-color-surface); color: var(--qb-color-text-strong); }
+  .number-play-number-card.selected { background: var(--qb-color-accent-soft); }
+  .number-play-number-card.correct { background: var(--qb-key-bg-correct); color: var(--qb-color-success); }
+
+  .odd-one-out-card { background: var(--qb-color-surface); color: var(--qb-color-text-on-surface); border-color: var(--qb-color-line-strong); }
+  .odd-one-out-card.correct { background: var(--qb-key-bg-correct); color: var(--qb-color-success); }
+  .odd-one-out-feedback:not(:empty) { background: var(--qb-color-surface-muted); color: var(--qb-color-text); }
+
+  .roulette, .roulette-window, .missing-word-card, .word-card { background: var(--qb-color-surface); }
+  .slot, .slot-word, .reel { color: var(--qb-color-text-strong); }
+}

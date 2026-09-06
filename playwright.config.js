@@ -28,6 +28,17 @@ export default defineConfig({
     project,
     {
       ...project,
+      name: `dark-${project.name}`,
+      use: {
+        ...project.use,
+        storageState: {
+          cookies: [],
+          origins: [{ origin: "http://127.0.0.1:8000", localStorage: [{ name: "quizbase.theme", value: "dark" }] }],
+        },
+      },
+    },
+    {
+      ...project,
       name: `automata-${project.name}`,
       use: {
         ...project.use,

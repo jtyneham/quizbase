@@ -2,6 +2,7 @@
     @import url("./edition-picker.css");
     @import url("./compact-landscape.css");
     @import url("./themes/automata/components.css");
+    @import url("./themes/dark/components.css");
 
     :host {
       --page-bg: var(--qb-color-page);

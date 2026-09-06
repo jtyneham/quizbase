@@ -4,7 +4,7 @@ import { games, assertNoPageOverflow } from "./helpers.js";
 test("theme choice survives routes, reload, history, and a return to Classic", async ({ page }) => {
   await page.goto("/");
   const picker = page.getByRole("combobox", { name: "Themes" });
-  await expect(picker.locator("option")).toHaveText(["Classic", "Automata"]);
+  await expect(picker.locator("option")).toHaveText(["Classic", "Dark", "Automata"]);
   await picker.selectOption("automata");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "automata");
   for (const game of games) {
@@ -30,6 +30,22 @@ test("theme choice survives routes, reload, history, and a return to Classic", a
   await page.goto("/#missingword");
   await expect(page.locator('quiz-missing-word')).toHaveAttribute("data-theme", "classic");
   await expect(page.locator('#missingWordScreen #wordCard')).toHaveCSS("background-color", "rgb(255, 255, 255)");
+});
+
+test("Dark applies its readable palette through every game", async ({ page }) => {
+  await page.goto("/");
+  const picker = page.getByRole("combobox", { name: "Themes" });
+  await picker.selectOption("dark");
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  for (const game of games) {
+    await page.goto(`/${game.hash}`);
+    const root = page.locator(`#${game.screen} [data-ui="game-root"]`);
+    await expect(root).toBeVisible();
+    await expect(root).toHaveCSS("background-color", "rgb(20, 23, 29)");
+    await root.locator('[data-ui="home-action"]').click();
+    await expect(picker).toHaveValue("dark");
+    await assertNoPageOverflow(page);
+  }
 });
 
 test("unknown saved themes and unavailable storage fall back safely", async ({ page }) => {
