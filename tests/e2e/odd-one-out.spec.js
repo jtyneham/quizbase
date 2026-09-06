@@ -29,7 +29,8 @@ test("Odd One Out generates a reviewed set and resolves correct and wrong picks"
 
   const values = await cards.allTextContents();
   await cards.first().click();
-  await expect(cards.filter({ hasText: values[0] })).toHaveClass(/correct|wrong/);
+  // Exact choice identity avoids matching both Tennis and Table Tennis.
+  await expect(screen.getByRole("button", { name: `Choose ${values[0]}`, exact: true })).toHaveClass(/correct|wrong/);
   const feedback = screen.locator("#oddOneOutFeedback");
   await expect(feedback).not.toBeEmpty();
   await expect(feedback).not.toContainText(/Correct\.|Not quite\./);

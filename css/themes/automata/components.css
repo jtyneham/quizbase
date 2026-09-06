@@ -1,0 +1,97 @@
+/* Imported once per stylesheet boundary. The host receives the same theme ID
+ * as the document; all palette values are inherited semantic tokens. */
+:is(:root[data-theme="automata"], :host([data-theme="automata"])) {
+  [data-ui="game-root"] {
+    font-family: var(--qb-font-family);
+    background-color: var(--qb-color-page);
+    background-image: var(--qb-automata-grid);
+    background-size: 6px 6px;
+    color: var(--qb-color-text);
+  }
+  [data-ui="game-toolbar"] { border-bottom: 1px solid var(--qb-color-line-strong); }
+  button, input, select, [data-ui="game-keyboard"], [data-ui="overlay-panel"],
+  [data-ui="edition-picker-panel"], [data-ui="difficulty-control"], [data-ui="option-control"],
+  .edition-picker-icon, .solve-ui, .topic-panel, .topics-sheet {
+    border-radius: 0;
+  }
+  button, input, select { font-family: var(--qb-font-family); }
+  input { background: var(--qb-color-surface); color: var(--qb-color-text); border-color: var(--qb-color-line-strong); }
+  input::placeholder { color: var(--qb-color-text-muted); opacity: 1; }
+  .topic-all-row, .topic-checkbox { border-radius: 0; }
+  .topic-clear { border-color: var(--qb-color-line-strong); color: var(--qb-color-text); }
+  .topic-clear:hover { background: var(--qb-color-surface-hover); }
+  .topic-clear:active { background: var(--qb-color-surface-muted); }
+  [data-ui="difficulty-control"] button, [data-ui="option-control"] button { border-radius: 0; }
+  [data-ui="home-action"], [data-ui="fullscreen-action"], [data-ui="edition-picker-trigger"],
+  [data-ui="topic-picker-trigger"] {
+    border: 1px solid var(--qb-color-line-strong);
+    box-shadow: none;
+    background: var(--qb-color-surface);
+    color: var(--qb-color-text);
+  }
+  [data-ui="primary-action"] {
+    border: 1px solid var(--qb-color-accent);
+    box-shadow: 0 3px 0 var(--qb-color-line);
+    letter-spacing: .045em;
+  }
+  [data-ui="secondary-action"] {
+    border: 1px solid var(--qb-color-line-strong);
+    background: var(--qb-color-surface-subtle);
+    color: var(--qb-color-text);
+  }
+  [data-ui="overlay-panel"], [data-ui="edition-picker-panel"], .number-play-mode-menu {
+    background: var(--qb-color-surface);
+    border: 1px solid var(--qb-color-line-strong);
+    border-top: 5px solid var(--qb-color-accent);
+    box-shadow: 4px 4px 0 rgba(53,54,46,.2);
+  }
+  .topic-row, .topic-item { border-bottom: 1px solid var(--qb-color-line); }
+  [data-ui="status-counter"], [data-ui="status-detail"], [data-ui="answer-length"] { color: var(--qb-color-text); }
+  [data-ui="game-primary-surface"]:not(.game-card):not(.odd-one-out-cards):not(.number-gap-choices):not(.number-detective-choices) {
+    border: 1px solid var(--qb-color-line-strong);
+    border-top: 4px solid var(--qb-color-accent);
+  }
+  .game-card { background: transparent; }
+  .status-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: .5rem; }
+  .hangman-picker-controls { position: static; transform: none; justify-self: center; }
+  .status-actions [data-ui="home-action"], .status-actions [data-ui="fullscreen-action"] { width: 2.75rem; height: 2.75rem; padding: 0; }
+  [data-ui="game-artwork"] { border-bottom: 1px solid var(--qb-color-line); }
+  [data-ui="game-keyboard"] {
+    border: 1px solid var(--qb-color-line-strong);
+    border-top: 3px solid var(--qb-color-accent);
+    box-shadow: none;
+  }
+  .kb-key { box-shadow: none; border-color: var(--qb-color-line-strong); }
+  .key-icon { stroke: var(--qb-color-text); }
+  .solve-display { border-radius: 0; }
+  .custom-keyboard.solve-mode .enter-key { background: var(--qb-color-accent); }
+  .custom-keyboard.solve-mode .enter-key:active,
+  .custom-keyboard.solve-mode .enter-key.key-pressed { background: var(--qb-color-accent-hover); border-color: var(--qb-color-accent-hover); }
+  .solve-cancel-btn:active { background: var(--qb-color-surface-muted); }
+  .odd-one-out-card, .number-play-number-card, .number-play-launch-option {
+    border-top: 4px solid var(--qb-color-line-strong);
+  }
+  .odd-one-out-card.correct { background: var(--qb-key-bg-correct); }
+  .odd-one-out-feedback:not(:empty), .number-play-mode-menu,
+  .target-pair-feedback:not(:empty), .number-gap-feedback:not(:empty), .number-detective-feedback:not(:empty) {
+    background: var(--qb-color-surface);
+    border-radius: 0;
+    border-left: 4px solid var(--qb-color-line-strong);
+    box-shadow: none;
+  }
+  .number-play-mode-option, .number-play-launch-option { border-radius: 0; }
+  .number-play-launch-option { background: var(--qb-color-surface-subtle); }
+  .target-pair-instruction strong { background: var(--qb-color-surface-subtle); border-radius: 0; }
+  .number-play-number-card.selected { background: var(--qb-color-accent); color: var(--qb-color-control-active-text); }
+  .number-play-number-card.correct { background: var(--qb-key-bg-correct); color: var(--qb-color-success); }
+  .number-play-mode-band { border-bottom: 1px solid var(--qb-color-line); }
+  .target-pair-target, .number-gap-target { border-radius: 0; }
+  .ticker-shell, .ticker-panel { border-radius: 0; }
+  .rngl-home-button { border-radius: 0; }
+  :focus-visible { outline: 2px solid var(--qb-color-focus); outline-offset: 2px; }
+  @media (max-width: 480px) {
+    .status-row { grid-template-columns: auto minmax(0, 1fr); row-gap: .2rem; }
+    .hangman-picker-controls { justify-self: end; }
+    .tries-text { grid-column: 1 / -1; justify-self: end; font-size: .875rem; }
+  }
+}

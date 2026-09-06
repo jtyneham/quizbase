@@ -1,0 +1,129 @@
+/* Original Quizbase styling informed by the supplied UI screenshots.
+ * No reference images, branded motifs, fonts, or artwork are embedded. */
+:root[data-theme="automata"] {
+  color-scheme: light;
+  --qb-font-family: "Segoe UI", Arial, sans-serif;
+  --qb-font-weight-medium: 600;
+  --qb-font-weight-strong: 650;
+  --qb-font-weight-heavy: 700;
+  --qb-color-page: #d6d3bd;
+  --qb-color-game-page: #d6d3bd;
+  --qb-color-surface: #e5e2ce;
+  --qb-color-surface-hover: #d2cfb9;
+  --qb-color-surface-subtle: #ccc9b2;
+  --qb-color-surface-muted: #c5c2ad;
+  --qb-color-overlay: rgba(42, 43, 37, .55);
+  --qb-color-text: #35362e;
+  --qb-color-text-strong: #303129;
+  --qb-color-text-on-surface: #303129;
+  --qb-color-text-muted: #55564a;
+  --qb-color-text-muted-soft: #55564a;
+  --qb-color-text-control: #35362e;
+  --qb-color-line: #a7a48e;
+  --qb-color-line-strong: #777966;
+  --qb-color-accent: #42453a;
+  --qb-color-accent-strong: #42453a;
+  --qb-color-accent-hover: #2b2e26;
+  --qb-color-accent-soft: #cbcbb5;
+  --qb-color-reveal: #515544;
+  --qb-color-reveal-hover: #373b2e;
+  --qb-color-success: #276137;
+  --qb-color-danger: #963b2b;
+  --qb-color-generating: #626451;
+  --qb-color-focus: #303129;
+  --qb-color-control-track: #bab79f;
+  --qb-color-control-border: #777966;
+  --qb-color-control-knob: #42453a;
+  --qb-color-control-active-text: #f4f1df;
+  --qb-color-danger-soft: #ecdbcb;
+  --qb-radius-card: 0;
+  --qb-radius-control: 0;
+  --qb-radius-control-large: 0;
+  --qb-radius-pill: 0;
+  --qb-shadow-card: 3px 3px 0 rgba(53,54,46,.14);
+  --qb-shadow-card-hover: 3px 3px 0 rgba(53,54,46,.24);
+  --qb-shadow-control: none;
+  --qb-shadow-control-pressed: none;
+  --qb-shadow-game: none;
+  --qb-motion-fast: 100ms;
+  --qb-motion-normal: 150ms;
+  --qb-ease-standard: linear;
+  --qb-ease-emphasis: ease-out;
+  --qb-picker-control-bg: #c5c2ad;
+  --qb-picker-control-text: #35362e;
+  --qb-picker-border: #777966;
+  --qb-picker-field-border: #8b8b76;
+  --qb-picker-field-focus: #42453a;
+  --qb-picker-row-hover: #d2cfb9;
+  --qb-picker-footer-line: #a7a48e;
+  --qb-keyboard-bg: #c5c2ad;
+  --qb-key-bg: #e5e2ce;
+  --qb-key-text: #303129;
+  --qb-key-bg-pressed: #b9b8a0;
+  --qb-key-bg-special: #d2cfb9;
+  --qb-key-bg-correct: #cbd9ba;
+  --qb-key-bg-wrong: #ecdbcb;
+  --qb-ticker-bg: #42453a;
+  --qb-ticker-text: #f4f1df;
+  --qb-ticker-text-muted: #d2cfb9;
+  --qb-ticker-separator: #a7a48e;
+  --qb-ticker-border: #777966;
+  --qb-hangman-wood-dark: #35362e;
+  --qb-hangman-wood-mid: #55564a;
+  --qb-hangman-wood-light: #a7a48e;
+  --qb-hangman-rope: #55564a;
+  --qb-hangman-figure: #303129;
+  --qb-automata-grid: linear-gradient(rgba(53,54,46,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(53,54,46,.025) 1px, transparent 1px);
+}
+
+:root[data-theme="automata"] .screen-home {
+  background-image: var(--qb-automata-grid);
+  background-size: 6px 6px;
+}
+:root[data-theme="automata"] .hub-main { padding-inline: max(1.5rem, 6vw); }
+:root[data-theme="automata"] .game-launcher {
+  width: min(100%, 52rem);
+  gap: clamp(.4rem, 1.1dvh, .8rem);
+  border-left: 5px double var(--qb-color-line-strong);
+  padding-left: clamp(.75rem, 2.5vw, 2rem);
+}
+:root[data-theme="automata"] .game-launcher::before {
+  content: "QUIZBASE";
+  font-size: clamp(1.6rem, 4vw, 2.5rem);
+  font-weight: 400;
+  letter-spacing: .16em;
+  padding-bottom: clamp(.4rem, 1.5dvh, 1.5rem);
+  border-bottom: 1px solid var(--qb-color-line-strong);
+}
+:root[data-theme="automata"] .game-launcher-item {
+  min-height: 3rem;
+  grid-template-columns: clamp(2.5rem, 6dvh, 4rem) minmax(0, 1fr) auto;
+  background: rgba(110,110,87,.12);
+  border: 1px solid transparent;
+  padding: .3rem .8rem;
+  animation-name: automata-arrive;
+}
+:root[data-theme="automata"] .game-launcher-label {
+  font-size: clamp(1.05rem, 3vw, 1.35rem);
+  font-weight: 500;
+  letter-spacing: .035em;
+}
+:root[data-theme="automata"] .game-launcher-item::after { color: inherit; }
+:root[data-theme="automata"] .game-launcher-item:is(:hover, :focus-visible, :active, .pressed) {
+  background: var(--qb-color-accent);
+  color: var(--qb-color-control-active-text);
+  outline: 1px solid var(--qb-color-accent);
+  outline-offset: 3px;
+  --qb-color-text-strong: #f4f1df;
+  --qb-color-surface: #42453a;
+}
+:root[data-theme="automata"] .icon { stroke-width: 4; stroke-linecap: square; stroke-linejoin: miter; }
+:root[data-theme="automata"] .icon text { font-family: var(--qb-font-family); }
+:root[data-theme="automata"] .theme-picker label { font-weight: 500; letter-spacing: .07em; }
+:root[data-theme="automata"] #rnglScreen .rngl-home-button { border-radius: 0; border: 1px solid var(--qb-color-line-strong); }
+@keyframes automata-arrive { from { opacity: 0; transform: translateX(-.4rem); } to { opacity: 1; transform: none; } }
+@media (max-height: 450px) and (orientation: landscape) {
+  :root[data-theme="automata"] .game-launcher { gap: .25rem; }
+  :root[data-theme="automata"] .game-launcher::before { font-size: 1.15rem; padding-bottom: .3rem; }
+  :root[data-theme="automata"] .game-launcher-item { min-height: 2.75rem; grid-template-columns: 2rem minmax(0,1fr) auto; padding-block: .1rem; }
+}

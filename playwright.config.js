@@ -23,5 +23,19 @@ export default defineConfig({
     { name: "desktop", use: { viewport: { width: 1280, height: 800 } } },
     { name: "phone-portrait", use: { ...devices["Pixel 7"] } },
     { name: "tablet-portrait", use: { viewport: { width: 800, height: 1280 }, isMobile: true, hasTouch: true } },
-  ],
+    { name: "phone-landscape", use: { viewport: { width: 844, height: 390 }, isMobile: true, hasTouch: true } },
+  ].flatMap(project => [
+    project,
+    {
+      ...project,
+      name: `automata-${project.name}`,
+      use: {
+        ...project.use,
+        storageState: {
+          cookies: [],
+          origins: [{ origin: "http://127.0.0.1:8000", localStorage: [{ name: "quizbase.theme", value: "automata" }] }],
+        },
+      },
+    },
+  ]),
 });

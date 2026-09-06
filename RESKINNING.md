@@ -70,6 +70,23 @@ controls, and viewport overflow.
 
 ## Theme tokens and Shadow DOM
 
+### Selectable whole-app themes
+
+Home's native **Themes** selector offers **Classic** and **Automata**.
+`js/themes.js` is the theme registry and applies the saved `quizbase.theme`
+choice before first paint, with Classic as the fallback when storage is
+unavailable or a saved ID is unknown. It sets `data-theme` on the document
+and existing custom-element hosts; theme changes do not recreate games.
+
+Classic defaults remain in `css/theme.css`. Automata's token overrides and
+shared structural rules live in `css/themes/automata/`. Component styles
+import the shared theme rules at their Shadow DOM boundaries. Keep new theme
+assets and rules grouped similarly, and register their name and ID centrally.
+`css/compact-landscape.css` contains shared short-screen geometry corrections
+for both skins. Browser regression projects cover both themes at all four
+required viewport categories. See `RESKIN_BRIEF.md` for reference provenance
+and the current theme's deliberate visual departures.
+
 `css/theme.css` defines the public `--qb-*` theme variables on `:root`. CSS custom properties inherit through Shadow DOM hosts, so Missing Word and Hangman components can consume the same global theme without piercing their Shadow DOM.
 
 This is intentional: do not copy a complete reskin stylesheet independently into every Shadow DOM.

@@ -1,0 +1,29 @@
+/* Shared, accessible native picker. Reserve its own space in both skins. */
+.screen-home { position: relative; }
+.theme-picker {
+  position: absolute;
+  top: max(.75rem, env(safe-area-inset-top));
+  right: max(1rem, env(safe-area-inset-right));
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+.theme-picker select {
+  min-height: 2.75rem;
+  max-width: 11rem;
+  padding: .5rem .65rem;
+  font: inherit;
+  border: 1px solid var(--qb-color-line-strong);
+  border-radius: var(--qb-radius-control);
+  background: var(--qb-color-surface);
+  color: var(--qb-color-text);
+  cursor: pointer;
+}
+.theme-picker select:focus-visible { outline: 2px solid var(--qb-color-focus); outline-offset: 3px; }
+.screen-home .hub-main { padding-top: max(4.5rem, calc(env(safe-area-inset-top) + 3.75rem)); }
+@media (max-height: 450px) and (orientation: landscape) {
+  .screen-home .game-launcher-item { min-height: 2.75rem; padding-block: .1rem; grid-template-columns: 2.5rem minmax(0, 1fr) auto; }
+}

@@ -1,4 +1,9 @@
 node_modules/
+.npm-cache/
+.visual-qa/
+.unit-results.log
+.e2e-results.log
+.theme-results.log
 playwright-report/
 test-results/
 npm-debug.log*

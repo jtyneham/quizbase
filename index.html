@@ -10,6 +10,11 @@
   <link rel="stylesheet" href="css/rngl.css" />
   <link rel="stylesheet" href="css/odd-one-out.css" />
   <link rel="stylesheet" href="css/number-play.css" />
+  <link rel="stylesheet" href="css/theme-picker.css" />
+  <link rel="stylesheet" href="css/compact-landscape.css" />
+  <link rel="stylesheet" href="css/themes/automata/theme.css" />
+  <link rel="stylesheet" href="css/themes/automata/components.css" />
+  <script src="js/themes.js"></script>
   <script type="importmap">
     { "imports": { "pixi.js": "./vendor/pixi.min.js" } }
   </script>
@@ -17,6 +22,10 @@
 <body>
   <div id="quizApp" class="quiz-shell" data-ui="app-shell">
     <section id="homeScreen" class="screen screen-home active" data-ui="home-screen" aria-label="Quiz games">
+      <div class="theme-picker" data-ui="theme-picker">
+        <label for="themeSelect">Themes</label>
+        <select id="themeSelect" data-ui="theme-select" aria-label="Themes"></select>
+      </div>
       <main class="hub-main">
         <section class="game-launcher" data-ui="game-launcher" aria-label="Games">
           
