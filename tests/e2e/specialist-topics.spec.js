@@ -4,7 +4,7 @@ import { openGame } from "./helpers.js";
 // These are intentionally player-facing browser checks, complementing the
 // data-contract tests: a future data or config edit must not strand a curated
 // specialist topic outside a picker or leave it unable to start a round.
-const specialistTopics = ["Business & Money", "Comics", "Manga & Anime", "Football Players"];
+const specialistTopics = ["Business & Money", "Comics", "Manga & Anime", "Football Players", "IT"];
 
 for (const topic of specialistTopics) {
   test(`${topic} is selectable and playable in Missing Word`, async ({ page }) => {
