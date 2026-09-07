@@ -21,6 +21,8 @@ export const IT_WORDS = [
   ["Domain", 1], ["Account", 1], ["Login", 1], ["Update", 1], ["Linux", 1],
   ["Search Engine", 1], ["Web Page", 1], ["QR Code", 1], ["Flash Drive", 1], ["Task Manager", 1],
   ["File Manager", 1], ["User Interface", 1], ["Power Supply", 1], ["Text File", 1], ["Recycle Bin", 1],
+  ["Switch", 1], ["Phishing", 1], ["Spam", 1], ["Spyware", 1], ["Hacker", 1],
+  ["Breach", 1], ["Threat", 1], ["Prompt", 1], ["Model", 1], ["Chatbot", 1],
 
   // Material familiar to regular computer users and IT learners.
   ["Windows", 2], ["Android", 2], ["iOS", 2], ["Ethernet", 2], ["Hotspot", 2],
@@ -43,6 +45,11 @@ export const IT_WORDS = [
   ["Variable", 2], ["Function", 2], ["Debugger", 2], ["Patch", 2], ["Plugin", 2],
   ["Kernel", 2], ["Firmware", 2], ["Proxy Server", 2], ["IP Address", 2], ["Subnet", 2],
   ["VPN", 2], ["SSH", 2], ["Encryption", 2], ["Hosting", 2], ["Bandwidth", 2],
+  ["Fiber Optics", 2], ["Gateway", 2], ["Mainframe", 2], ["Frontend", 2], ["Algorithm", 2],
+  ["Object", 2], ["Markup Language", 2], ["Spoofing", 2], ["Trojan", 2], ["Token", 2],
+  ["Audit", 2], ["Metadata", 2], ["Latency", 2], ["Packet", 2], ["Protocol", 2],
+  ["Cluster", 2], ["Pipeline", 2], ["Migration", 2], ["Instance", 2], ["Query", 2],
+  ["Artificial Intelligence", 2], ["Computer Vision", 2], ["Dataset", 2],
 
   // Specialist concepts reserved for Hard in Missing Word.
   ["Git Commit", 3], ["Compression", 3], ["Concurrency", 3], ["Configuration", 3], ["Container", 3],
@@ -52,15 +59,23 @@ export const IT_WORDS = [
   ["Load Balancer", 3], ["Microservice", 3], ["Namespace", 3], ["OAuth", 3], ["Orchestration", 3],
   ["Packet Loss", 3], ["Port Forwarding", 3], ["Race Condition", 3], ["Ransomware", 3], ["Serialization", 3],
   ["Database Schema", 3], ["Memory Leak", 3], ["Public Key", 3], ["Private Key", 3], ["Digital Signature", 3],
-  ["Reverse Proxy", 3], ["Message Queue", 3], ["Database Sharding", 3], ["Rate Limiting", 3], ["Zero-Day Exploit", 3]
+  ["Reverse Proxy", 3], ["Message Queue", 3], ["Database Sharding", 3], ["Rate Limiting", 3], ["Zero-Day Exploit", 3],
+  ["Replica", 3], ["Telemetry", 3], ["Data Ingestion", 3], ["Database Index", 3], ["IT Automation", 3],
+  ["AGI", 3], ["Data Mining", 3], ["Model Tuning", 3], ["Agent", 3], ["Speech Synthesis", 3]
 ];
+
+export const IT_MISSING_WORDS = IT_WORDS.filter(([answer]) => {
+  const letterCount = (answer.match(/[A-Za-z]/g) ?? []).length;
+  const wordCount = answer.trim().split(/\s+/).length;
+  return letterCount <= 20 && wordCount <= 3;
+});
 
 export function withItMissingWordPool(entries) {
   const withoutLegacyTopic = entries.map((entry) => ({
     ...entry,
     topics: entry.topics.filter((topic) => topic !== LEGACY_MISSING_WORD_TOPIC)
   }));
-  return withCuratedMissingWordTopic(withoutLegacyTopic, { topic: IT_TOPIC, words: IT_WORDS });
+  return withCuratedMissingWordTopic(withoutLegacyTopic, { topic: IT_TOPIC, words: IT_MISSING_WORDS });
 }
 
 export function withItHangmanPool(entries) {
