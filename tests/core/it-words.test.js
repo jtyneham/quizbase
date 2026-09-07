@@ -10,11 +10,11 @@ import { curateMissingWordPool, finalizeMissingWordPool } from "../../js/core/mi
 test("IT is a curated standalone topic in Missing Word and Hangman", () => {
   const canonicalAnswers = IT_WORDS.map(([answer]) => canonicalTopicWord(answer));
   const byDifficulty = Object.groupBy(IT_WORDS, ([, difficulty]) => difficulty);
-  assert.equal(IT_WORDS.length, 150);
+  assert.equal(IT_WORDS.length, 200);
   assert.equal(new Set(canonicalAnswers).size, IT_WORDS.length);
   assert.deepEqual(
     { easy: byDifficulty[1].length, medium: byDifficulty[2].length, hard: byDifficulty[3].length },
-    { easy: 50, medium: 70, hard: 30 }
+    { easy: 60, medium: 100, hard: 40 }
   );
 
   const missingPool = finalizeMissingWordPool(withItMissingWordPool(curateMissingWordPool(WORDS)));
