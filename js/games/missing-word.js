@@ -5,8 +5,9 @@ import { withBusinessMoneyMissingWordPool } from "../../data/business-money-word
 import { withComicsMissingWordPool } from "../../data/comics-words.js";
 import { withMangaAnimeMissingWordPool } from "../../data/manga-anime-words.js";
 import { withUfcFightersMissingWordPool } from "../../data/ufc-fighters.js";
+import { withFootballPlayersMissingWordPool } from "../../data/football-players.js";
 
-const TOPICS = ["General", "Animals", "Food & Drink", "Geography", "Nature", "Space", "Science", "Human Body", "Medicine", "History", "Mythology", "Sports", "Games", "Video Games", "Movies & TV", "Music", "Books & Literature", "Comics", "Manga & Anime", "UFC Fighters", "People & Professions", "IT & Technology", "Business & Money", "Vehicles", "Household", "Clothing", "Tools", "Buildings & Places", "Everyday Objects", "Brands", "Nouns", "Verbs", "Adjectives"];
+const TOPICS = ["General", "Animals", "Food & Drink", "Geography", "Nature", "Space", "Science", "Human Body", "Medicine", "History", "Mythology", "Sports", "Football Players", "Games", "Video Games", "Movies & TV", "Music", "Books & Literature", "Comics", "Manga & Anime", "UFC Fighters", "People & Professions", "IT & Technology", "Business & Money", "Vehicles", "Household", "Clothing", "Tools", "Buildings & Places", "Everyday Objects", "Brands", "Nouns", "Verbs", "Adjectives"];
 const EDITIONS = [
   { id: "general", name: "Missing Word", icon: "assets/missing-word.svg", screenId: "missingword" },
   { id: "pokemon", name: "Missing Word Pokemon", icon: "assets/missing-word-pokemon.svg", screenId: "missingwordpokemon" }
@@ -21,10 +22,12 @@ export function registerMissingWord(app) {
     // General is intentionally a curated default, while the full data remains
     // available through each specialist topic.
     wordPool: finalizeMissingWordPool(
-      withUfcFightersMissingWordPool(
-        withMangaAnimeMissingWordPool(
-          withComicsMissingWordPool(
-            withBusinessMoneyMissingWordPool(curateMissingWordPool(WORDS))
+      withFootballPlayersMissingWordPool(
+        withUfcFightersMissingWordPool(
+          withMangaAnimeMissingWordPool(
+            withComicsMissingWordPool(
+              withBusinessMoneyMissingWordPool(curateMissingWordPool(WORDS))
+            )
           )
         )
       )
