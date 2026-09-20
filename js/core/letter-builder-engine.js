@@ -92,6 +92,7 @@ export function initLetterBuilder(root, app, { words = LETTER_BUILDER_WORDS, ran
 
   let roundNumber = 1;
   let mode = "timed";
+  let roundMode = "timed";
   let stage = "selecting";
   let letters = [];
   let previousRound = [];
@@ -124,6 +125,7 @@ export function initLetterBuilder(root, app, { words = LETTER_BUILDER_WORDS, ran
     const running = stage === "running";
     const finished = stage === "finished";
     const revealed = stage === "revealed";
+    const displayedMode = running || finished || revealed ? roundMode : mode;
 
     renderTiles();
     roundLabel.textContent = `Round ${roundNumber} · ${letters.length}/9 letters · ${selectedVowels} vowels · ${selectedConsonants} consonants`;
@@ -133,13 +135,13 @@ export function initLetterBuilder(root, app, { words = LETTER_BUILDER_WORDS, ran
     consonantButton.disabled = !choosing || letters.length >= 9;
     randomButton.disabled = !choosing || letters.length >= 9;
     modeButtons.forEach((button) => {
-      button.disabled = running || finished || revealed;
+      button.disabled = running;
       button.setAttribute("aria-pressed", String(button.dataset.letterMode === mode));
     });
 
-    timer.textContent = mode === "relaxed" ? "∞" : String(remainingSeconds);
-    timer.setAttribute("aria-label", mode === "relaxed" ? "Untimed round" : `${remainingSeconds} seconds`);
-    timer.classList.toggle("warning", running && mode === "timed" && remainingSeconds <= 5);
+    timer.textContent = displayedMode === "relaxed" ? "∞" : String(remainingSeconds);
+    timer.setAttribute("aria-label", displayedMode === "relaxed" ? "Untimed round" : `${remainingSeconds} seconds`);
+    timer.classList.toggle("warning", running && roundMode === "timed" && remainingSeconds <= 5);
 
     if (choosing) {
       statusTitle.textContent = "Choose your letters";
@@ -153,17 +155,17 @@ export function initLetterBuilder(root, app, { words = LETTER_BUILDER_WORDS, ran
       primaryButton.disabled = false;
     } else if (running) {
       statusTitle.textContent = "Find your longest word";
-      statusDetail.textContent = mode === "timed" ? "The round ends when the clock reaches zero." : "Take as long as the group needs.";
+      statusDetail.textContent = roundMode === "timed" ? "The round ends when the clock reaches zero." : "Take as long as the group needs.";
       primaryButton.textContent = "End Round";
       primaryButton.disabled = false;
     } else if (finished) {
-      statusTitle.textContent = mode === "timed" && remainingSeconds === 0 ? "Time is up" : "Round ended";
-      statusDetail.textContent = "Compare answers, then reveal the best available words.";
+      statusTitle.textContent = roundMode === "timed" && remainingSeconds === 0 ? "Time is up" : "Round ended";
+      statusDetail.textContent = `Compare answers, then reveal the best available words. Next round: ${mode === "timed" ? "Timed" : "Relaxed"}.`;
       primaryButton.textContent = "Next Round";
       primaryButton.disabled = false;
     } else {
       statusTitle.textContent = "Best words revealed";
-      statusDetail.textContent = "Ready for another set?";
+      statusDetail.textContent = `Next round: ${mode === "timed" ? "Timed" : "Relaxed"}.`;
       primaryButton.textContent = "Next Round";
       primaryButton.disabled = false;
     }
@@ -209,9 +211,10 @@ export function initLetterBuilder(root, app, { words = LETTER_BUILDER_WORDS, ran
 
   function startRound() {
     if (stage !== "ready") return;
+    roundMode = mode;
     stage = "running";
     results.hidden = true;
-    if (mode === "timed") {
+    if (roundMode === "timed") {
       remainingSeconds = ROUND_SECONDS;
       deadline = Date.now() + ROUND_SECONDS * 1000;
       timerId = window.setInterval(tick, 200);
@@ -264,9 +267,9 @@ export function initLetterBuilder(root, app, { words = LETTER_BUILDER_WORDS, ran
   primaryButton.addEventListener("click", handlePrimaryAction);
   revealButton.addEventListener("click", revealWords);
   modeButtons.forEach((button) => button.addEventListener("click", () => {
-    if (stage !== "selecting" && stage !== "ready") return;
+    if (stage === "running") return;
     mode = button.dataset.letterMode;
-    remainingSeconds = ROUND_SECONDS;
+    if (stage === "selecting" || stage === "ready") remainingSeconds = ROUND_SECONDS;
     render();
   }));
 

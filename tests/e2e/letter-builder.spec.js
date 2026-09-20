@@ -17,15 +17,26 @@ test("Letter Builder supports selection, timed play, reveal, and consecutive rou
 
   await primary.click();
   await expect(primary).toHaveText("End Round");
+  await expect(screen.getByRole("button", { name: "Relaxed", exact: true })).toBeDisabled();
   await primary.click();
   await expect(reveal).toBeEnabled();
   await reveal.click();
   await expect(screen.locator("#letterBuilderResults")).toBeVisible();
   await expect(screen.locator("#letterBuilderWordList span").first()).toBeVisible();
 
+  const relaxed = screen.getByRole("button", { name: "Relaxed", exact: true });
+  await expect(relaxed).toBeEnabled();
+  await relaxed.click();
+  await expect(relaxed).toHaveAttribute("aria-pressed", "true");
+  await expect(screen.locator("#letterBuilderStatusDetail")).toContainText("Next round: Relaxed");
+
   await primary.click();
   await expect(tiles).toHaveCount(0);
   await expect(screen.locator("#letterBuilderRoundLabel")).toContainText("Round 2");
+  await screen.locator("#letterBuilderRandomButton").click();
+  await expect(primary).toHaveText("Start Round");
+  await primary.click();
+  await expect(screen.locator("#letterBuilderTimer")).toHaveText("∞");
   await assertNoPageOverflow(page);
 });
 
