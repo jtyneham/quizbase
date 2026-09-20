@@ -58,6 +58,7 @@ button{font:inherit}
 .screen-missing-word-pokemon{background:var(--page-bg)}quiz-missing-word-pokemon{display:block;width:100%;height:100%}
 .screen-hangman{background:var(--qb-color-game-page)}quiz-hangman{display:block;width:100%;height:100%}
 .screen-hangman-pokemon{background:var(--qb-color-game-page)}quiz-hangman-pokemon{display:block;width:100%;height:100%}
+.screen-letter-builder{background:var(--page-bg)}
 .screen-odd-one-out{background:var(--page-bg)}
 
 @media(max-height:42rem) and (orientation:landscape){

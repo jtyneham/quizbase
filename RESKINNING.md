@@ -179,7 +179,7 @@ A reskin may use cards, lists, terminals, diegetic panels, abstract navigation, 
 Unless the product explicitly changes, preserve:
 
 ### App
-- all eight routes and Home navigation, including direct hash links and browser Back/Forward;
+- all nine routes and Home navigation, including direct hash links and browser Back/Forward;
 - fullscreen enter/exit and icon state;
 - haptics where supported;
 - no accidental page scrolling.

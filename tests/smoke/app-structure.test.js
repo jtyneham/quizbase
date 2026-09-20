@@ -10,17 +10,18 @@ const routes = [
   ["missing-word-pokemon", "missingWordPokemonScreen"],
   ["hangman", "hangmanScreen"],
   ["hangman-pokemon", "hangmanPokemonScreen"],
+  ["letter-builder", "letterBuilderScreen"],
   ["number-play", "numberPlayScreen"],
   ["odd-one-out", "oddOneOutScreen"],
   ["odd-one-out-pokemon", "oddOneOutPokemonScreen"]
 ];
 
-test("all eight game screens are present in the app shell", async () => {
+test("all nine game screens are present in the app shell", async () => {
   const html = await read("index.html");
   for (const [, screenId] of routes) assert.match(html, new RegExp(`id=["']${screenId}["']`));
 });
 
-test("all eight route hashes are represented by app screen names", async () => {
+test("all nine route hashes are represented by app screen names", async () => {
   const app = await read("js/app.js");
   for (const [route] of routes) {
     assert.match(app, new RegExp(`"#${route}"`));
@@ -51,6 +52,9 @@ test("every game exposes Home navigation directly or through its shared engine",
 
   const numberPlay = await read("js/games/number-play.js");
   assert.match(numberPlay, /showHome\(\)/, "Number Play should call the shared Home API");
+
+  const letterBuilder = await read("js/core/letter-builder-engine.js");
+  assert.match(letterBuilder, /showHome\(\)/, "Letter Builder should call the shared Home API");
 
   const pokemonOddOneOut = await read("js/games/odd-one-out-pokemon.js");
   assert.match(pokemonOddOneOut, /initOddOneOut/, "Pokémon Odd One Out should reuse the shared OOO engine");

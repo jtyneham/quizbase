@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="css/rngl.css" />
   <link rel="stylesheet" href="css/odd-one-out.css" />
   <link rel="stylesheet" href="css/number-play.css" />
+  <link rel="stylesheet" href="css/letter-builder.css" />
   <link rel="stylesheet" href="css/theme-picker.css" />
   <link rel="stylesheet" href="css/compact-landscape.css" />
   <link rel="stylesheet" href="css/themes/automata/theme.css" />
@@ -64,6 +65,21 @@
               </svg>
             </div>
             <span class="game-launcher-label" data-ui="game-launch-label">Random Letter</span>
+          </button>
+
+          <button class="game-launcher-item" data-ui="game-launch" type="button" data-file="letterbuilder.html" data-name="Letter Builder">
+            <div class="game-launcher-icon" data-ui="game-launch-surface">
+              <svg class="icon letter-builder-icon" viewBox="0 0 120 120" aria-hidden="true">
+                <rect x="8" y="35" width="30" height="40" rx="5"></rect>
+                <rect x="45" y="23" width="30" height="40" rx="5"></rect>
+                <rect x="82" y="35" width="30" height="40" rx="5"></rect>
+                <text x="23" y="63" text-anchor="middle" font-size="22">A</text>
+                <text x="60" y="51" text-anchor="middle" font-size="22">B</text>
+                <text x="97" y="63" text-anchor="middle" font-size="22">C</text>
+                <path d="M22 91h76"></path>
+              </svg>
+            </div>
+            <span class="game-launcher-label" data-ui="game-launch-label">Letter Builder</span>
           </button>
 
           <button class="game-launcher-item" data-ui="game-launch" type="button" data-file="numberplay.html" data-name="Number Play">
@@ -235,6 +251,8 @@
     <section id="hangmanPokemonScreen" class="screen screen-hangman-pokemon" aria-label="Hangman - Pokemon">
       <quiz-hangman-pokemon></quiz-hangman-pokemon>
     </section>
+
+    <section id="letterBuilderScreen" class="screen screen-letter-builder" aria-label="Letter Builder"></section>
 
     <section id="numberPlayScreen" class="screen screen-number-play" aria-label="Number Play">
       <div class="number-play-app" data-ui="game-root">
