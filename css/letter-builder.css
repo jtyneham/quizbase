@@ -21,8 +21,8 @@
 
 .letter-builder-topbar {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: end;
+  grid-template-columns: 1fr auto;
+  align-items: center;
   gap: .75rem;
   padding: env(safe-area-inset-top) max(var(--lb-page-inline), env(safe-area-inset-right)) .65rem max(var(--lb-page-inline), env(safe-area-inset-left));
 }
@@ -42,10 +42,6 @@
   cursor: pointer;
 }
 .letter-builder-utility img { width: 1.35rem; height: 1.35rem; display: block; }
-
-.letter-builder-heading { text-align: center; align-self: center; line-height: 1.1; }
-.letter-builder-heading strong { display: block; font-size: clamp(1rem, 2.5vw, 1.3rem); }
-.letter-builder-heading span { display: block; margin-top: .2rem; color: var(--qb-color-text-muted); font-size: .78rem; }
 
 .letter-builder-mode {
   justify-self: end;
@@ -202,12 +198,8 @@
 .letter-builder-actions button:focus-visible { outline: .15rem solid var(--qb-color-focus); outline-offset: .16rem; }
 
 @media (max-width: 34rem) {
-  #letterBuilderScreen { --lb-toolbar-height: 6.65rem; --lb-gap: .75rem; }
-  .letter-builder-topbar { grid-template-columns: 1fr auto; align-items: center; padding-bottom: .5rem; }
-  .letter-builder-heading { grid-column: 1 / -1; grid-row: 1; }
-  .letter-builder-heading span { display: none; }
-  .letter-builder-utilities { grid-column: 1; grid-row: 2; }
-  .letter-builder-mode { grid-column: 2; grid-row: 2; }
+  #letterBuilderScreen { --lb-gap: .75rem; }
+  .letter-builder-topbar { padding-bottom: .5rem; }
   .letter-builder-board { padding: .85rem .6rem; }
   .letter-builder-tiles { gap: .18rem; padding: .28rem; }
   .letter-builder-status { min-height: 4.6rem; gap: .75rem; }
@@ -221,7 +213,6 @@
 @media (max-height: 42rem) and (orientation: landscape) {
   #letterBuilderScreen { --lb-toolbar-height: 3.5rem; --lb-gap: .35rem; }
   .letter-builder-topbar { padding-bottom: .3rem; }
-  .letter-builder-heading span { display: none; }
   .letter-builder-utility { width: 2.35rem; height: 2.35rem; }
   .letter-builder-mode button { min-height: 2.1rem; }
   .letter-builder-main { padding-block: .3rem; }

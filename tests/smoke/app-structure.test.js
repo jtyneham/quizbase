@@ -65,3 +65,10 @@ test("shared utility assets exist", async () => {
     assert.ok((await read(path)).includes("<svg"), `${path} should be a valid SVG asset`);
   }
 });
+
+test("Home exposes the shared fullscreen binding", async () => {
+  const html = await read("index.html");
+  const app = await read("js/app.js");
+  assert.match(html, /id="homeFullscreenButton"[^>]+data-ui="fullscreen-action"/);
+  assert.match(app, /bindFullscreenButton\(\{[\s\S]*?homeFullscreenButton/);
+});

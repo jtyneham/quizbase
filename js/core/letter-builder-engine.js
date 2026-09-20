@@ -18,11 +18,6 @@ const TEMPLATE = `
         </button>
       </div>
 
-      <div class="letter-builder-heading">
-        <strong>Letter Builder</strong>
-        <span>Build the longest word</span>
-      </div>
-
       <div class="letter-builder-mode" data-ui="option-control" role="group" aria-label="Round mode">
         <button type="button" data-letter-mode="timed" aria-pressed="true">Timed</button>
         <button type="button" data-letter-mode="relaxed" aria-pressed="false">Relaxed</button>

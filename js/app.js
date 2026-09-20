@@ -1,5 +1,6 @@
 import { initRandomLetter } from "./games/rngl.js";
 import { createFullscreenService, haptic } from "./core/device.js";
+import { bindFullscreenButton } from "./core/ui.js";
 
 const screens = {
   home: document.getElementById("homeScreen"),
@@ -86,6 +87,13 @@ const api = {
   openGame(name) { return navigate(name); },
   isScreenActive(name) { return current === name; }
 };
+
+bindFullscreenButton({
+  button: document.getElementById("homeFullscreenButton"),
+  icon: document.getElementById("homeFullscreenIcon"),
+  label: document.getElementById("homeFullscreenLabel"),
+  app: api
+});
 
 function routeFromHash(hash = location.hash) {
   return Object.entries(routes).find(([, route]) =>

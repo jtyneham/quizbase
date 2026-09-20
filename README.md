@@ -43,7 +43,7 @@ First-time Playwright setup requires:
 npx playwright install chromium
 ```
 
-The current fast gate contains **92 Node unit/contract tests**. Run the
+The current fast gate contains **94 Node unit/contract tests**. Run the
 Playwright suite in a normal local browser environment for end-to-end visual
 coverage.
 
@@ -52,7 +52,7 @@ coverage.
 - `js/core/missing-word-engine.js` powers both Missing Word editions; its template, edition picker, topic picker, and reel renderer live in dedicated core modules, while data/configuration remain separate.
 - `js/core/hangman-engine.js` powers both Hangman variants; its shared topic picker is isolated in `js/core/hangman-topic-picker.js`, while data/configuration remain separate.
 - `js/core/letter-builder-engine.js` runs Letter Builder's timed and relaxed rounds; persistent weighted bags, duplicate-letter checks, and solution finding live in `js/core/letter-builder-logic.js`.
-- `data/letter-builder-words.js` is a static, curated British-English SCOWL export. Its reproducible build script and licence notice live in `scripts/build-letter-builder-dictionary.mjs` and `vendor/SCOWL-LICENSE.txt`.
+- `data/letter-builder-words.js` is a static, curated British-English SCOWL export. Supplemental regional entries, unsuitable terms, and unclear short forms are filtered for familiar quiz play; the reproducible build script and licence notice live in `scripts/build-letter-builder-dictionary.mjs` and `vendor/SCOWL-LICENSE.txt`.
 - `js/core/random-letter-ticker.js` owns the Random Letter Ideas ticker; generation animations remain in its game module.
 - `js/core/hangman-engine.js` and `js/core/odd-one-out-engine.js` each power General and Pokémon editions from separate reviewed data pools; the compact edition picker only controls navigation between them.
 - `js/core/target-pair-logic.js` and `js/core/number-detective-logic.js` hold Number Play's active procedural modes; its small mode registry is in `data/number-play-modes.js`, so future modes can share one shell without copying routes or navigation.

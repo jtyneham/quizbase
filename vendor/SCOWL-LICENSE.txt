@@ -16,4 +16,7 @@ SCOWL is derived from many sources, most of which are in the Public Domain.
 Data from the Corpus of Contemporary American English (COCA) was also used.
 
 The generated Quizbase list uses SCOWL size 40, British spelling B, and variant
-level 1. It is below size 80 and does not use Australian spelling data.
+level 1. It excludes SCOWL's supplemental "extra" tag, nonword/special/wordpart
+categories, marked offensive/vulgar entries, and a small Quizbase-reviewed set
+of unsuitable or unclear short forms. It is below size 80 and does not use
+Australian spelling data.

@@ -25,6 +25,10 @@
 <body>
   <div id="quizApp" class="quiz-shell" data-ui="app-shell">
     <section id="homeScreen" class="screen screen-home active" data-ui="home-screen" aria-label="Quiz games">
+      <button id="homeFullscreenButton" class="home-fullscreen-button" data-ui="fullscreen-action" type="button" aria-label="Enter fullscreen" title="Fullscreen">
+        <img id="homeFullscreenIcon" src="assets/fullscreen.svg" alt="" aria-hidden="true">
+        <span id="homeFullscreenLabel" class="visually-hidden">Fullscreen</span>
+      </button>
       <div class="theme-picker" data-ui="theme-picker">
         <label for="themeSelect">Themes</label>
         <select id="themeSelect" data-ui="theme-select" aria-label="Themes"></select>

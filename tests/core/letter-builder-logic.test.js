@@ -61,3 +61,15 @@ test("the bundled dictionary stays lowercase, tile-sized, and family-safe", () =
     assert.equal(LETTER_BUILDER_WORDS.includes(blocked), false, `${blocked} must be excluded`);
   }
 });
+
+test("revealed short words favour recognisable standalone vocabulary", () => {
+  for (const unclear of ["col", "etc", "non", "qua", "sec", "sup"]) {
+    assert.equal(LETTER_BUILDER_WORDS.includes(unclear), false, `${unclear} must be excluded`);
+  }
+  for (const familiar of ["cog", "con", "cot", "got", "not", "ton", "tot"]) {
+    assert.equal(LETTER_BUILDER_WORDS.includes(familiar), true, `${familiar} should remain playable`);
+  }
+
+  const screenshotRound = findBestWords(LETTER_BUILDER_WORDS, ["T", "O", "N", "C", "C", "T", "N", "G", "M"]);
+  assert.deepEqual(screenshotRound.words, ["cog", "con", "cot", "got", "not", "ton", "tot"]);
+});
