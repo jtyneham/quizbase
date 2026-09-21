@@ -71,10 +71,77 @@
 .letter-builder-main {
   min-height: 0;
   display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
   place-items: center;
+  gap: clamp(.5rem, 1.5dvh, .85rem);
   overflow: hidden;
   padding: .55rem max(var(--lb-page-inline), env(safe-area-inset-right)) max(.8rem, env(safe-area-inset-bottom)) max(var(--lb-page-inline), env(safe-area-inset-left));
 }
+
+.letter-builder-word-checker {
+  width: min(100%, 27rem);
+  min-width: 0;
+  color: var(--qb-color-text);
+}
+.letter-builder-word-checker-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  overflow: hidden;
+  border: 1px solid var(--qb-color-line-strong);
+  border-radius: var(--qb-radius-control-large);
+  background: var(--qb-color-surface);
+  box-shadow: var(--qb-shadow-control);
+}
+.letter-builder-word-checker input {
+  min-width: 0;
+  height: 3.25rem;
+  padding: 0 1rem;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--qb-color-text-strong);
+  font: inherit;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-align: center;
+  text-transform: uppercase;
+}
+.letter-builder-word-checker input::placeholder {
+  color: var(--qb-color-text-muted);
+  opacity: .82;
+}
+.letter-builder-word-checker button {
+  min-width: 5.4rem;
+  border: 0;
+  border-left: 1px solid var(--qb-color-line-strong);
+  background: var(--qb-color-surface-muted);
+  color: var(--qb-color-text-strong);
+  font-weight: 750;
+  cursor: pointer;
+}
+.letter-builder-word-checker button:hover { background: var(--qb-color-accent-soft); }
+.letter-builder-word-checker output {
+  display: block;
+  min-height: 1.25rem;
+  padding-top: .25rem;
+  color: var(--qb-color-text-muted);
+  font-size: .78rem;
+  font-weight: 700;
+  text-align: center;
+}
+.letter-builder-word-checker[data-state="valid"] .letter-builder-word-checker-row { border-color: var(--qb-color-success, #2f8f5b); }
+.letter-builder-word-checker[data-state="valid"] output { color: var(--qb-color-success, #2f8f5b); }
+.letter-builder-word-checker[data-state="not-found"] .letter-builder-word-checker-row,
+.letter-builder-word-checker[data-state="not-buildable"] .letter-builder-word-checker-row,
+.letter-builder-word-checker[data-state="letters-only"] .letter-builder-word-checker-row,
+.letter-builder-word-checker[data-state="length"] .letter-builder-word-checker-row,
+.letter-builder-word-checker[data-state="empty"] .letter-builder-word-checker-row { border-color: var(--qb-color-danger); }
+.letter-builder-word-checker[data-state="not-found"] output,
+.letter-builder-word-checker[data-state="not-buildable"] output,
+.letter-builder-word-checker[data-state="letters-only"] output,
+.letter-builder-word-checker[data-state="length"] output,
+.letter-builder-word-checker[data-state="empty"] output { color: var(--qb-color-danger); }
 
 .letter-builder-board {
   width: min(100%, 59rem);
@@ -196,6 +263,8 @@
 .letter-builder-mode button:focus-visible,
 .letter-builder-pickers button:focus-visible,
 .letter-builder-actions button:focus-visible { outline: .15rem solid var(--qb-color-focus); outline-offset: .16rem; }
+.letter-builder-word-checker input:focus-visible,
+.letter-builder-word-checker button:focus-visible { outline: .15rem solid var(--qb-color-focus); outline-offset: -.18rem; }
 
 @media (max-width: 34rem) {
   #letterBuilderScreen { --lb-gap: .75rem; }
@@ -208,6 +277,7 @@
   .letter-builder-pickers button { min-height: 3.45rem; padding-inline: .3rem; }
   .letter-builder-actions { gap: .4rem; }
   .letter-builder-actions button { min-width: 0; flex: 1; padding-inline: .45rem; }
+  .letter-builder-word-checker input { height: 3rem; }
 }
 
 @media (max-height: 42rem) and (orientation: landscape) {
@@ -227,6 +297,9 @@
   .letter-builder-actions button { min-height: 2.65rem; padding-block: .35rem; }
   .letter-builder-results { min-height: 2.5rem; padding-block: .35rem; }
   .letter-builder-results > span { display: none; }
+  .letter-builder-word-checker-row { width: min(100%, 23rem); margin-inline: auto; }
+  .letter-builder-word-checker input { height: 2.55rem; }
+  .letter-builder-word-checker output { min-height: 1rem; padding-top: .1rem; font-size: .7rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -52,3 +52,24 @@ test("Letter Builder relaxed mode and keyboard shortcuts remain playable", async
   await expect(screen.locator("#letterBuilderPrimaryButton")).toHaveText("End Round");
   await assertNoPageOverflow(page);
 });
+
+test("Letter Builder word checker validates the dictionary and current tiles", async ({ page }) => {
+  const screen = await openGame(page, { name: "Letter Builder" });
+  const input = screen.locator("#letterBuilderWordInput");
+  const feedback = screen.locator("#letterBuilderWordFeedback");
+
+  await input.fill("builder");
+  await input.press("Enter");
+  await expect(input).toHaveValue("BUILDER");
+  await expect(feedback).toHaveText("Valid word.");
+
+  await screen.locator("#letterBuilderRandomButton").click();
+  await input.fill("builder");
+  await input.press("Enter");
+  await expect(feedback).toHaveText(/Valid word\.|Valid word, but not from these letters\./);
+
+  await input.fill("zzzzzzzzz");
+  await input.press("Enter");
+  await expect(feedback).toHaveText("Not in the word list.");
+  await assertNoPageOverflow(page);
+});

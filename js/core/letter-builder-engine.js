@@ -1,5 +1,5 @@
 import { LETTER_BUILDER_WORDS } from "../../data/letter-builder-words.js";
-import { PersistentLetterBags, fillRandomLetters, findBestWords, isVowel } from "./letter-builder-logic.js";
+import { checkLetterBuilderWord, PersistentLetterBags, fillRandomLetters, findBestWords, isVowel } from "./letter-builder-logic.js";
 import { bindFullscreenButton } from "./ui.js";
 
 const INITIALISED_ROOTS = new WeakSet();
@@ -57,6 +57,26 @@ const TEMPLATE = `
           <span id="letterBuilderResultDetail"></span>
         </div>
       </section>
+
+      <form id="letterBuilderWordChecker" class="letter-builder-word-checker" data-state="idle">
+        <div class="letter-builder-word-checker-row">
+          <input
+            id="letterBuilderWordInput"
+            type="text"
+            inputmode="text"
+            enterkeyhint="done"
+            autocomplete="off"
+            autocapitalize="characters"
+            spellcheck="false"
+            maxlength="9"
+            aria-label="Check a word"
+            aria-describedby="letterBuilderWordFeedback"
+            placeholder="CHECK A WORD"
+          >
+          <button type="submit">Check</button>
+        </div>
+        <output id="letterBuilderWordFeedback" aria-live="polite"></output>
+      </form>
     </main>
   </div>`;
 
@@ -87,8 +107,12 @@ export function initLetterBuilder(root, app, { words = LETTER_BUILDER_WORDS, ran
   const resultTitle = required(root, "#letterBuilderResultTitle");
   const wordList = required(root, "#letterBuilderWordList");
   const resultDetail = required(root, "#letterBuilderResultDetail");
+  const wordChecker = required(root, "#letterBuilderWordChecker");
+  const wordInput = required(root, "#letterBuilderWordInput");
+  const wordFeedback = required(root, "#letterBuilderWordFeedback");
   const modeButtons = [...root.querySelectorAll("[data-letter-mode]")];
   const bags = new PersistentLetterBags(random);
+  const dictionary = new Set(words);
 
   let roundNumber = 1;
   let mode = "timed";
@@ -178,6 +202,7 @@ export function initLetterBuilder(root, app, { words = LETTER_BUILDER_WORDS, ran
   function addLetter(type) {
     if (stage !== "selecting" || letters.length >= 9) return;
     letters = [...letters, bags.draw(type, { chosen: letters, previousRound })];
+    clearWordCheck();
     app.haptic?.(10);
     if (letters.length === 9) stage = "ready";
     render();
@@ -186,6 +211,7 @@ export function initLetterBuilder(root, app, { words = LETTER_BUILDER_WORDS, ran
   function randomFill() {
     if (stage !== "selecting" || letters.length >= 9) return;
     letters = fillRandomLetters({ letters, bags, previousRound, random });
+    clearWordCheck();
     stage = "ready";
     app.haptic?.([10, 28, 10]);
     render();
@@ -251,6 +277,8 @@ export function initLetterBuilder(root, app, { words = LETTER_BUILDER_WORDS, ran
     roundNumber += 1;
     remainingSeconds = ROUND_SECONDS;
     stage = "selecting";
+    wordInput.value = "";
+    clearWordCheck();
     wordList.replaceChildren();
     render();
   }
@@ -261,11 +289,39 @@ export function initLetterBuilder(root, app, { words = LETTER_BUILDER_WORDS, ran
     else if (stage === "finished" || stage === "revealed") nextRound();
   }
 
+  function clearWordCheck() {
+    wordChecker.dataset.state = "idle";
+    wordFeedback.textContent = "";
+  }
+
+  function checkWord(event) {
+    event.preventDefault();
+    const result = checkLetterBuilderWord(dictionary, wordInput.value, letters);
+    const messages = {
+      empty: "Type a word first.",
+      "letters-only": "Use letters only.",
+      length: "Words must contain 3–9 letters.",
+      "not-found": "Not in the word list.",
+      "not-buildable": "Valid word, but not from these letters.",
+      valid: "Valid word."
+    };
+    wordChecker.dataset.state = result.code;
+    wordFeedback.textContent = messages[result.code];
+    app.haptic?.(result.code === "valid" ? [12, 24, 12] : 18);
+  }
+
   vowelButton.addEventListener("click", () => addLetter("vowel"));
   consonantButton.addEventListener("click", () => addLetter("consonant"));
   randomButton.addEventListener("click", randomFill);
   primaryButton.addEventListener("click", handlePrimaryAction);
   revealButton.addEventListener("click", revealWords);
+  wordChecker.addEventListener("submit", checkWord);
+  wordInput.addEventListener("input", () => {
+    const selection = wordInput.selectionStart;
+    wordInput.value = wordInput.value.replace(/[^a-z]/gi, "").toUpperCase();
+    if (selection !== null) wordInput.setSelectionRange(selection, selection);
+    clearWordCheck();
+  });
   modeButtons.forEach((button) => button.addEventListener("click", () => {
     if (stage === "running") return;
     mode = button.dataset.letterMode;

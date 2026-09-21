@@ -4,6 +4,7 @@ import {
   LETTER_BUILDER_DISTRIBUTIONS,
   PersistentLetterBags,
   canBuildWord,
+  checkLetterBuilderWord,
   fillRandomLetters,
   findBestWords,
   multisetLetterOverlap
@@ -40,6 +41,14 @@ test("letter multisets and solver respect duplicate tile counts", () => {
   const solution = findBestWords(["rat", "rate", "tear", "treat", "tare"], ["T", "R", "E", "A"]);
   assert.equal(solution.longestLength, 4);
   assert.deepEqual(solution.words, ["rate", "tare", "tear"]);
+});
+
+test("word checker distinguishes dictionary membership from the current letters", () => {
+  const dictionary = new Set(["rate", "tear", "builder"]);
+  assert.deepEqual(checkLetterBuilderWord(dictionary, " RATE ", ["R", "A", "T", "E"]), { code: "valid", word: "rate" });
+  assert.deepEqual(checkLetterBuilderWord(dictionary, "builder", ["R", "A", "T", "E"]), { code: "not-buildable", word: "builder" });
+  assert.deepEqual(checkLetterBuilderWord(dictionary, "fake", ["F", "A", "K", "E"]), { code: "not-found", word: "fake" });
+  assert.deepEqual(checkLetterBuilderWord(dictionary, "a"), { code: "length", word: "a" });
 });
 
 test("the final draw avoids an extremely similar consecutive set when possible", () => {

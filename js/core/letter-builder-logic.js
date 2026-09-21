@@ -119,6 +119,18 @@ export function canBuildWord(word, letters) {
   return /^[A-Za-z]+$/.test(word) && word.length >= 3;
 }
 
+export function checkLetterBuilderWord(dictionary, candidate, letters = []) {
+  const word = String(candidate).trim().toLowerCase();
+  if (!word) return { code: "empty", word };
+  if (!/^[a-z]+$/.test(word)) return { code: "letters-only", word };
+  if (word.length < 3 || word.length > 9) return { code: "length", word };
+
+  const exists = dictionary instanceof Set ? dictionary.has(word) : dictionary.includes(word);
+  if (!exists) return { code: "not-found", word };
+  if (letters.length && !canBuildWord(word, letters)) return { code: "not-buildable", word };
+  return { code: "valid", word };
+}
+
 export function findBestWords(words, letters, { limit = 12, minimumLength = 3 } = {}) {
   const candidates = words
     .filter((word) => word.length >= minimumLength && canBuildWord(word, letters))
