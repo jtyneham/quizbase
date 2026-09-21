@@ -307,6 +307,7 @@ export function initLetterBuilder(root, app, { words = LETTER_BUILDER_WORDS, ran
     };
     wordChecker.dataset.state = result.code;
     wordFeedback.textContent = messages[result.code];
+    wordInput.value = "";
     app.haptic?.(result.code === "valid" ? [12, 24, 12] : 18);
   }
 
