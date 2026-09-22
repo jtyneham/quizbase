@@ -123,6 +123,7 @@ export function initLetterBuilder(root, app, { words = LETTER_BUILDER_WORDS, ran
   let remainingSeconds = ROUND_SECONDS;
   let deadline = 0;
   let timerId = null;
+  let checkedWordVisible = false;
 
   function stopTimer() {
     if (timerId !== null) window.clearInterval(timerId);
@@ -202,7 +203,7 @@ export function initLetterBuilder(root, app, { words = LETTER_BUILDER_WORDS, ran
   function addLetter(type) {
     if (stage !== "selecting" || letters.length >= 9) return;
     letters = [...letters, bags.draw(type, { chosen: letters, previousRound })];
-    clearWordCheck();
+    clearWordCheck({ clearValue: true });
     app.haptic?.(10);
     if (letters.length === 9) stage = "ready";
     render();
@@ -211,7 +212,7 @@ export function initLetterBuilder(root, app, { words = LETTER_BUILDER_WORDS, ran
   function randomFill() {
     if (stage !== "selecting" || letters.length >= 9) return;
     letters = fillRandomLetters({ letters, bags, previousRound, random });
-    clearWordCheck();
+    clearWordCheck({ clearValue: true });
     stage = "ready";
     app.haptic?.([10, 28, 10]);
     render();
@@ -277,8 +278,7 @@ export function initLetterBuilder(root, app, { words = LETTER_BUILDER_WORDS, ran
     roundNumber += 1;
     remainingSeconds = ROUND_SECONDS;
     stage = "selecting";
-    wordInput.value = "";
-    clearWordCheck();
+    clearWordCheck({ clearValue: true });
     wordList.replaceChildren();
     render();
   }
@@ -289,13 +289,20 @@ export function initLetterBuilder(root, app, { words = LETTER_BUILDER_WORDS, ran
     else if (stage === "finished" || stage === "revealed") nextRound();
   }
 
-  function clearWordCheck() {
+  function clearWordCheck({ clearValue = false } = {}) {
+    if (clearValue) wordInput.value = "";
+    checkedWordVisible = false;
     wordChecker.dataset.state = "idle";
     wordFeedback.textContent = "";
   }
 
+  function beginNewWord() {
+    if (checkedWordVisible) clearWordCheck({ clearValue: true });
+  }
+
   function checkWord(event) {
     event.preventDefault();
+    const submittedFromInput = document.activeElement === wordInput;
     const result = checkLetterBuilderWord(dictionary, wordInput.value, letters);
     const messages = {
       empty: "Type a word first.",
@@ -307,7 +314,8 @@ export function initLetterBuilder(root, app, { words = LETTER_BUILDER_WORDS, ran
     };
     wordChecker.dataset.state = result.code;
     wordFeedback.textContent = messages[result.code];
-    wordInput.value = "";
+    checkedWordVisible = true;
+    if (submittedFromInput && wordInput.value) wordInput.select();
     app.haptic?.(result.code === "valid" ? [12, 24, 12] : 18);
   }
 
@@ -323,6 +331,8 @@ export function initLetterBuilder(root, app, { words = LETTER_BUILDER_WORDS, ran
     if (selection !== null) wordInput.setSelectionRange(selection, selection);
     clearWordCheck();
   });
+  wordInput.addEventListener("pointerdown", beginNewWord);
+  wordInput.addEventListener("focus", beginNewWord);
   modeButtons.forEach((button) => button.addEventListener("click", () => {
     if (stage === "running") return;
     mode = button.dataset.letterMode;

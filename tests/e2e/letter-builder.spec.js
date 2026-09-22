@@ -60,18 +60,30 @@ test("Letter Builder word checker validates the dictionary and current tiles", a
 
   await input.fill("builder");
   await input.press("Enter");
-  await expect(input).toHaveValue("");
+  await expect(input).toHaveValue("BUILDER");
   await expect(feedback).toHaveText("Valid word.");
+  await page.keyboard.type("rate");
+  await expect(input).toHaveValue("RATE");
+  await expect(feedback).toHaveText("");
+
+  await input.fill("builder");
+  await input.press("Enter");
+  await input.click();
+  await expect(input).toHaveValue("");
+  await expect(feedback).toHaveText("");
 
   await screen.locator("#letterBuilderRandomButton").click();
   await input.fill("builder");
   await screen.getByRole("button", { name: "Check", exact: true }).click();
-  await expect(input).toHaveValue("");
+  await expect(input).toHaveValue("BUILDER");
   await expect(feedback).toHaveText(/Valid word\.|Valid word, but not from these letters\./);
+  await input.click();
+  await expect(input).toHaveValue("");
+  await expect(feedback).toHaveText("");
 
   await input.fill("zzzzzzzzz");
   await input.press("Enter");
-  await expect(input).toHaveValue("");
+  await expect(input).toHaveValue("ZZZZZZZZZ");
   await expect(feedback).toHaveText("Not in the word list.");
   await assertNoPageOverflow(page);
 });
